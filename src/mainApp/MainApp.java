@@ -142,7 +142,6 @@ public class MainApp implements KeyListener{
 		}
 		checkJump();
     	checkDash();
-    	lvl.checkIfDashing();
     	lvl.moveMadelineVertically();
     	lvl.moveMadelineHorizontally();
     }
@@ -161,6 +160,7 @@ public class MainApp implements KeyListener{
      */
     private void checkDash()
     {
+    	lvl.checkIfDashing();
 		// 75 is k
 		if (pressedKeys.contains(75))
 		{
