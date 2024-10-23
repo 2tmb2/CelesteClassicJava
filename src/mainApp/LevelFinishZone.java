@@ -24,16 +24,25 @@ public class LevelFinishZone extends CollisionObject {
 		this.m = m;
 	}
 
+	/**
+	 * Returns false for a LevelFinishZone to disable vertical collision
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		return false;
 	}
 
+	/**
+	 * Returns false for a LevelFinishZone to disable vertical collision
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		return false;
 	}
 
+	/**
+	 * Purpose: To advance to the next level when collided with
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int isFacing) {
 		if (super.isCollidingWall(madelineX, madelineY, isFacing)) {
