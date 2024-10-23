@@ -159,7 +159,7 @@ public class LevelComponent extends JComponent{
 			collisionObjects.add(c20);
 			CollisionObject c21 = new EnvironmentObject(48+96,96,48,48,new String[] {"","","",""});
 			collisionObjects.add(c21);
-			CollisionObject c22 = new InvisibleWall(-100,-100,100,868);
+			CollisionObject c22 = new CollisionObject(-100,-100,100,868);
 			collisionObjects.add(c22);
 //			CollisionObject test = new EnvironmentObject(200,200,300,400);
 //			collisionObjects.add(test);
