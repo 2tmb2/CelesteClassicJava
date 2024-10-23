@@ -83,8 +83,8 @@ public class Madeline {
 	}
 
 	/**
-	 * Updates Madeline's horizontal position based on her current velocity, position,
-	 * and any objects she is colliding with
+	 * Updates Madeline's horizontal position based on her current velocity,
+	 * position, and any objects she is colliding with
 	 */
 	public void setHorizontalPosition() {
 		if (Math.abs(xVel) <= 2) {
@@ -109,8 +109,8 @@ public class Madeline {
 	}
 
 	/**
-	 * Updates Madeline's vertical position based on her current velocity, position, and
-	 * any objects she is colliding with
+	 * Updates Madeline's vertical position based on her current velocity, position,
+	 * and any objects she is colliding with
 	 */
 	public void setVerticalPosition() {
 		if (!isCollidingWithFloor() && !isDashingHorizontally) {
@@ -151,6 +151,7 @@ public class Madeline {
 
 	/**
 	 * Checks if Madeline is currently colliding with any walls
+	 * 
 	 * @return true if she is colliding with a wall, otherwise false
 	 */
 	public boolean isCollidingWithWall() {
@@ -164,6 +165,7 @@ public class Madeline {
 
 	/**
 	 * Checks if Madeline is currently colliding with any floors
+	 * 
 	 * @return true if she is colliding with a floor, otherwise false
 	 */
 	public boolean isCollidingWithFloor() {
@@ -177,8 +179,10 @@ public class Madeline {
 		}
 		return false;
 	}
+
 	/**
 	 * Checks if Madeline is currently colliding with any ceilings
+	 * 
 	 * @return true if she is colliding with a ceiling, otherwise false
 	 */
 	public boolean isCollidingWithCeiling() {
@@ -218,10 +222,12 @@ public class Madeline {
 	/**
 	 * If she is able, makes Madeline dash in the given direction
 	 * 
-	 * @param dir represents the direction to dash.
-	 * Dir is made up of either a single direction or a combination of directions.
-	 * When combining directions, the vertical direction must come first. (e.g. "upright", not "rightup")
-	 * To dash horizontally, dir must be an empty string. This will make Madeline dash in the direction she is facing.
+	 * @param dir represents the direction to dash. Dir is made up of either a
+	 *            single direction or a combination of directions. When combining
+	 *            directions, the vertical direction must come first. (e.g.
+	 *            "upright", not "rightup") To dash horizontally, dir must be an
+	 *            empty string. This will make Madeline dash in the direction she is
+	 *            facing.
 	 */
 	public void dash(String dir) {
 		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0)) {
@@ -259,6 +265,7 @@ public class Madeline {
 
 	/**
 	 * Draws Madeline onto the screen. Madeline is 48 pixels wide by 42 pixels tall.
+	 * 
 	 * @param Graphics2D g2
 	 */
 	public void drawOn(Graphics2D g2) {
@@ -272,14 +279,16 @@ public class Madeline {
 			hairColor = BLUE_HAIR;
 		}
 
-		// duplicates the Graphics2D object so that transformations don't affect other objects
+		// duplicates the Graphics2D object so that transformations don't affect other
+		// objects
 		g2 = (Graphics2D) g2.create();
-		
+
 		// facingRight < 0 when Madeline is facing left
 		if (facingRight < 0) {
 			// create an AffineTransform to mirror Madeline's model when she is facing left
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			// moves the transform left by 48 pixels to adjust for the difference in x/y location
+			// moves the transform left by 48 pixels to adjust for the difference in x/y
+			// location
 			tx.translate(-48, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
@@ -295,10 +304,10 @@ public class Madeline {
 		g2.fillRect(0, 6, 48, 18);
 		g2.fillRect(0, 24, 12, 6);
 		g2.fillRect(6, 30, 6, 6);
-		
-		//======================================
-		//                 WIP
-		//======================================
+
+		// ======================================
+		// WIP
+		// ======================================
 		// draws the velocity-affected section of Madeline's hair
 		double xModifier = -2 * Math.abs(xVel);
 		if (Math.abs(xVel) >= 3) {
@@ -348,8 +357,11 @@ public class Madeline {
 
 	/**
 	 * Spawns a Strawberry in the location of the breakable block
-	 * @param x representing the horizontal center of the strawberry in absolute coordinates (from 0 to 768)
-	 * @param y representing the vertical center of the strawberry in absolute coordinates (from 0 to 768)
+	 * 
+	 * @param x representing the horizontal center of the strawberry in absolute
+	 *          coordinates (from 0 to 768)
+	 * @param y representing the vertical center of the strawberry in absolute
+	 *          coordinates (from 0 to 768)
 	 */
 	public void breakBlock(int x, int y) {
 		lvl.addNewStrawberry(x, y);
@@ -366,14 +378,14 @@ public class Madeline {
 			c.updateAnimation();
 		}
 	}
-	
+
 	/**
 	 * resets the level upon death
 	 */
 	public void death() {
 		lvl.resetLevel();
 	}
-	
+
 	public void collectStrawberry() {
 		lvl.collectStrawberry();
 	}
