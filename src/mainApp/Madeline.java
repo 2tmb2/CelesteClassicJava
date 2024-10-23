@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class Madeline {
+	// xPos and yPos store the top left corner of Madeline
 	private int xPos;
 	private int yPos;
 	private double xVel;
@@ -20,153 +21,155 @@ public class Madeline {
 	private boolean jumpPressed;
 	private boolean isDashing;
 	private LevelComponent lvl;
-	
-	private Color hairColor; 
+
+	private Color hairColor;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
-	private static final Color GREEN_HAIR = new Color(0,0,0);
-	private static final Color EYE_COLOR = new Color(29,43,83);
+	private static final Color GREEN_HAIR = new Color(0, 0, 0);
+	private static final Color EYE_COLOR = new Color(29, 43, 83);
 	private static final Color TORSO_COLOR = new Color(0, 135, 81);
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
 	private static final Color FACE_COLOR = new Color(255, 204, 170);
-	
-	
-	//48pix by 42pix
-	// screen is 770
+
+	/**
+	 * Creates a Madeline object
+	 * 
+	 * @param xPos             representing madeline's starting x position
+	 * @param yPos             representing madeline's starting y position
+	 * @param numOfDashesTotal representing madeline's number of available dashes (1
+	 *                         or 2)
+	 * @param c                representing an ArrayList of CollisionObjects
+	 * @param lvl              representing the level component
+	 */
 	public Madeline(int xPos, int yPos, int numOfDashesTotal, ArrayList<CollisionObject> c, LevelComponent lvl) {
+		// initialize starting values
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.lvl = lvl;
-		
+		this.collisionObjects = c;
+		this.numOfDashesTotal = numOfDashesTotal;
+
 		xVel = 0;
 		yVel = 0;
 		yVelMax = 6;
-		collisionObjects = c;
+		numOfDashesRemaining = 0;
+
 		wallJump = false;
 		jumpPressed = false;
 		isDashing = false;
 		isDashingHorizontally = false;
+
+		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
-		this.numOfDashesTotal = numOfDashesTotal;
-		numOfDashesRemaining = 0;
-		if (this.numOfDashesTotal == 1)
-		{
-			hairColor = new Color(255, 0, 77);
-		}
 	}
-	public void increaseX()
-	{
-		if (xVel <= 3 && !wallJump)
-		{
+
+	/**
+	 * Increases Madeline's X velocity
+	 */
+	public void increaseX() {
+		if (xVel <= 3 && !wallJump) {
 			xVel += 1;
 		}
 	}
-	public void decreaseX()
-	{
-		if (xVel >= -3 && !wallJump)
-		{
+
+	/**
+	 * Decreases Madeline's X velocity
+	 */
+	public void decreaseX() {
+		if (xVel >= -3 && !wallJump) {
 			xVel -= 1;
 		}
-		
+
 	}
-	public void setHorizontalPosition()
-	{
-		if (Math.abs(xVel) <= 2)
-		{
+
+	/**
+	 * Updates Madeline's horizontal position based on her current velocity, position,
+	 * and any objects she is colliding with
+	 */
+	public void setHorizontalPosition() {
+		if (Math.abs(xVel) <= 2) {
 			wallJump = false;
 		}
-		if (!isCollidingWithWall())
-		{
+		if (!isCollidingWithWall()) {
 			yVelMax = 6;
-			xPos += (int)xVel;
-		}
-		else
-		{
-			while (isCollidingWithWall() && Math.abs(xVel) != 0)
-			{
-				xVel += -.5*facingRight;
+			xPos += (int) xVel;
+		} else {
+			while (isCollidingWithWall() && Math.abs(xVel) != 0) {
+				xVel += -.5 * facingRight;
 			}
 			yVelMax = 2;
 		}
-		if (xVel > 0)
-		{
+		if (xVel > 0) {
 			xVel -= .5;
 			facingRight = 1;
-		}
-		else if (xVel < 0)
-		{
+		} else if (xVel < 0) {
 			facingRight = -1;
 			xVel += .5;
 		}
 	}
-	public void setVerticalPosition()
-	{
-		if (!isCollidingWithFloor() && !isDashingHorizontally)
-		{
-			if (isCollidingWithCeiling() && yVel < 0)
-			{
+
+	/**
+	 * Updates Madeline's vertical position based on her current velocity, position, and
+	 * any objects she is colliding with
+	 */
+	public void setVerticalPosition() {
+		if (!isCollidingWithFloor() && !isDashingHorizontally) {
+			if (isCollidingWithCeiling() && yVel < 0) {
 				yVel = 0;
 			}
-			yPos += (int)yVel;
-		}
-		else
-		{
+			yPos += (int) yVel;
+		} else {
 			yVel = 0;
 		}
-		if (isCollidingWithFloor())
-		{
+		if (isCollidingWithFloor()) {
 			yVel = 0;
-		}
-		else if (yVel < yVelMax)
-		{
+		} else if (yVel < yVelMax) {
 			yVel += 0.5;
-		}
-		else if (yVel > yVelMax)
-		{
-			if (!isDashing)
-			{
+		} else if (yVel > yVelMax) {
+			if (!isDashing) {
 				yVel = yVelMax;
-			}
-			else
-			{
+			} else {
 				yVel -= .5;
 			}
 		}
 	}
-	public void checkIfDashing()
-	{
-		if (Math.abs(xVel) <= 8 && yVel >= 0)
-		{
+
+	/**
+	 * Checks if Madeline is currently in a dashing state
+	 */
+	public void checkIfDashing() {
+		if (Math.abs(xVel) <= 8 && yVel >= 0) {
 			isDashingHorizontally = false;
 		}
-		if (Math.abs(xVel) <= 4 && Math.abs(yVel) <= yVelMax)
-		{
+		if (Math.abs(xVel) <= 4 && Math.abs(yVel) <= yVelMax) {
 			isDashing = false;
 		}
-		if (isCollidingWithFloor())
-		{
+		if (isCollidingWithFloor()) {
 			numOfDashesRemaining = numOfDashesTotal;
 		}
 	}
-	public boolean isCollidingWithWall()
-	{
-		for (CollisionObject c : collisionObjects)
-		{
-			if (c.isCollidingWall(xPos + (int)xVel, yPos + (int)yVel, facingRight))
-			{
+
+	/**
+	 * Checks if Madeline is currently colliding with any walls
+	 * @return true if she is colliding with a wall, otherwise false
+	 */
+	public boolean isCollidingWithWall() {
+		for (CollisionObject c : collisionObjects) {
+			if (c.isCollidingWall(xPos + (int) xVel, yPos + (int) yVel, facingRight)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public boolean isCollidingWithFloor()
-	{
-		for (CollisionObject c : collisionObjects)
-		{
-			if (c.isCollidingFloor(xPos + (int)xVel, yPos + (int)yVel))
-			{
-				if (c instanceof Spike)
-				{
+
+	/**
+	 * Checks if Madeline is currently colliding with any floors
+	 * @return true if she is colliding with a floor, otherwise false
+	 */
+	public boolean isCollidingWithFloor() {
+		for (CollisionObject c : collisionObjects) {
+			if (c.isCollidingFloor(xPos + (int) xVel, yPos + (int) yVel)) {
+				if (c instanceof Spike) {
 					death();
 				}
 				return true;
@@ -174,201 +177,212 @@ public class Madeline {
 		}
 		return false;
 	}
-	public boolean isCollidingWithCeiling()
-	{
-		for (CollisionObject c : collisionObjects)
-		{
-			if (c.isCollidingCeiling(xPos + (int)xVel, yPos + (int)yVel))
-			{
+	/**
+	 * Checks if Madeline is currently colliding with any ceilings
+	 * @return true if she is colliding with a ceiling, otherwise false
+	 */
+	public boolean isCollidingWithCeiling() {
+		for (CollisionObject c : collisionObjects) {
+			if (c.isCollidingCeiling(xPos + (int) xVel, yPos + (int) yVel)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public void jump()
-	{
-		if (isCollidingWithFloor() && !jumpPressed)
-		{
+
+	/**
+	 * Make Madeline jump or wall jump if she is able to
+	 */
+	public void jump() {
+		if (isCollidingWithFloor() && !jumpPressed) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = -10;
 			jumpPressed = true;
-		}
-		else if (isCollidingWithWall() && !jumpPressed && isCollidingWithFloor())
-		{
+		} else if (isCollidingWithWall() && !jumpPressed && isCollidingWithFloor()) {
 			jumpPressed = true;
 			wallJump = true;
 			xVel = -facingRight * 10;
 			yVel = -10;
-		}
-		else if (isCollidingWithWall() && !jumpPressed && !isCollidingWithFloor() && !wallJump)
-		{
+		} else if (isCollidingWithWall() && !jumpPressed && !isCollidingWithFloor() && !wallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			xVel = -facingRight * 10;
 			yVel = -10;
 		}
 	}
-	public void setJumpPressed(boolean b)
-	{
+
+	public void setJumpPressed(boolean b) {
 		jumpPressed = b;
 	}
-	public void dash(String dir)
-	{
-		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0))
-		{
+
+	/**
+	 * If she is able, makes Madeline dash in the given direction
+	 * 
+	 * @param dir represents the direction to dash.
+	 * Dir is made up of either a single direction or a combination of directions.
+	 * When combining directions, the vertical direction must come first. (e.g. "upright", not "rightup")
+	 * To dash horizontally, dir must be an empty string. This will make Madeline dash in the direction she is facing.
+	 */
+	public void dash(String dir) {
+		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0)) {
 			isDashing = true;
 			numOfDashesRemaining--;
-			if (dir.equals("up"))
-			{
+			if (dir.equals("up")) {
 				yVel = -13;
 			}
-			if (dir.equals("down"))
-			{
+			if (dir.equals("down")) {
 				yVel = 13;
 			}
-			if (dir.equals("upleft"))
-			{
+			if (dir.equals("upleft")) {
 				yVel = -12;
 				xVel = -12;
 			}
-			if (dir.equals("upright"))
-			{
+			if (dir.equals("upright")) {
 				yVel = -12;
 				xVel = 12;
 			}
-			if (dir.equals("downleft"))
-			{
+			if (dir.equals("downleft")) {
 				yVel = 12;
 				xVel = -12;
 			}
-			if (dir.equals("downright"))
-			{
+			if (dir.equals("downright")) {
 				yVel = 12;
 				xVel = 12;
 			}
-			if (dir.equals(""))
-			{
+			if (dir.equals("")) {
 				isDashingHorizontally = true;
-				xVel = 13*facingRight;
+				xVel = 13 * facingRight;
 				yVel = 0;
 			}
 		}
 	}
-	public void drawOn(Graphics2D g2)
-	{
-		if (numOfDashesRemaining == 1)
-		{
+
+	/**
+	 * Draws Madeline onto the screen. Madeline is 48 pixels wide by 42 pixels tall.
+	 * @param Graphics2D g2
+	 */
+	public void drawOn(Graphics2D g2) {
+		// updates Madeline's hair color based on her number of dashes remaining
+		if (numOfDashesRemaining == 1) {
 			hairColor = RED_HAIR;
 			numOfDashesRemaining = numOfDashesTotal;
-		}
-		else if (numOfDashesRemaining == 2)
-		{
+		} else if (numOfDashesRemaining == 2) {
 			hairColor = GREEN_HAIR;
-		}
-		else
-		{
+		} else {
 			hairColor = BLUE_HAIR;
 		}
+
+		// duplicates the Graphics2D object so that transformations don't affect other objects
+		g2 = (Graphics2D) g2.create();
 		
-		
-		g2 = (Graphics2D)g2.create();
-		g2.setColor(Color.YELLOW);
-		if (facingRight < 0)
-		{
+		// facingRight < 0 when Madeline is facing left
+		if (facingRight < 0) {
+			// create an AffineTransform to mirror Madeline's model when she is facing left
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+			// moves the transform left by 48 pixels to adjust for the difference in x/y location
 			tx.translate(-48, 0);
 			g2.transform(tx);
+			// translates g2 to make 0, 0 be the top right of Madeline's head
 			g2.translate(-xPos, yPos);
-		}
-		else
-		{
+		} else {
+			// translates g2 to make 0, 0 be the top left of Madeline's head
 			g2.translate(xPos, yPos);
 		}
-		
+
 		// drawing hair
 		g2.setColor(hairColor);
 		g2.fillRect(6, 0, 36, 6);
 		g2.fillRect(0, 6, 48, 18);
 		g2.fillRect(0, 24, 12, 6);
 		g2.fillRect(6, 30, 6, 6);
-//		
-		double xModifier = -2*Math.abs(xVel);
-		if (Math.abs(xVel) >= 3)
-		{
-			xModifier = (Math.abs(xVel)/xVel) * 3 * -2 * facingRight;
+		
+		//======================================
+		//                 WIP
+		//======================================
+		// draws the velocity-affected section of Madeline's hair
+		double xModifier = -2 * Math.abs(xVel);
+		if (Math.abs(xVel) >= 3) {
+			xModifier = (Math.abs(xVel) / xVel) * 3 * -2 * facingRight;
 		}
 		double yModifier = 0;
 		g2.translate(xModifier, yModifier);
 		g2.fillRect(12, 0, 6, 6);
-		
+
 		g2.translate(xModifier, yModifier);
 		g2.fillRect(12, 6, 12, 6);
-		
+
 		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 12, 18,6);
-		
+		g2.fillRect(12, 12, 18, 6);
+
 		g2.translate(xModifier, yModifier);
 		g2.fillRect(12, 18, 24, 6);
-		
+
 		g2.translate(xModifier, yModifier);
 		g2.fillRect(12, 24, 30, 6);
-		
+
 		g2.translate(xModifier, yModifier);
 		g2.fillRect(24, 30, 18, 6);
-		
-		g2.translate(-6*xModifier, -6*yModifier);
-		
-		
+
+		g2.translate(-6 * xModifier, -6 * yModifier);
+
 		// drawing face
 		g2.setColor(FACE_COLOR);
 		g2.fillRect(18, 12, 24, 6);
 		g2.fillRect(12, 18, 30, 12);
-		
+
 		// drawing torso
 		g2.setColor(TORSO_COLOR);
 		g2.fillRect(12, 30, 24, 6);
-		
+
 		// drawing legs
 		g2.setColor(LEG_COLOR);
 		g2.fillRect(12, 36, 6, 6);
 		g2.fillRect(30, 36, 6, 6);
-		
+
 		// drawing eyes
 		g2.setColor(EYE_COLOR);
-		g2.fillRect(18,18,6,6);
+		g2.fillRect(18, 18, 6, 6);
 		g2.fillRect(36, 18, 6, 6);
-	
+
 	}
-	public void death()
-	{
-		lvl.resetLevel();
-	}
-	public void breakBlock(int x, int y)
-	{
+
+	/**
+	 * Spawns a Strawberry in the location of the breakable block
+	 * @param x representing the horizontal center of the strawberry in absolute coordinates (from 0 to 768)
+	 * @param y representing the vertical center of the strawberry in absolute coordinates (from 0 to 768)
+	 */
+	public void breakBlock(int x, int y) {
 		lvl.addNewStrawberry(x, y);
-		//jumpPressed = true;
-		//wallJump = true;
 		xVel = -facingRight * 7;
 		yVel = -10;
 		yPos -= 10;
 	}
-	public void updateAnimations()
-	{
-		for (CollisionObject c : collisionObjects)
-		{
+
+	/**
+	 * Updates the current animation frame of all CollisionObjects
+	 */
+	public void updateAnimations() {
+		for (CollisionObject c : collisionObjects) {
 			c.updateAnimation();
 		}
 	}
-	public void collectStrawberry()
-	{
+	
+	/**
+	 * resets the level upon death
+	 */
+	public void death() {
+		lvl.resetLevel();
+	}
+	
+	public void collectStrawberry() {
 		lvl.collectStrawberry();
 	}
-	public boolean getIsDashing()
-	{
+
+	public boolean getIsDashing() {
 		return isDashing;
 	}
-	public void nextLevel()
-	{
+
+	public void nextLevel() {
 		lvl.nextLevel();
 	}
 }
