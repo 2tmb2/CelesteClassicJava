@@ -92,8 +92,8 @@ public class BreakableBlock extends CollisionObject {
 				if (m.getIsDashing()) {
 					breakBlock();
 					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
-					return true;
 				}
+				return true;
 			}
 		}
 		return false;
