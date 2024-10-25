@@ -18,8 +18,8 @@ public class Strawberry extends CollisionObject{
 	{
 		super(x, y, width, height);
 		this.m = m;
-		currentFrame = 0;
-		numOfAnimationFrames = 60;
+		setCurrentFrame(0);
+		setNumOfAnimationFrames(60);
 	}
 	@Override
 	public void drawOn(Graphics2D g2)
@@ -27,7 +27,7 @@ public class Strawberry extends CollisionObject{
 		g2 = (Graphics2D)g2.create();
 		g2.translate(getX(), getY());
 		updateTranslateBy();
-		g2.translate(0, translateBy);
+		g2.translate(0, getTranslateBy());
 		g2.setColor(STRAWBERRY_RED);
 		g2.fillRect(0, 6, 18, 6);
 		g2.fillRect(-18, 6, 12, 6);
@@ -62,28 +62,28 @@ public class Strawberry extends CollisionObject{
 		g2.fillRect(-12, -18, 6, 6);
 		g2.fillRect(0, -18, 12, 6);
 	}
-	private void updateTranslateBy()
+	public void updateTranslateBy()
 	{
-		if (currentFrame > numOfAnimationFrames/4 && currentFrame < 3*numOfAnimationFrames/4)
+		if (getCurrentFrame() > getNumOfAnimationFrames()/4 && getCurrentFrame() < 3*getNumOfAnimationFrames()/4)
 		{
-			translateBy--;;
+			setTranslateBy(getTranslateBy() - 1);;
 		}
 		else
 		{
-			translateBy++;
+			setTranslateBy(getTranslateBy() + 1);
 		}
 	}
 	@Override
 	public void updateAnimation()
 	{
-		if (currentFrame >= numOfAnimationFrames - 2)
+		if (getCurrentFrame() >= getNumOfAnimationFrames() - 2)
 		{
-			translateBy--;
-			currentFrame = 0;
+			setTranslateBy(getTranslateBy() - 1);
+			setCurrentFrame(0);
 		}
 		else
 		{
-			currentFrame++;
+			setCurrentFrame(getCurrentFrame() + 1);
 		}
 	}
 	@Override
@@ -115,5 +115,23 @@ public class Strawberry extends CollisionObject{
 			return true;
 		}
 		return false;
+	}
+	public int getTranslateBy() {
+		return translateBy;
+	}
+	public void setTranslateBy(int translateBy) {
+		this.translateBy = translateBy;
+	}
+	public int getCurrentFrame() {
+		return currentFrame;
+	}
+	public void setCurrentFrame(int currentFrame) {
+		this.currentFrame = currentFrame;
+	}
+	public int getNumOfAnimationFrames() {
+		return numOfAnimationFrames;
+	}
+	public void setNumOfAnimationFrames(int numOfAnimationFrames) {
+		this.numOfAnimationFrames = numOfAnimationFrames;
 	}
 }

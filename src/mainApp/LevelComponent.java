@@ -19,7 +19,7 @@ public class LevelComponent extends JComponent {
 	private int madelineSpawnX;
 	private int madelineSpawnY;
 	private int numberOfDashesTotal;
-	private CollisionObject strawberry;
+	private Strawberry strawberry;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
 
@@ -142,11 +142,11 @@ public class LevelComponent extends JComponent {
 	public void addNewStrawberry(int x, int y, boolean isWinged) {
 		if (isWinged)
 		{
-			strawberry = new Strawberry(x, y, 36, 48, m);
+			strawberry = new WingedStrawberry(x, y, 36, 48, m);
 		}
 		else
 		{
-			strawberry = new WingedStrawberry(x,y,36,48,m);
+			strawberry = new Strawberry(x,y,36,48,m);
 		}
 		
 		collisionObjects.add(strawberry);
@@ -260,7 +260,10 @@ public class LevelComponent extends JComponent {
 			CollisionObject s3 = new HorizontalSpike(240 + 96 + 96 + 96, 768 - 144 - 36, 144, 28, m);
 			collisionObjects.add(s3);
 
-			addNewStrawberry(300, 300, true);
+			// temporary for testing
+			addNewStrawberry(400, 300, true);
+			
+			
 			// adding the BreakableBlock for level 1 (if the strawberry has not already been
 			// collected)
 			if (!strawberryAlreadyCollected) {
