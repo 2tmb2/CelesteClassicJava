@@ -20,11 +20,11 @@ public class HorizontalSpike extends Spike {
 		for (int i = 0; i < getWidth()/24; i++)
 		{
 			g2.setColor(SPIKE_GREY);
-			g2.fillRect(0, 12, 18, 24);
+			g2.fillRect(0, 18, 18, 18);
 			
 			g2.setColor(SPIKE_WHITE);
-			g2.fillRect(6, 0, 6, 18);
-			g2.fillRect(12, 12, 6, 6);
+			g2.fillRect(6, 6, 6, 24);
+			g2.fillRect(12, 18, 6, 6);
 			
 			g2.translate(24, 0);
 		}
