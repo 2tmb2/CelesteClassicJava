@@ -139,8 +139,16 @@ public class LevelComponent extends JComponent {
 	 * @param x representing the center of the strawberry
 	 * @param y representing the center of the strawberry
 	 */
-	public void addNewStrawberry(int x, int y) {
-		strawberry = new Strawberry(x, y, 36, 48, m);
+	public void addNewStrawberry(int x, int y, boolean isWinged) {
+		if (isWinged)
+		{
+			strawberry = new Strawberry(x, y, 36, 48, m);
+		}
+		else
+		{
+			strawberry = new WingedStrawberry(x,y,36,48,m);
+		}
+		
 		collisionObjects.add(strawberry);
 	}
 
@@ -252,6 +260,7 @@ public class LevelComponent extends JComponent {
 			CollisionObject s3 = new HorizontalSpike(240 + 96 + 96 + 96, 768 - 144 - 36, 144, 28, m);
 			collisionObjects.add(s3);
 
+			addNewStrawberry(300, 300, true);
 			// adding the BreakableBlock for level 1 (if the strawberry has not already been
 			// collected)
 			if (!strawberryAlreadyCollected) {

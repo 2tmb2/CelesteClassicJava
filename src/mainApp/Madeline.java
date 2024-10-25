@@ -169,11 +169,8 @@ public class Madeline {
 	 * @return true if she is colliding with a floor, otherwise false
 	 */
 	public boolean isCollidingWithFloor() {
-		for (CollisionObject c : collisionObjects) {
-			if (c.isCollidingFloor(xPos + (int) xVel, yPos + (int) yVel)) {
-				if (c instanceof Spike) {
-					death();
-				}
+		for (int i = 0; i < collisionObjects.size(); i++) {
+			if (collisionObjects.get(i).isCollidingFloor(xPos + (int) xVel, yPos + (int) yVel)) {
 				return true;
 			}
 		}
@@ -186,8 +183,8 @@ public class Madeline {
 	 * @return true if she is colliding with a ceiling, otherwise false
 	 */
 	public boolean isCollidingWithCeiling() {
-		for (CollisionObject c : collisionObjects) {
-			if (c.isCollidingCeiling(xPos + (int) xVel, yPos + (int) yVel)) {
+		for (int i = 0; i < collisionObjects.size(); i++) {
+			if (collisionObjects.get(i).isCollidingCeiling(xPos + (int) xVel, yPos + (int) yVel)) {
 				return true;
 			}
 		}
@@ -364,7 +361,7 @@ public class Madeline {
 	 *          coordinates (from 0 to 768)
 	 */
 	public void breakBlock(int x, int y) {
-		lvl.addNewStrawberry(x, y);
+		lvl.addNewStrawberry(x, y, false);
 		xVel = -facingRight * 7;
 		yVel = -10;
 		yPos -= 10;

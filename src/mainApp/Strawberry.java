@@ -76,7 +76,7 @@ public class Strawberry extends CollisionObject{
 	@Override
 	public void updateAnimation()
 	{
-		if (currentFrame >= numOfAnimationFrames - 1)
+		if (currentFrame >= numOfAnimationFrames - 2)
 		{
 			translateBy--;
 			currentFrame = 0;
@@ -89,11 +89,21 @@ public class Strawberry extends CollisionObject{
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
+		if (super.isCollidingFloor(madelineX, madelineY))
+		{
+			m.collectStrawberry();
+			return false;
+		}
 		return false;
 	}
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{
+		if (super.isCollidingCeiling(madelineX, madelineY))
+		{
+			m.collectStrawberry();
+			return false;
+		}
 		return false;
 	}
 	@Override
