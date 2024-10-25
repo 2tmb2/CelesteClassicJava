@@ -268,8 +268,7 @@ public class LevelComponent extends JComponent {
 			addNewStrawberry(400, 400, true);
 			
 			
-			// adding the BreakableBlock for level 1 (if the strawberry has not already been
-			// collected)
+			// adding the BreakableBlock for level 1 (if the strawberry has not already been collected)
 			if (!strawberryAlreadyCollected) {
 				CollisionObject b1 = new BreakableBlock(48, 768 - 288 - 96 - 96 - 96, 96, 96, m);
 				collisionObjects.add(b1);
