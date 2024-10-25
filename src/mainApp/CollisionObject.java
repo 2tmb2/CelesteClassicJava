@@ -119,7 +119,10 @@ public class CollisionObject {
 
 	public void updateAnimation() {
 	}
-
+	public void setY(int y)
+	{
+		this.y = y;
+	}
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height

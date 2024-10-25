@@ -113,7 +113,11 @@ public class LevelComponent extends JComponent {
 	 * @param dir
 	 */
 	public void dash(String dir) {
-		m.dash(dir);
+		if (m.dash(dir) && strawberry instanceof WingedStrawberry)
+		{
+			((WingedStrawberry) strawberry).flyAway();
+		}
+		//m.dash(dir);
 	}
 
 	/**
@@ -261,7 +265,7 @@ public class LevelComponent extends JComponent {
 			collisionObjects.add(s3);
 
 			// temporary for testing
-			addNewStrawberry(400, 300, true);
+			addNewStrawberry(400, 400, true);
 			
 			
 			// adding the BreakableBlock for level 1 (if the strawberry has not already been

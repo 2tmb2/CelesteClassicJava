@@ -226,7 +226,7 @@ public class Madeline {
 	 *            empty string. This will make Madeline dash in the direction she is
 	 *            facing.
 	 */
-	public void dash(String dir) {
+	public boolean dash(String dir) {
 		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0)) {
 			isDashing = true;
 			numOfDashesRemaining--;
@@ -257,7 +257,9 @@ public class Madeline {
 				xVel = 13 * facingRight;
 				yVel = 0;
 			}
+			return true;
 		}
+		return false;
 	}
 
 	/**

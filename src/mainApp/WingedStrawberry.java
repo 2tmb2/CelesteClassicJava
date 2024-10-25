@@ -9,10 +9,13 @@ public class WingedStrawberry extends Strawberry {
 	private static final Color WING_GREY = new Color(194, 195, 199);
 	private Graphics2D g2;
 	private int drawFrame;
-
+	private boolean isFlyingAway;
+	private double flyAwayAmount;
 	public WingedStrawberry(int x, int y, int width, int height, Madeline m) {
 		super(x, y, width, height, m);
 		drawFrame = 1;
+		isFlyingAway = false;
+		flyAwayAmount = 0;
 	}
 
 	@Override
@@ -125,5 +128,15 @@ public class WingedStrawberry extends Strawberry {
 		} else if (getCurrentFrame() >= (getNumOfAnimationFrames() - 2) / 2) {
 			drawFrame = 2;
 		}
+		if (isFlyingAway && getY() > -50)
+		{
+			super.setY(super.getY() - (int)flyAwayAmount);
+			if (flyAwayAmount < 10)
+				flyAwayAmount += .5;
+		}
+	}
+	public void flyAway()
+	{
+		isFlyingAway = true;
 	}
 }
