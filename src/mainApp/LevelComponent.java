@@ -221,7 +221,7 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(new LeftSpike(j*48, i*48, (secondChar - '0')*48, m));
 						break;
 					case ('^'):
-						collisionObjects.add(new UpSpike(j*48, i*48, (secondChar - '0')*48, m));
+						collisionObjects.add(new UpSpike(j*48, i*48+12, (secondChar - '0')*48, m));
 						break;
 					case ('v'):
 						collisionObjects.add(new DownSpike(j*48, i*48, (secondChar - '0')*48, m));
