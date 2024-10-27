@@ -18,7 +18,7 @@ public class EnvironmentObject extends CollisionObject {
 	private int randy;
 
 	/**
-	 * Creates an Environment Object with collision and randomized detail location
+	 * Creates an Environment Object with collision and randomized detail location using Array
 	 * 
 	 * @param x          representing the initial x position
 	 * @param y          representing the initial y position
@@ -26,7 +26,7 @@ public class EnvironmentObject extends CollisionObject {
 	 * @param height     representing the height
 	 * @param connectsAt is an array of strings that signifies which sides the
 	 *                   EnvironmentObject connects to other EnvironmentObjects.
-	 *                   Options are "top", "bottom", "left", and "right". The array
+	 *                   Options are "u", "d", "l", and "r". The array
 	 *                   should be of length 4.
 	 */
 	public EnvironmentObject(int x, int y, int width, int height, String[] connectsAt) {
@@ -34,6 +34,36 @@ public class EnvironmentObject extends CollisionObject {
 		positionModifierValues = new ArrayList<Integer>();
 		// creates an arraylist of strings based on the inputed array
 		this.connectsAt = new ArrayList<String>(Arrays.asList(connectsAt));
+		// creates values for randomized detail locations
+		randx = (int) (Math.random() * (width - 36)) + 18;
+		randy = (int) (Math.random() * (height - 36)) + 18;
+		int positionVariance;
+		if (getWidth() > getHeight()) {
+			positionVariance = getHeight();
+		} else {
+			positionVariance = getWidth();
+		}
+		for (int i = 0; i < 4; i++) {
+			positionModifierValues.add((int) (Math.random() * (positionVariance - 64)) - (positionVariance - 64) / 2);
+		}
+	}
+	
+	/**
+	 * Creates an Environment Object with collision and randomized detail location using ArrayList
+	 * 
+	 * @param x          representing the initial x position
+	 * @param y          representing the initial y position
+	 * @param width      representing the width
+	 * @param height     representing the height
+	 * @param connectsAt is an arrayList of strings that signifies which sides the
+	 *                   EnvironmentObject connects to other EnvironmentObjects.
+	 *                   Options are "u", "d", "l", and "r".
+	 */
+	public EnvironmentObject(int x, int y, int width, int height, ArrayList<String> connectsAt) {
+		super(x, y, width, height);
+		positionModifierValues = new ArrayList<Integer>();
+		// creates an arraylist of strings based on the inputed array
+		this.connectsAt = connectsAt;
 		// creates values for randomized detail locations
 		randx = (int) (Math.random() * (width - 36)) + 18;
 		randy = (int) (Math.random() * (height - 36)) + 18;
@@ -61,18 +91,18 @@ public class EnvironmentObject extends CollisionObject {
 		int rightSideModifier = 0;
 		int bottomModifier = 0;
 		int topModifier = 0;
-		if (connectsAt.contains("left")) {
+		if (connectsAt.contains("l")) {
 			leftSideModifier += 12;
 			rightSideModifier += 12;
 		}
-		if (connectsAt.contains("right")) {
+		if (connectsAt.contains("r")) {
 			rightSideModifier += 12;
 		}
-		if (connectsAt.contains("top")) {
+		if (connectsAt.contains("u")) {
 			topModifier += 12;
 			bottomModifier += 12;
 		}
-		if (connectsAt.contains("bottom")) {
+		if (connectsAt.contains("d")) {
 			bottomModifier += 12;
 		}
 
@@ -85,30 +115,30 @@ public class EnvironmentObject extends CollisionObject {
 		// draws the outer white borders of the EnvironmentObject (if they should exist)
 		g2.setColor(OUTER_COLOR);
 		// top border
-		if (!connectsAt.contains("top"))
+		if (!connectsAt.contains("u"))
 			g2.fillRect(6 - leftSideModifier, 0, getWidth() - 12 + rightSideModifier, 6);
 		// left border
-		if (!connectsAt.contains("left"))
+		if (!connectsAt.contains("l"))
 			g2.fillRect(0, 0 + 6 - topModifier, 6, getHeight() - 12 + bottomModifier);
 		// bottom border
-		if (!connectsAt.contains("bottom"))
+		if (!connectsAt.contains("d"))
 			g2.fillRect(6 - leftSideModifier, 0 + getHeight() - 6, getWidth() - 12 + rightSideModifier, 6);
 		// right border
-		if (!connectsAt.contains("right"))
+		if (!connectsAt.contains("r"))
 			g2.fillRect(getWidth() - 6, 0 + 6 - topModifier, 6, getHeight() - 12 + bottomModifier);
 
 		// draws the corners of the block (if they should exist)
 		// top left
-		if (!(connectsAt.contains("top") || connectsAt.contains("left")))
+		if (!(connectsAt.contains("u") || connectsAt.contains("l")))
 			g2.fillRect(6, 6, 6, 6);
 		// top right
-		if (!(connectsAt.contains("top") || connectsAt.contains("right")))
+		if (!(connectsAt.contains("u") || connectsAt.contains("r")))
 			g2.fillRect(getWidth() - 12, 6, 6, 6);
 		// bottom left
-		if (!(connectsAt.contains("bottom") || connectsAt.contains("left")))
+		if (!(connectsAt.contains("d") || connectsAt.contains("l")))
 			g2.fillRect(6, getHeight() - 12, 6, 6);
 		// bottom right
-		if (!(connectsAt.contains("bottom") || connectsAt.contains("right")))
+		if (!(connectsAt.contains("d") || connectsAt.contains("r")))
 			g2.fillRect(getWidth() - 12, getHeight() - 12, 6, 6);
 
 		// add detail to the object
