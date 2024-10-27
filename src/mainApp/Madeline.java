@@ -21,6 +21,8 @@ public class Madeline {
 	private boolean jumpPressed;
 	private boolean isDashing;
 	private LevelComponent lvl;
+	private boolean isNextLevel;
+	private boolean canContinue;
 
 	private Color hairColor;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
@@ -31,6 +33,31 @@ public class Madeline {
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
 	private static final Color FACE_COLOR = new Color(255, 204, 170);
 
+	/**
+	 * Creates an empty Madeline object
+	 */
+	public Madeline(LevelComponent level) {
+		this.lvl = level;
+		this.xPos = 0;
+		this.yPos = 0;
+		this.collisionObjects = null;
+		this.numOfDashesTotal = 1;
+		
+		xVel = 0;
+		yVel = 0;
+		yVelMax = 6;
+		numOfDashesRemaining = 0;
+
+		wallJump = false;
+		jumpPressed = false;
+		isDashing = false;
+		isDashingHorizontally = false;
+
+		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
+		facingRight = 1;
+		isNextLevel = false;
+		canContinue = true;
+	}
 	/**
 	 * Creates a Madeline object
 	 * 
@@ -61,6 +88,43 @@ public class Madeline {
 
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
+		canContinue = true;
+	}
+	
+	public void setCanCollide(boolean canCollide) {
+		this.canContinue = canCollide;
+	}
+	
+	public boolean getCanCollide() {
+		return this.canContinue;
+	}
+	
+	public int getXPos() {
+		return this.xPos;
+	}
+	
+	public void setXPos(int xPos) {
+		this.xPos = xPos;
+	}
+	
+	public int getYPos() {
+		return this.yPos;
+	}
+	
+	public void setYPos(int yPos) {
+		this.yPos = yPos;
+	}
+	
+	public void setLevel(LevelComponent lvl) {
+		this.lvl = lvl;
+	}
+	
+	public void setCollisionObjects(ArrayList<CollisionObject> c) {
+		this.collisionObjects = c;
+	}
+	
+	public void setTotalDashes(int totalDashes) {
+		this.numOfDashesTotal = totalDashes;
 	}
 
 	/**
@@ -155,8 +219,14 @@ public class Madeline {
 	 * @return true if she is colliding with a wall, otherwise false
 	 */
 	public boolean isCollidingWithWall() {
-		for (CollisionObject c : collisionObjects) {
-			if (c.isCollidingWall(xPos + (int) xVel, yPos + (int) yVel, facingRight)) {
+		for (int i = 0; i < collisionObjects.size(); i++)
+		{
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel, yPos + (int) yVel, facingRight)) {
+				if (isNextLevel)
+				{
+					i = collisionObjects.size() + 2;
+					return false;
+				}
 				return true;
 			}
 		}
@@ -394,6 +464,10 @@ public class Madeline {
 	}
 
 	public void nextLevel() {
+		if (!canContinue) return;
+		isNextLevel = true;
+		canContinue = false;
+		//collisionObjects = null;
 		lvl.nextLevel();
 	}
 }
