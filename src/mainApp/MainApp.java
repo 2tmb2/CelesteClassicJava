@@ -44,7 +44,7 @@ public class MainApp implements KeyListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
+		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
 		frame.add(lvl);
 		frame.setVisible(true);
 		// creates a timer that fires every 10 milliseconds. This acts as our main game loop.
@@ -67,7 +67,7 @@ public class MainApp implements KeyListener{
 	public void resetLevel()
 	{
 		frame.remove(lvl);
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
+		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
 		frame.add(lvl);
 		Timer t = new Timer(250, new ActionListener() {
 			@Override
@@ -120,7 +120,7 @@ public class MainApp implements KeyListener{
     	strawberryAlreadyCollected = false;
     	frame.remove(lvl);
     	currentLevel++;
-    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
+    	lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
     	frame.add(lvl);
     	frame.setVisible(true);
     }
