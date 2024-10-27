@@ -7,6 +7,7 @@ package mainApp;
 public class LevelFinishZone extends CollisionObject {
 
 	private Madeline m;
+	private boolean canCollide;
 
 	/**
 	 * Creates a LevelFinishZone object. A LevelFinishZone is a CollisionObject that
@@ -22,6 +23,7 @@ public class LevelFinishZone extends CollisionObject {
 	public LevelFinishZone(int x, int y, int width, int height, Madeline m) {
 		super(x, y, width, height);
 		this.m = m;
+		this.canCollide = true;
 	}
 
 	/**
@@ -45,7 +47,8 @@ public class LevelFinishZone extends CollisionObject {
 	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int isFacing) {
-		if (super.isCollidingWall(madelineX, madelineY, isFacing)) {
+		if (canCollide && super.isCollidingWall(madelineX, madelineY, isFacing)) {
+			this.canCollide = false;
 			m.nextLevel();
 		}
 		return false;
