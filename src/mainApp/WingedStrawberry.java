@@ -11,8 +11,8 @@ public class WingedStrawberry extends Strawberry {
 	private int drawFrame;
 	private boolean isFlyingAway;
 	private double flyAwayAmount;
-	public WingedStrawberry(int x, int y, int width, int height, Madeline m) {
-		super(x, y, width, height, m);
+	public WingedStrawberry(int x, int y, Madeline m) {
+		super(x, y, m);
 		drawFrame = 1;
 		isFlyingAway = false;
 		flyAwayAmount = 0;
