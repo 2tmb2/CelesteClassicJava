@@ -151,16 +151,18 @@ public class LevelComponent extends JComponent {
 	 * @param y representing the center of the strawberry
 	 */
 	public void addNewStrawberry(int x, int y, boolean isWinged) {
-		if (isWinged)
+		if (!strawberryAlreadyCollected)
 		{
-			strawberry = new WingedStrawberry(x, y, m);
+			if (isWinged)
+			{
+				strawberry = new WingedStrawberry(x, y, m);
+			}
+			else
+			{
+				strawberry = new Strawberry(x,y,m);
+			}
+			collisionObjects.add(strawberry);
 		}
-		else
-		{
-			strawberry = new Strawberry(x,y,m);
-		}
-		
-		collisionObjects.add(strawberry);
 	}
 
 	/**
@@ -225,13 +227,16 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(new DownSpike(j*48, i*48, (secondChar - '0')*48, m));
 						break;
 					case ('b'):
-						collisionObjects.add(new BreakableBlock(j*48,i*48, 2*48, 2*48, m));
+						if (!strawberryAlreadyCollected)
+							collisionObjects.add(new BreakableBlock(j*48,i*48, 2*48, 2*48, m));
 						break;
 					case ('s'):
-						strawberry = new Strawberry(j*48, i*48, m);
+						if (!strawberryAlreadyCollected)
+							strawberry = new Strawberry(j*48, i*48, m);
 						break;
 					case ('w'):
-						strawberry = new WingedStrawberry(j*48, i*48, m);
+						if (!strawberryAlreadyCollected)
+							strawberry = new WingedStrawberry(j*48, i*48, m);
 						break;
 					case ('m'):
 						madX = j*48;
@@ -272,7 +277,7 @@ public class LevelComponent extends JComponent {
 				index++;
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("The file for level " + levelNum + " could not be found");
 		}
 		return output;
 	}
