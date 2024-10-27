@@ -10,7 +10,7 @@ public class UpSpike extends Spike {
 	
 	public UpSpike(int x, int y, int width, Madeline m)
 	{
-		super(x,y,width,1, m);
+		super(x,y,width,30, m);
 	}
 	@Override
 	public void drawOn(Graphics2D g2)
