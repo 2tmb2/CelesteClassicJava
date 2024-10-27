@@ -2,8 +2,11 @@ package mainApp;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JComponent;
 
@@ -22,6 +25,10 @@ public class LevelComponent extends JComponent {
 	private Strawberry strawberry;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
+	private String[] levelData;
+	private int madX;
+	private int madY;
+	
 
 	/**
 	 * Creates a LevelComponent Object
@@ -33,13 +40,13 @@ public class LevelComponent extends JComponent {
 	 *                                   strawberry in the level has already been
 	 *                                   collected and false otherwise.
 	 */
-	public LevelComponent(MainApp main, int level, boolean strawberryAlreadyCollected) {
+	public LevelComponent(MainApp main, String levelNum, boolean strawberryAlreadyCollected) {
 		this.main = main;
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
 
 		collisionObjects = new ArrayList<CollisionObject>();
 		// createLevelFromText();
-		createLevel(level);
+		levelFromText(levelNum);
 	}
 
 	/**
@@ -146,11 +153,11 @@ public class LevelComponent extends JComponent {
 	public void addNewStrawberry(int x, int y, boolean isWinged) {
 		if (isWinged)
 		{
-			strawberry = new WingedStrawberry(x, y, 36, 48, m);
+			strawberry = new WingedStrawberry(x, y, m);
 		}
 		else
 		{
-			strawberry = new Strawberry(x,y,36,48,m);
+			strawberry = new Strawberry(x,y,m);
 		}
 		
 		collisionObjects.add(strawberry);
@@ -179,187 +186,95 @@ public class LevelComponent extends JComponent {
 			}
 		}
 	}
-
-	/**
-	 * Creates a level
-	 * 
-	 * @param level integer representing the level to create
-	 */
-	public void createLevel(int level) {
-		// the following is temporary while a system to read levels from text files is still being implemented
-		if (level == 1) {
-			madelineSpawnX = 60;
-			madelineSpawnY = 768 - 144 - 42;
-			numberOfDashesTotal = 1;
-			m = new Madeline(madelineSpawnX, madelineSpawnY, numberOfDashesTotal, collisionObjects, this);
-			CollisionObject c1 = new EnvironmentObject(0, 768 - 144, 240, 144, new String[] { "", "", "", "" });
-			collisionObjects.add(c1);
-			CollisionObject c2 = new EnvironmentObject(150, 768 - 144 - 48, 240 - 150, 48,
-					new String[] { "bottom", "", "", "" });
-			collisionObjects.add(c2);
-			CollisionObject c4 = new EnvironmentObject(240 + 96, 768 - 246, 96, 96, new String[] { "", "", "", "" });
-			collisionObjects.add(c4);
-			CollisionObject c23 = new EnvironmentObject(240 + 96, 768 - 246 + 96, 96, 246 - 96,
-					new String[] { "", "", "", "" });
-			collisionObjects.add(c23);
-			CollisionObject c8 = new EnvironmentObject(768 - 144, 768 - 336, 144, 48, new String[] { "", "", "", "" });
-			collisionObjects.add(c8);
-			CollisionObject c10 = new EnvironmentObject(768 - 96, 768 - 336 - 144 - 96, 96, 96,
-					new String[] { "", "", "", "" });
-			collisionObjects.add(c10);
-			CollisionObject c11 = new EnvironmentObject(768 - 96, 768 - 336 - 144 - 96 - 48, 48, 48,
-					new String[] { "", "", "", "" });
-			collisionObjects.add(c11);
-			CollisionObject c12 = new EnvironmentObject(768 - 96 - 48, 768 - 336 - 144 - 96 - 48, 48, 48,
-					new String[] { "", "", "", "" });
-			collisionObjects.add(c12);
-			CollisionObject c13 = new EnvironmentObject(768 - 96 - 96, 768 - 336 - 144 - 96, 96, 48,
-					new String[] { "right", "", "", "" });
-			collisionObjects.add(c13);
-			CollisionObject c14 = new EnvironmentObject(768 - 48, 0, 48, 192, new String[] { "bottom", "", "", "" });
-			collisionObjects.add(c14);
-			CollisionObject c15 = new EnvironmentObject(0, 0, 48, 768 - 288, new String[] { "", "", "", "" });
-			collisionObjects.add(c15);
-			CollisionObject c16 = new EnvironmentObject(48, 768 - 288 - 96 - 96, 48, 96,
-					new String[] { "left", "", "", "" });
-			collisionObjects.add(c16);
-			CollisionObject c17 = new EnvironmentObject(48 + 48, 768 - 288 - 96 - 96, 144, 48,
-					new String[] { "", "", "", "" });
-			collisionObjects.add(c17);
-			CollisionObject c19 = new EnvironmentObject(48, 0, 96, 96 + 96, new String[] { "left", "", "", "" });
-			collisionObjects.add(c19);
-			CollisionObject c20 = new EnvironmentObject(48 + 96, 0, 48 * 4, 48 * 2,
-					new String[] { "left", "", "", "" });
-			collisionObjects.add(c20);
-			CollisionObject c21 = new EnvironmentObject(48 + 96, 96, 48, 48, new String[] { "", "", "", "" });
-			collisionObjects.add(c21);
-			CollisionObject c22 = new CollisionObject(-100, -100, 100, 868);
-			collisionObjects.add(c22);
-
-			// These CollisionObjects were moved below the previous ones to ensure they draw
-			// on top of all other objects
-			CollisionObject c18 = new EnvironmentObject(48 + 96 + 96 + 96, 0, 48 * 6, 48,
-					new String[] { "left", "", "", "" });
-			collisionObjects.add(c18);
-			CollisionObject c9 = new EnvironmentObject(768 - 48, 768 - 336 - 144, 48, 144,
-					new String[] { "bottom", "top", "", "" });
-			collisionObjects.add(c9);
-			CollisionObject c7 = new EnvironmentObject(768 - 96, 768 - 288, 96, 288,
-					new String[] { "top", "", "", "" });
-			collisionObjects.add(c7);
-			CollisionObject c6 = new EnvironmentObject(240 + 96 + 96 + 96, 768 - 144, 144, 144,
-					new String[] { "right", "", "", "" });
-			collisionObjects.add(c6);
-			CollisionObject c5 = new EnvironmentObject(240 + 96 + 96, 768 - 96, 96, 96,
-					new String[] { "left", "right", "", "" });
-			collisionObjects.add(c5);
-			CollisionObject c3 = new EnvironmentObject(240, 768 - 48, 96, 48, new String[] { "left", "right", "", "" });
-			collisionObjects.add(c3);
-
-			// adding the spikes for level 1
-			CollisionObject s1 = new HorizontalSpike(150 + (240 - 150), 768 - 36 - 48, 96, 28, m);
-			collisionObjects.add(s1);
-			CollisionObject s2 = new HorizontalSpike(240 + 96 + 96, 768 - 96 - 36, 96, 28, m);
-			collisionObjects.add(s2);
-			CollisionObject s3 = new HorizontalSpike(240 + 96 + 96 + 96, 768 - 144 - 36, 144, 28, m);
-			collisionObjects.add(s3);
-
-			// temporary for testing
-			addNewStrawberry(400, 400, true);
-			
-			
-			// adding the BreakableBlock for level 1 (if the strawberry has not already been collected)
-			if (!strawberryAlreadyCollected) {
-				CollisionObject b1 = new BreakableBlock(48, 768 - 288 - 96 - 96 - 96, 96, 96, m);
-				collisionObjects.add(b1);
-			}
-
-			// adding the level finish zone
-			CollisionObject lvlFinish = new LevelFinishZone(0, -10, 786, 10, m);
-			collisionObjects.add(lvlFinish);
-		} else {
-			// for any level other than 1, spawn Madeline at (50, 50)
-			madelineSpawnX = 50;
-			madelineSpawnY = 50;
-			numberOfDashesTotal = 1;
-			m = new Madeline(madelineSpawnX, madelineSpawnY, numberOfDashesTotal, collisionObjects, this);
-		}
-
+	
+	public void levelFromText(String levelNum) {
+		m = new Madeline(this);
+		levelData = getLevelData(levelNum);
+		createLevel();
+		if (Integer.parseInt(levelNum) > 22) m.setTotalDashes(2);
+		m.setCollisionObjects(collisionObjects);
+		m.setXPos(madX);
+		m.setYPos(madY);
 	}
-
-	/**
-	 * The following methods are temporary and are used exclusively for testing
-	 * reading information from strings/text files.
-	 */
-
-	public void printLevel() {
-		for (CollisionObject c : collisionObjects) {
-			System.out.println(c.toString());
-		}
-	}
-
-	public void createLevelFromText() {
-		String t = "mainApp.EnvironmentObject, 0 624 240 144 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 150 576 90 48 , bottom   \r\n"
-				+ "mainApp.EnvironmentObject, 336 522 96 96 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 336 618 96 150 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 624 432 144 48 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 672 192 96 96 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 672 144 48 48 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 624 144 48 48 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 576 192 96 48 , right   \r\n"
-				+ "mainApp.EnvironmentObject, 720 0 48 192 , bottom   \r\n"
-				+ "mainApp.EnvironmentObject, 0 0 48 480 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 48 288 48 96 , left   \r\n"
-				+ "mainApp.EnvironmentObject, 96 288 144 48 ,    \r\n"
-				+ "mainApp.EnvironmentObject, 48 0 96 192 , left   \r\n"
-				+ "mainApp.EnvironmentObject, 144 0 192 96 , left   \r\n"
-				+ "mainApp.EnvironmentObject, 144 96 48 48 ,    \r\n" + "mainApp.InvisibleWall, -100 -100 100 868 \r\n"
-				+ "mainApp.EnvironmentObject, 336 0 288 48 , left   \r\n"
-				+ "mainApp.EnvironmentObject, 720 288 48 144 , bottom top  \r\n"
-				+ "mainApp.EnvironmentObject, 672 480 96 288 , top   \r\n"
-				+ "mainApp.EnvironmentObject, 528 624 144 144 , right   \r\n"
-				+ "mainApp.EnvironmentObject, 432 672 96 96 , left right  \r\n"
-				+ "mainApp.EnvironmentObject, 240 720 96 48 , left right  \r\n"
-				+ "mainApp.Spike, 240, 684, 4, true, false\r\n" + "mainApp.Spike, 432, 636, 4, true, false\r\n"
-				+ "mainApp.Spike, 528, 588, 6, true, false\r\n" + "mainApp.BreakableBlock, 48 192 96 96 \r\n"
-				+ "mainApp.LevelFinishZone, 0 -10 786 10 ";
-
-		String[] tList = t.split("\n");
-		for (int i = 0; i < tList.length; i++) {
-			String[] options = tList[i].split(",");
-			String clsName = options[0];
-			String[] positions = options[1].split(" ");
-			Object collisionObject;
-			try {
-				Class<?> cls = Class.forName(clsName);
-				if (options.length == 6) {
-					Constructor<?> constructor = cls.getConstructor(int.class, int.class, int.class, boolean.class,
-							boolean.class);
-					collisionObject = constructor.newInstance(Integer.parseInt(options[1].substring(1)),
-							Integer.parseInt(options[2].substring(1)), Integer.parseInt(options[3].substring(1)),
-							Boolean.parseBoolean(options[4].substring(1)),
-							Boolean.parseBoolean(options[5].substring(1)));
-				} else if (options.length == 3) {
-					String[] touchingDirections = options[2].split(" ");
-					Constructor<?> constructor = cls.getConstructor(int.class, int.class, int.class, int.class,
-							String[].class);
-					collisionObject = constructor.newInstance(Integer.parseInt(positions[1]),
-							Integer.parseInt(positions[2]), Integer.parseInt(positions[3]),
-							Integer.parseInt(positions[4]), touchingDirections);
-				} else {
-					Constructor<?> constructor = cls.getConstructor(int.class, int.class, int.class, int.class);
-					collisionObject = constructor.newInstance(Integer.parseInt(positions[1]),
-							Integer.parseInt(positions[2]), Integer.parseInt(positions[3]),
-							Integer.parseInt(positions[4]));
+	
+	public ArrayList<CollisionObject> createLevel() {
+		collisionObjects = new ArrayList<CollisionObject>();
+		m.setCollisionObjects(collisionObjects);
+		String[] objectsData;
+		for (int i = 0; i < 16; i++) {
+			//if (levelData[i].equals("")) continue;
+			objectsData = levelData[i].split(" ");
+			for (int j = 0; j < objectsData.length; j++) {
+				char firstChar = objectsData[j].charAt(0);
+				char secondChar = objectsData[j].charAt(1);
+				switch (firstChar) {
+					case ('-'):
+						break;
+					case ('['):
+						break;
+					case ('>'):
+						collisionObjects.add(new RightSpike(j*48, i*48, (secondChar - '0')*48, m));
+						break;
+					case ('<'):
+						collisionObjects.add(new LeftSpike(j*48, i*48, (secondChar - '0')*48, m));
+						break;
+					case ('^'):
+						collisionObjects.add(new UpSpike(j*48, i*48, (secondChar - '0')*48, m));
+						break;
+					case ('v'):
+						collisionObjects.add(new DownSpike(j*48, i*48, (secondChar - '0')*48, m));
+						break;
+					case ('b'):
+						collisionObjects.add(new BreakableBlock(j*48,i*48, 2*48, 2*48, m));
+						break;
+					case ('s'):
+						strawberry = new Strawberry(j*48, i*48, m);
+						break;
+					case ('w'):
+						strawberry = new WingedStrawberry(j*48, i*48, m);
+						break;
+					case ('m'):
+						madX = j*48;
+						madY = i*48;
+						break;
+					default:
+						//if (firstChar - '0' >= 1 && (firstChar - '0') <= 9) {
+							collisionObjects.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, 
+									(secondChar - '0')*48, connectionDataAt(i, j)));
+						//}
 				}
-				CollisionObject c = (CollisionObject) collisionObject;
-				collisionObjects.add(c);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48));
+				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48));
+				collisionObjects.add(new LevelFinishZone(-48, -48, 20*48, 48, m));
+				collisionObjects.add(new UpSpike(-48, 16*48, 20*48, m));
+				m.setCanCollide(true);
 			}
-
 		}
+		return new ArrayList<CollisionObject>();
 	}
+	
+	public ArrayList<String> connectionDataAt(int vert, int hor) {
+		char[] connData = new char[2];
+		String[] dataAtX = levelData[17 + vert].split(" ");
+		ArrayList<String> output = new ArrayList<String>();
+		connData[0] = dataAtX[hor].charAt(0);
+		connData[1] = dataAtX[hor].charAt(1);
+		output.add(Character.toString(connData[0]));
+		output.add(Character.toString(connData[1]));
+		return output;
+	}
+	public String[] getLevelData(String levelNum) {
+		String[] output = new String[33];
+		try (Scanner s1 = new Scanner(new File("src/LevelData/level" + levelNum + ".txt"))){
+			int index = 0;
+			while (s1.hasNext()) {
+				output[index] = s1.nextLine();
+				index++;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return output;
+	}
+
 }
