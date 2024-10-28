@@ -129,6 +129,14 @@ public class MainApp implements KeyListener{
     	if (currentLevel < 30)
     	{
     		currentLevel++;
+    		if (currentLevel == 7 || currentLevel == 11 || currentLevel == 18 || currentLevel == 20 || currentLevel == 22 || currentLevel == 24)
+    		{
+    			if (currentLevel == 11)
+    			{
+    				currentLevel++;
+    			}
+    			currentLevel++;
+    		}
     	}
     	lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
     	frame.add(lvl);

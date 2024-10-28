@@ -10,13 +10,13 @@ public class UpSpike extends Spike {
 	
 	public UpSpike(int x, int y, int width, Madeline m)
 	{
-		super(x,y,width,30, m);
+		super(x,y,width,20, m);
 	}
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX() + 6, getY());
+		g2.translate(getX(), getY() - 18);
 		for (int i = 0; i < getWidth()/24; i++)
 		{
 			g2.setColor(SPIKE_GREY);
