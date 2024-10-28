@@ -28,9 +28,11 @@ public class MainApp implements KeyListener{
 	private int strawberryCount;
 	private int currentLevel;
 	private boolean strawberryAlreadyCollected;
+	private boolean canMoveLevels;
 	
 	public MainApp() {
 		// sets default values
+		canMoveLevels = true;
 		currentLevel = 3;
 		strawberryAlreadyCollected = false;
 		frame = new JFrame();
@@ -52,6 +54,7 @@ public class MainApp implements KeyListener{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				checkMoveLevels();
 				updateMadelinePosition();
 				lvl.updateAnimations();
 				frame.repaint();
@@ -94,9 +97,13 @@ public class MainApp implements KeyListener{
 	 */
     @Override
     public synchronized void keyReleased(KeyEvent e) {
-    	if (e.getKeyCode() == 74)
+    	if (e.getKeyCode() == 74 || e.getKeyCode() == 67)
     	{
     		lvl.setMadelineJumpPressed(false);
+    	}
+    	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
+    	{
+    		canMoveLevels = true;
     	}
         pressedKeys.remove(e.getKeyCode());
     }
@@ -119,24 +126,42 @@ public class MainApp implements KeyListener{
     {
     	strawberryAlreadyCollected = false;
     	frame.remove(lvl);
-    	currentLevel++;
+    	if (currentLevel < 30)
+    	{
+    		currentLevel++;
+    	}
     	lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
     	frame.add(lvl);
     	frame.setVisible(true);
     }
     
     /**
+     * Moves to the previous level
+     */
+    public void previousLevel()
+    {
+    	strawberryAlreadyCollected = false;
+    	frame.remove(lvl);
+    	if (currentLevel > 1)
+    	{
+    		currentLevel--;
+    	}
+    	lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
+    	frame.add(lvl);
+    	frame.setVisible(true);
+    }
+    /**
      * Updates Madeline's current position
      */
     private void updateMadelinePosition()
     {
-    	// 68 is d
-    	if (pressedKeys.contains(68))
+    	// 68 is d, 39 is right arrow
+    	if (pressedKeys.contains(68) || pressedKeys.contains(39))
 		{
 			lvl.moveMadelineRight();
 		}
-    	// 65 is s
-		if (pressedKeys.contains(65))
+    	// 65 is s, 37 is left arrow
+		if (pressedKeys.contains(65) || pressedKeys.contains(37))
 		{
 			lvl.moveMadelineLeft();
 		}
@@ -148,8 +173,8 @@ public class MainApp implements KeyListener{
     
     private void checkJump()
     {
-    	// 74 is j
-    	if (pressedKeys.contains(74))
+    	// 74 is j, 67 is c
+    	if (pressedKeys.contains(74) || pressedKeys.contains(67))
 		{
 			lvl.madelineJump();
 		}
@@ -161,30 +186,30 @@ public class MainApp implements KeyListener{
     private void checkDash()
     {
     	lvl.checkIfDashing();
-		// 75 is k
-		if (pressedKeys.contains(75))
+		// 75 is k, 88 is x
+		if (pressedKeys.contains(75) || pressedKeys.contains(88))
 		{
-			if (pressedKeys.contains(87) && pressedKeys.contains(68))
+			if ((pressedKeys.contains(87) && pressedKeys.contains(68)) || (pressedKeys.contains(38) && pressedKeys.contains(39)))
 			{
 				lvl.dash("upright");
 			}
-			else if (pressedKeys.contains(87) && pressedKeys.contains(65))
+			else if ((pressedKeys.contains(87) && pressedKeys.contains(65)) || (pressedKeys.contains(38) && pressedKeys.contains(37)))
 			{
 				lvl.dash("upleft");
 			}
-			else if (pressedKeys.contains(68) && pressedKeys.contains(83))
+			else if ((pressedKeys.contains(68) && pressedKeys.contains(83)) || (pressedKeys.contains(40) && pressedKeys.contains(39)))
 			{
 				lvl.dash("downright");
 			}
-			else if (pressedKeys.contains(65) && pressedKeys.contains(83))
+			else if ((pressedKeys.contains(65) && pressedKeys.contains(83)) || (pressedKeys.contains(40) && pressedKeys.contains(37)))
 			{
 				lvl.dash("downleft");
 			}
-			else if (pressedKeys.contains(83))
+			else if (pressedKeys.contains(83) || pressedKeys.contains(40))
 			{
 				lvl.dash("down");
 			}
-			else if (pressedKeys.contains(87))
+			else if (pressedKeys.contains(87) || pressedKeys.contains(38))
 			{
 				lvl.dash("up");
 			}
@@ -196,6 +221,27 @@ public class MainApp implements KeyListener{
 		}
     }
     
+    /**
+     * Allows level select via the p and o keys
+     */
+    private void checkMoveLevels()
+    {
+    	if (canMoveLevels)
+    	{
+    		// 80 is p
+        	if (pressedKeys.contains(80))
+        	{
+        		nextLevel();
+        		canMoveLevels = false;
+        	}
+        	// 79 is o
+        	else if (pressedKeys.contains(79))
+        	{
+        		previousLevel();
+        		canMoveLevels = false;
+        	}
+    	}
+    }
 	/**
 	 * ensures: runs the application
 	 * @param args unused

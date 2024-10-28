@@ -34,7 +34,7 @@ public class CollisionObject {
 	 *         false
 	 */
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
-		if (madelineX + MADELINE_WIDTH - 10 > x && madelineX + 10 < x + width) {
+		if (madelineX + MADELINE_WIDTH - 5 > x && madelineX + 5 < x + width) {
 			if (madelineY + MADELINE_HEIGHT > y) {
 				if (madelineY + MADELINE_HEIGHT - y <= height) {
 					return true;
