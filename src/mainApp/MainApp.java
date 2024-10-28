@@ -31,7 +31,7 @@ public class MainApp implements KeyListener{
 	
 	public MainApp() {
 		// sets default values
-		currentLevel = 1;
+		currentLevel = 3;
 		strawberryAlreadyCollected = false;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input

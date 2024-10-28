@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -61,6 +60,10 @@ public class LevelComponent extends JComponent {
 		m.drawOn(g2);
 		if (pt != null) {
 			pt.drawOn(g2);
+		}
+		if (strawberry != null)
+		{
+			strawberry.drawOn(g2);
 		}
 
 	}
@@ -226,20 +229,27 @@ public class LevelComponent extends JComponent {
 					case ('v'):
 						collisionObjects.add(new DownSpike(j*48, i*48, (secondChar - '0')*48, m));
 						break;
+					case ('p'):
+						collisionObjects.add(new Spring(j*48, i*48,m));
+						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected)
 							collisionObjects.add(new BreakableBlock(j*48,i*48, 2*48, 2*48, m));
 						break;
 					case ('s'):
 						if (!strawberryAlreadyCollected)
-							strawberry = new Strawberry(j*48, i*48, m);
+						{
+							strawberry = new Strawberry(j*48+24, i*48+18, m);
+							collisionObjects.add(strawberry);
+						}
 						break;
 					case ('w'):
 						if (!strawberryAlreadyCollected)
-							strawberry = new WingedStrawberry(j*48, i*48, m);
+						{
+							strawberry = new WingedStrawberry(j*48+24, i*48+18, m);
+							collisionObjects.add(strawberry);
+						}
 						break;
-					case ('p'):
-						collisionObjects.add(new Spring(j*48,i*48,m));
 					case ('m'):
 						madX = j*48;
 						madY = i*48;

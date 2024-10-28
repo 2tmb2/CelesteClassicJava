@@ -16,7 +16,7 @@ public class Spring extends CollisionObject{
 	Timer restoreTimer;
 	public Spring(int x, int y, Madeline m)
 	{
-		super(x, y+18, 36, 30);
+		super(x+6, y+18, 36, 30);
 		this.m = m;
 		originalY = getY();
 		drawFrame = 1;
