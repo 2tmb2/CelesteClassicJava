@@ -16,7 +16,8 @@ public class UpSpike extends Spike {
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX(), getY() - 18);
+		g2.drawRect(getX(), getY(), getWidth(), getHeight());
+		g2.translate(getX()+6, getY() - 18);
 		for (int i = 0; i < getWidth() / 24; i++) {
 			g2.setColor(SPIKE_GREY);
 			g2.fillRect(0, 18, 18, 18);
@@ -32,8 +33,35 @@ public class UpSpike extends Spike {
 		}
 	}
 
-	@Override
-	public boolean isCollidingCeiling(int madelineX, int madelineY) {
-		return super.isCollidingCeiling(madelineX, madelineY);
+//	@Override
+//	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
+//		return false;
+//	}
+	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
+		// ensures that madeline is below the top of the object and above the bottom of
+		// the object
+		if (madelineY + getMadelineHeight() > getY() + 10 && madelineY < getY() + getHeight() - 10) {
+			// if madeline is facing left and moving to the right
+			if (facing < 0 && madelineX > getX() + getWidth() / 2) {
+				if (madelineX - (getX() + getWidth()) <= 0)
+					return true;
+			}
+			// if madeline is facing right and moving to the right
+			else if (facing > 0 && madelineX > getX() + getWidth() / 2) {
+				if (madelineX + getMadelineWidth() - (getX() + getWidth()) <= 0)
+					return true;
+			}
+			// if madeline is facing left and moving to the left
+			else if (facing < 0 && madelineX < getX() + getWidth() / 2) {
+				if (madelineX - getX() >= 0)
+					return true;
+			}
+			// if madeline is facing right and moving to the left
+			else if (facing > 0 && madelineX + getMadelineWidth() < getX() + getWidth() / 2) {
+				if (madelineX + getMadelineWidth() - getX() >= 0)
+					return true;
+			}
+		}
+		return false;
 	}
 }

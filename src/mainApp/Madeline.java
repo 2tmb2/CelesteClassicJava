@@ -361,7 +361,7 @@ public class Madeline {
 			tx.translate(-48, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
-			g2.translate(-xPos, yPos);
+			g2.translate(xPos, yPos);
 		} else {
 			// translates g2 to make 0, 0 be the top left of Madeline's head
 			g2.translate(xPos, yPos);
