@@ -11,6 +11,7 @@ public class WingedStrawberry extends Strawberry {
 	private int drawFrame;
 	private boolean isFlyingAway;
 	private double flyAwayAmount;
+
 	public WingedStrawberry(int x, int y, Madeline m) {
 		super(x, y, m);
 		drawFrame = 1;
@@ -128,15 +129,14 @@ public class WingedStrawberry extends Strawberry {
 		} else if (getCurrentFrame() >= (getNumOfAnimationFrames() - 2) / 2) {
 			drawFrame = 2;
 		}
-		if (isFlyingAway && getY() > -50)
-		{
-			super.setY(super.getY() - (int)flyAwayAmount);
+		if (isFlyingAway && getY() > -50) {
+			super.setY(super.getY() - (int) flyAwayAmount);
 			if (flyAwayAmount < 10)
 				flyAwayAmount += .5;
 		}
 	}
-	public void flyAway()
-	{
+
+	public void flyAway() {
 		isFlyingAway = true;
 	}
 }

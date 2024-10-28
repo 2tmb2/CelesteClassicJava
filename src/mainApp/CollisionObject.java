@@ -22,7 +22,8 @@ public class CollisionObject {
 		this.height = height;
 	}
 
-	public void drawOn(Graphics2D g2) {}
+	public void drawOn(Graphics2D g2) {
+	}
 
 	/**
 	 * Checks if the character located at the given x and y values would be within
@@ -119,27 +120,29 @@ public class CollisionObject {
 
 	public void updateAnimation() {
 	}
-	public void setY(int y)
-	{
+
+	public void setY(int y) {
 		this.y = y;
 	}
-	public void setHeight(int y)
-	{
+
+	public void setHeight(int y) {
 		this.height = y;
 	}
-	public int getMadelineWidth()
-	{
+
+	public int getMadelineWidth() {
 		return MADELINE_WIDTH;
 	}
-	public int getMadelineHeight()
-	{
+
+	public int getMadelineHeight() {
 		return MADELINE_HEIGHT;
 	}
+
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height
 	 */
 	public String toString() {
-		return this.getClass().toString().substring(6) + ", " + this.getX() + " " + this.getY() + " " + this.getWidth() + " " + this.getHeight();
+		return this.getClass().toString().substring(6) + ", " + this.getX() + " " + this.getY() + " " + this.getWidth()
+				+ " " + this.getHeight();
 	}
 }

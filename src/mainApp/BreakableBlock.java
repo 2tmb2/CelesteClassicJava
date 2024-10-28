@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Class: BreakableBlock
- * <br>Purpose: Used to create a BreakableBlock which reveals a strawberry when dashed into
+ * Class: BreakableBlock <br>
+ * Purpose: Used to create a BreakableBlock which reveals a strawberry when
+ * dashed into
  */
 public class BreakableBlock extends CollisionObject {
 	private static final Color OUTER_COLOR = new Color(255, 241, 232);

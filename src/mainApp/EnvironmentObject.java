@@ -19,7 +19,8 @@ public class EnvironmentObject extends CollisionObject {
 	private int randy;
 
 	/**
-	 * Creates an Environment Object with collision and randomized detail location using Array
+	 * Creates an Environment Object with collision and randomized detail location
+	 * using Array
 	 * 
 	 * @param x          representing the initial x position
 	 * @param y          representing the initial y position
@@ -27,8 +28,8 @@ public class EnvironmentObject extends CollisionObject {
 	 * @param height     representing the height
 	 * @param connectsAt is an array of strings that signifies which sides the
 	 *                   EnvironmentObject connects to other EnvironmentObjects.
-	 *                   Options are "u", "d", "l", and "r". The array
-	 *                   should be of length 4.
+	 *                   Options are "u", "d", "l", and "r". The array should be of
+	 *                   length 4.
 	 */
 	public EnvironmentObject(int x, int y, int width, int height, String[] connectsAt) {
 		super(x, y, width, height);
@@ -48,9 +49,10 @@ public class EnvironmentObject extends CollisionObject {
 			positionModifierValues.add((int) (Math.random() * (positionVariance - 64)) - (positionVariance - 64) / 2);
 		}
 	}
-	
+
 	/**
-	 * Creates an Environment Object with collision and randomized detail location using ArrayList
+	 * Creates an Environment Object with collision and randomized detail location
+	 * using ArrayList
 	 * 
 	 * @param x          representing the initial x position
 	 * @param y          representing the initial y position
@@ -78,10 +80,11 @@ public class EnvironmentObject extends CollisionObject {
 			positionModifierValues.add((int) (Math.random() * (positionVariance - 64)) - (positionVariance - 64) / 2);
 		}
 	}
-	public ArrayList<String> getConnectsAt()
-	{
+
+	public ArrayList<String> getConnectsAt() {
 		return connectsAt;
 	}
+
 	/**
 	 * Draws the EnvironmentObject based on it's values of x, y, width, height, and
 	 * randomized detail location
@@ -133,41 +136,37 @@ public class EnvironmentObject extends CollisionObject {
 
 		// draws the corners of the block (if they should exist)
 		// top left
-		if (!(connectsAt.contains("u") || connectsAt.contains("l")))
-		{
+		if (!(connectsAt.contains("u") || connectsAt.contains("l"))) {
 			g2.fillRect(6, 6, 6, 6);
 			g2.setColor(CORNER_COLOR);
 			g2.fillRect(0, 0, 6, 6);
 			g2.setColor(OUTER_COLOR);
 		}
-			
+
 		// top right
-		if (!(connectsAt.contains("u") || connectsAt.contains("r")))
-		{
+		if (!(connectsAt.contains("u") || connectsAt.contains("r"))) {
 			g2.fillRect(getWidth() - 12, 6, 6, 6);
 			g2.setColor(CORNER_COLOR);
-			g2.fillRect(getWidth()-6, 0, 6, 6);
+			g2.fillRect(getWidth() - 6, 0, 6, 6);
 			g2.setColor(OUTER_COLOR);
 		}
-			
+
 		// bottom left
-		if (!(connectsAt.contains("d") || connectsAt.contains("l")))
-		{
+		if (!(connectsAt.contains("d") || connectsAt.contains("l"))) {
 			g2.fillRect(6, getHeight() - 12, 6, 6);
 			g2.setColor(CORNER_COLOR);
-			g2.fillRect(0, getHeight()-6, 6, 6);
+			g2.fillRect(0, getHeight() - 6, 6, 6);
 			g2.setColor(OUTER_COLOR);
 		}
-			
+
 		// bottom right
-		if (!(connectsAt.contains("d") || connectsAt.contains("r")))
-		{
+		if (!(connectsAt.contains("d") || connectsAt.contains("r"))) {
 			g2.fillRect(getWidth() - 12, getHeight() - 12, 6, 6);
 			g2.setColor(CORNER_COLOR);
-			g2.fillRect(getWidth()-6, getHeight()-6, 6, 6);
+			g2.fillRect(getWidth() - 6, getHeight() - 6, 6, 6);
 			g2.setColor(OUTER_COLOR);
 		}
-		
+
 		// add detail to the object
 		if (getWidth() > 48 && getHeight() > 48) {
 			largeObjectDetail(g2);

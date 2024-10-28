@@ -42,7 +42,7 @@ public class Madeline {
 		this.yPos = 0;
 		this.collisionObjects = null;
 		this.numOfDashesTotal = 1;
-		
+
 		xVel = 0;
 		yVel = 0;
 		yVelMax = 6;
@@ -58,6 +58,7 @@ public class Madeline {
 		isNextLevel = false;
 		canContinue = true;
 	}
+
 	/**
 	 * Creates a Madeline object
 	 * 
@@ -90,39 +91,39 @@ public class Madeline {
 		facingRight = 1;
 		canContinue = true;
 	}
-	
+
 	public void setCanCollide(boolean canCollide) {
 		this.canContinue = canCollide;
 	}
-	
+
 	public boolean getCanCollide() {
 		return this.canContinue;
 	}
-	
+
 	public int getXPos() {
 		return this.xPos;
 	}
-	
+
 	public void setXPos(int xPos) {
 		this.xPos = xPos;
 	}
-	
+
 	public int getYPos() {
 		return this.yPos;
 	}
-	
+
 	public void setYPos(int yPos) {
 		this.yPos = yPos;
 	}
-	
+
 	public void setLevel(LevelComponent lvl) {
 		this.lvl = lvl;
 	}
-	
+
 	public void setCollisionObjects(ArrayList<CollisionObject> c) {
 		this.collisionObjects = c;
 	}
-	
+
 	public void setTotalDashes(int totalDashes) {
 		this.numOfDashesTotal = totalDashes;
 	}
@@ -219,11 +220,9 @@ public class Madeline {
 	 * @return true if she is colliding with a wall, otherwise false
 	 */
 	public boolean isCollidingWithWall() {
-		for (int i = 0; i < collisionObjects.size(); i++)
-		{
+		for (int i = 0; i < collisionObjects.size(); i++) {
 			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel, yPos + (int) yVel, facingRight)) {
-				if (isNextLevel)
-				{
+				if (isNextLevel) {
 					i = collisionObjects.size() + 2;
 					return false;
 				}
@@ -404,6 +403,10 @@ public class Madeline {
 
 		g2.translate(-6 * xModifier, -6 * yModifier);
 
+		// ======================================
+		// END WIP
+		// ======================================
+		
 		// drawing face
 		g2.setColor(FACE_COLOR);
 		g2.fillRect(18, 12, 24, 6);
@@ -463,17 +466,18 @@ public class Madeline {
 	public boolean getIsDashing() {
 		return isDashing;
 	}
-	public void springBounce()
-	{
+
+	public void springBounce() {
 		yVel = -15;
 		numOfDashesRemaining = numOfDashesTotal;
 	}
 
 	public void nextLevel() {
-		if (!canContinue) return;
+		if (!canContinue)
+			return;
 		isNextLevel = true;
 		canContinue = false;
-		//collisionObjects = null;
+		// collisionObjects = null;
 		lvl.nextLevel();
 	}
 }
