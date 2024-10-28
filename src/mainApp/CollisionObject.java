@@ -123,6 +123,10 @@ public class CollisionObject {
 	{
 		this.y = y;
 	}
+	public void setHeight(int y)
+	{
+		this.height = y;
+	}
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height

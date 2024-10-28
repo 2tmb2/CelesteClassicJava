@@ -462,6 +462,11 @@ public class Madeline {
 	public boolean getIsDashing() {
 		return isDashing;
 	}
+	public void springBounce()
+	{
+		yVel = -14;
+		numOfDashesRemaining = numOfDashesTotal;
+	}
 
 	public void nextLevel() {
 		if (!canContinue) return;

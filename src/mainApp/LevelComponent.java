@@ -238,6 +238,8 @@ public class LevelComponent extends JComponent {
 						if (!strawberryAlreadyCollected)
 							strawberry = new WingedStrawberry(j*48, i*48, m);
 						break;
+					case ('p'):
+						collisionObjects.add(new Spring(j*48,i*48,m));
 					case ('m'):
 						madX = j*48;
 						madY = i*48;
