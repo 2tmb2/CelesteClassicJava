@@ -243,6 +243,18 @@ public class LevelComponent extends JComponent {
 					case ('p'):
 						collisionObjects.add(new Spring(j*48, i*48,m));
 						break;
+					case ('d'):
+						// add disappearing blocks
+						break;
+					case ('r'):
+						// add balloons (r for refresh dash)
+						break;
+					case ('k'):
+						// add key
+						break;
+					case ('c'):
+						// add chest
+						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected)
 							collisionObjects.add(new BreakableBlock(j*48,i*48, 2*48, 2*48, m));
@@ -284,12 +296,12 @@ public class LevelComponent extends JComponent {
 		return new ArrayList<CollisionObject>();
 	}
 	
-	public ArrayList<String> connectionDataAt(int vert, int hor) {
+	public ArrayList<String> connectionDataAt(int vertical, int horizontal) {
 		char[] connData = new char[2];
-		String[] dataAtX = levelData[17 + vert].split(" ");
+		String[] dataAtX = levelData[17 + vertical].split(" ");
 		ArrayList<String> output = new ArrayList<String>();
-		connData[0] = dataAtX[hor].charAt(0);
-		connData[1] = dataAtX[hor].charAt(1);
+		connData[0] = dataAtX[horizontal].charAt(0);
+		connData[1] = dataAtX[horizontal].charAt(1);
 		output.add(Character.toString(connData[0]));
 		output.add(Character.toString(connData[1]));
 		return output;
@@ -302,7 +314,7 @@ public class LevelComponent extends JComponent {
 				output[index] = s1.nextLine();
 				index++;
 			}
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) { 
 			System.out.println("The file for level " + levelNum + " could not be found");
 		}
 		return output;
