@@ -16,7 +16,6 @@ public class UpSpike extends Spike {
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.drawRect(getX(), getY(), getWidth(), getHeight());
 		g2.translate(getX()+6, getY() - 18);
 		for (int i = 0; i < getWidth() / 24; i++) {
 			g2.setColor(SPIKE_GREY);
