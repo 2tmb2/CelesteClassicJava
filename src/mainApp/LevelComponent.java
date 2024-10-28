@@ -203,6 +203,13 @@ public class LevelComponent extends JComponent {
 		}
 	}
 	
+	/**
+	 * Head method for loading a level from a file.
+	 * creates a new empty Madeline for the next level (to pass to objects in the level).
+	 * Sets proper dashNum based on level number
+	 * Sets position of Madeline based on level data and gives her the processed list of collision objects
+	 * @param levelNum the String representing the integer level number
+	 */
 	public void levelFromText(String levelNum) {
 		m = new Madeline(this);
 		levelData = getLevelData(levelNum);
@@ -213,7 +220,21 @@ public class LevelComponent extends JComponent {
 		m.setYPos(madY);
 	}
 	
-	public ArrayList<CollisionObject> createLevel() {
+	/**
+	 * Parses the String array of level data for the information of obstacles and objects at each point 
+	 * '-' and '[' are characters representing empty data. There are two symbols for human readability
+	 * '>', '<', '<^', and 'v' are all spikes with corresponding direction
+	 * 'p' is spring
+	 * 'd' is disappearing block
+	 * 'r' is balloon
+	 * 'k' is key
+	 * 'c' is chest
+	 * 'b' is breakable block (always 2x2)
+	 * 's' is strawberry
+	 * 'w' is winged strawberry
+	 * 'm' is madeline's starting position
+	 */
+	public void createLevel() {
 		collisionObjects = new ArrayList<CollisionObject>();
 		m.setCollisionObjects(collisionObjects);
 		String[] objectsData;
@@ -285,19 +306,26 @@ public class LevelComponent extends JComponent {
 							hasConnectsAt.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, (secondChar - '0')*48, connectionDataAt(i, j)));
 						collisionObjects.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, (secondChar - '0')*48, connectionDataAt(i, j)));
 				}
-				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48));
-				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48));
-				collisionObjects.add(new LevelFinishZone(-48, -48-18, 20*48, 48, m));
-				collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m));
+				//Creates offscreen objects
+				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48)); //Invisible wall on left side
+				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48)); //Invisible wall on right side
+				collisionObjects.add(new LevelFinishZone(-48, -48-18, 20*48, 48, m)); //Finish zone on top side
+				collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m)); //Death zone on bottom side
 				m.setCanCollide(true);
 			}
 		}
-		return new ArrayList<CollisionObject>();
 	}
 	
+	/**
+	 * Obtains the connection data for a block from the identical position in the connection data map
+	 * 
+	 * @param vertical the vertical position of the block
+	 * @param horizontal the horizontal position of the block
+	 * @return the ArrayList representing the (at most 2) sides a block can connect at
+	 */
 	public ArrayList<String> connectionDataAt(int vertical, int horizontal) {
 		char[] connData = new char[2];
-		String[] dataAtX = levelData[17 + vertical].split(" ");
+		String[] dataAtX = levelData[17 + vertical].split(" "); //17 is the offset of the second map from the first map
 		ArrayList<String> output = new ArrayList<String>();
 		connData[0] = dataAtX[horizontal].charAt(0);
 		connData[1] = dataAtX[horizontal].charAt(1);
@@ -305,6 +333,12 @@ public class LevelComponent extends JComponent {
 		output.add(Character.toString(connData[1]));
 		return output;
 	}
+	
+	/**
+	 * Reads in the level data as an array of Strings corresponding to line number
+	 * @param levelNum the String representing the integer level number
+	 * @return the String array (always length 33) representing the level
+	 */
 	public String[] getLevelData(String levelNum) {
 		String[] output = new String[33];
 		try (Scanner s1 = new Scanner(new File("src/LevelData/level" + levelNum + ".txt"))){
