@@ -13,7 +13,7 @@ public class Strawberry extends CollisionObject{
 	private static final int WIDTH = 36;
 	private static final int HEIGHT = 48;
 	private int numOfAnimationFrames;
-	private int translateBy;
+	private double translateBy;
 	private int currentFrame;
 	private Madeline m;
 	public Strawberry(int x, int y, Madeline m)
@@ -21,7 +21,7 @@ public class Strawberry extends CollisionObject{
 		super(x, y, WIDTH, HEIGHT);
 		this.m = m;
 		setCurrentFrame(0);
-		setNumOfAnimationFrames(60);
+		setNumOfAnimationFrames(80);
 	}
 	@Override
 	public void drawOn(Graphics2D g2)
@@ -68,11 +68,11 @@ public class Strawberry extends CollisionObject{
 	{
 		if (getCurrentFrame() > getNumOfAnimationFrames()/4 && getCurrentFrame() < 3*getNumOfAnimationFrames()/4)
 		{
-			setTranslateBy(getTranslateBy() - 1);;
+			setTranslateBy(getTranslateBy() - .5);
 		}
 		else
 		{
-			setTranslateBy(getTranslateBy() + 1);
+			setTranslateBy(getTranslateBy() + .5);
 		}
 	}
 	@Override
@@ -80,7 +80,7 @@ public class Strawberry extends CollisionObject{
 	{
 		if (getCurrentFrame() >= getNumOfAnimationFrames() - 2)
 		{
-			setTranslateBy(getTranslateBy() - 1);
+			setTranslateBy(getTranslateBy() - .5);
 			setCurrentFrame(0);
 		}
 		else
@@ -118,10 +118,10 @@ public class Strawberry extends CollisionObject{
 		}
 		return false;
 	}
-	public int getTranslateBy() {
+	public double getTranslateBy() {
 		return translateBy;
 	}
-	public void setTranslateBy(int translateBy) {
+	public void setTranslateBy(double translateBy) {
 		this.translateBy = translateBy;
 	}
 	public int getCurrentFrame() {
