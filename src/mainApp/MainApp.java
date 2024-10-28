@@ -26,6 +26,7 @@ public class MainApp implements KeyListener{
 	private JFrame frame;
 	private int frameSize = 768;
 	private int strawberryCount;
+	private int deathCount;
 	private int currentLevel;
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
@@ -35,6 +36,8 @@ public class MainApp implements KeyListener{
 		canMoveLevels = true;
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
+		deathCount = 0;
+		strawberryCount = 0;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input
 		frame.addKeyListener(this);
@@ -69,6 +72,7 @@ public class MainApp implements KeyListener{
 	 */
 	public void resetLevel()
 	{
+		deathCount++;
 		frame.remove(lvl);
 		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
 		frame.add(lvl);

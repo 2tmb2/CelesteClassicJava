@@ -127,6 +127,14 @@ public class CollisionObject {
 	{
 		this.height = y;
 	}
+	public int getMadelineWidth()
+	{
+		return MADELINE_WIDTH;
+	}
+	public int getMadelineHeight()
+	{
+		return MADELINE_HEIGHT;
+	}
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height

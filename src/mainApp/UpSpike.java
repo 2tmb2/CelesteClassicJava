@@ -7,7 +7,7 @@ public class UpSpike extends Spike {
 	
 	private static final Color SPIKE_WHITE = new Color(255,241,232);
 	private static final Color SPIKE_GREY = new Color(194,195,199);
-	
+	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
 	public UpSpike(int x, int y, int width, Madeline m)
 	{
 		super(x,y,width,20, m);
@@ -26,7 +26,15 @@ public class UpSpike extends Spike {
 			g2.fillRect(6, 6, 6, 24);
 			g2.fillRect(12, 18, 6, 6);
 			
+			g2.setColor(SPIKE_BROWN);
+			g2.fillRect(-6, 24, 6, 18);
+			
 			g2.translate(24, 0);
 		}
+	}
+	@Override
+	public boolean isCollidingCeiling(int madelineX, int madelineY)
+	{
+		return super.isCollidingCeiling(madelineX, madelineY);
 	}
 }

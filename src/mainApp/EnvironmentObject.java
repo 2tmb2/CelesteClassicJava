@@ -12,6 +12,7 @@ import java.util.Arrays;
 public class EnvironmentObject extends CollisionObject {
 	private static final Color OUTER_COLOR = new Color(255, 241, 232);
 	private static final Color INNER_COLOR = new Color(41, 172, 253);
+	private static final Color CORNER_COLOR = new Color(95, 87, 79);
 	private ArrayList<Integer> positionModifierValues;
 	private ArrayList<String> connectsAt;
 	private int randx;
@@ -133,17 +134,40 @@ public class EnvironmentObject extends CollisionObject {
 		// draws the corners of the block (if they should exist)
 		// top left
 		if (!(connectsAt.contains("u") || connectsAt.contains("l")))
+		{
 			g2.fillRect(6, 6, 6, 6);
+			g2.setColor(CORNER_COLOR);
+			g2.fillRect(0, 0, 6, 6);
+			g2.setColor(OUTER_COLOR);
+		}
+			
 		// top right
 		if (!(connectsAt.contains("u") || connectsAt.contains("r")))
+		{
 			g2.fillRect(getWidth() - 12, 6, 6, 6);
+			g2.setColor(CORNER_COLOR);
+			g2.fillRect(getWidth()-6, 0, 6, 6);
+			g2.setColor(OUTER_COLOR);
+		}
+			
 		// bottom left
 		if (!(connectsAt.contains("d") || connectsAt.contains("l")))
+		{
 			g2.fillRect(6, getHeight() - 12, 6, 6);
+			g2.setColor(CORNER_COLOR);
+			g2.fillRect(0, getHeight()-6, 6, 6);
+			g2.setColor(OUTER_COLOR);
+		}
+			
 		// bottom right
 		if (!(connectsAt.contains("d") || connectsAt.contains("r")))
+		{
 			g2.fillRect(getWidth() - 12, getHeight() - 12, 6, 6);
-
+			g2.setColor(CORNER_COLOR);
+			g2.fillRect(getWidth()-6, getHeight()-6, 6, 6);
+			g2.setColor(OUTER_COLOR);
+		}
+		
 		// add detail to the object
 		if (getWidth() > 48 && getHeight() > 48) {
 			largeObjectDetail(g2);

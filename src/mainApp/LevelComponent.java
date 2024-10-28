@@ -218,7 +218,6 @@ public class LevelComponent extends JComponent {
 		m.setCollisionObjects(collisionObjects);
 		String[] objectsData;
 		for (int i = 0; i < 16; i++) {
-			//if (levelData[i].equals("")) continue;
 			objectsData = levelData[i].split(" ");
 			for (int j = 0; j < objectsData.length; j++) {
 				char firstChar = objectsData[j].charAt(0);
@@ -232,13 +231,13 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(new RightSpike(j*48, i*48, (secondChar - '0')*48, m));
 						break;
 					case ('<'):
-						collisionObjects.add(new LeftSpike(j*48, i*48, (secondChar - '0')*48, m));
+						collisionObjects.add(new LeftSpike(j*48+30, i*48-6, (secondChar - '0')*48, m));
 						break;
 					case ('^'):
 						collisionObjects.add(new UpSpike(j*48 + 6, i*48+30, (secondChar - '0')*48, m));
 						break;
 					case ('v'):
-						collisionObjects.add(new DownSpike(j*48, i*48, (secondChar - '0')*48, m));
+						collisionObjects.add(new DownSpike(j*48, i*48+0, (secondChar - '0')*48, m));
 						break;
 					case ('p'):
 						collisionObjects.add(new Spring(j*48, i*48,m));
@@ -288,8 +287,8 @@ public class LevelComponent extends JComponent {
 				}
 				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48));
 				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48));
-				collisionObjects.add(new LevelFinishZone(-48, -48, 20*48, 48, m));
-				collisionObjects.add(new UpSpike(-48, 16*48, 20*48, m));
+				collisionObjects.add(new LevelFinishZone(-48, -48-18, 20*48, 48, m));
+				collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m));
 				m.setCanCollide(true);
 			}
 		}
