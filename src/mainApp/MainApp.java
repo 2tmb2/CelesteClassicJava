@@ -33,7 +33,7 @@ public class MainApp implements KeyListener{
 	public MainApp() {
 		// sets default values
 		canMoveLevels = true;
-		currentLevel = 3;
+		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input

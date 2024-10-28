@@ -18,16 +18,14 @@ public class LevelComponent extends JComponent {
 	private Madeline m;
 	private MainApp main;
 	private ArrayList<CollisionObject> collisionObjects;
-	private int madelineSpawnX;
-	private int madelineSpawnY;
-	private int numberOfDashesTotal;
 	private Strawberry strawberry;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
 	private String[] levelData;
 	private int madX;
 	private int madY;
-	
+	private ArrayList<CollisionObject> hasConnectsAt;
+	private ArrayList<CollisionObject> noConnectsAt;
 
 	/**
 	 * Creates a LevelComponent Object
@@ -41,6 +39,8 @@ public class LevelComponent extends JComponent {
 	 */
 	public LevelComponent(MainApp main, String levelNum, boolean strawberryAlreadyCollected) {
 		this.main = main;
+		hasConnectsAt = new ArrayList<CollisionObject>();
+		noConnectsAt = new ArrayList<CollisionObject>();
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
 
 		collisionObjects = new ArrayList<CollisionObject>();
@@ -54,9 +54,20 @@ public class LevelComponent extends JComponent {
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
-		for (CollisionObject c : collisionObjects) {
+		for (CollisionObject c : collisionObjects)
+		{
+			if (!(c instanceof EnvironmentObject))
 			c.drawOn(g2);
 		}
+		for (CollisionObject c : noConnectsAt)
+		{
+			c.drawOn(g2);
+		}
+		for (CollisionObject c : hasConnectsAt)
+		{
+			c.drawOn(g2);
+		}
+		
 		m.drawOn(g2);
 		if (pt != null) {
 			pt.drawOn(g2);
@@ -255,10 +266,13 @@ public class LevelComponent extends JComponent {
 						madY = i*48;
 						break;
 					default:
-						//if (firstChar - '0' >= 1 && (firstChar - '0') <= 9) {
-							collisionObjects.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, 
-									(secondChar - '0')*48, connectionDataAt(i, j)));
-						//}
+						if (connectionDataAt(i,j).get(0).equals("."))
+						{
+							noConnectsAt.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, (secondChar - '0')*48, connectionDataAt(i, j)));
+						}
+						else
+							hasConnectsAt.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, (secondChar - '0')*48, connectionDataAt(i, j)));
+						collisionObjects.add(new EnvironmentObject(j*48, i*48, (firstChar - '0')*48, (secondChar - '0')*48, connectionDataAt(i, j)));
 				}
 				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48));
 				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48));

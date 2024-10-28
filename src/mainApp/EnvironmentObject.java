@@ -77,7 +77,10 @@ public class EnvironmentObject extends CollisionObject {
 			positionModifierValues.add((int) (Math.random() * (positionVariance - 64)) - (positionVariance - 64) / 2);
 		}
 	}
-
+	public ArrayList<String> getConnectsAt()
+	{
+		return connectsAt;
+	}
 	/**
 	 * Draws the EnvironmentObject based on it's values of x, y, width, height, and
 	 * randomized detail location

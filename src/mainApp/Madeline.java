@@ -131,8 +131,8 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (xVel <= 3 && !wallJump) {
-			xVel += 1;
+		if (xVel <= 5 && !wallJump) {
+			xVel += 1.25;
 		}
 	}
 
@@ -140,8 +140,8 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (xVel >= -3 && !wallJump) {
-			xVel -= 1;
+		if (xVel >= -5 && !wallJump) {
+			xVel -= 1.25;
 		}
 
 	}
@@ -151,7 +151,7 @@ public class Madeline {
 	 * position, and any objects she is colliding with
 	 */
 	public void setHorizontalPosition() {
-		if (Math.abs(xVel) <= 2) {
+		if (Math.abs(xVel) <= 2.5) {
 			wallJump = false;
 		}
 		if (!isCollidingWithWall()) {
@@ -163,10 +163,10 @@ public class Madeline {
 			}
 			yVelMax = 2;
 		}
-		if (xVel > 0) {
+		if (xVel > .25) {
 			xVel -= .5;
 			facingRight = 1;
-		} else if (xVel < 0) {
+		} else if (xVel < -.25) {
 			facingRight = -1;
 			xVel += .5;
 		}
@@ -267,18 +267,18 @@ public class Madeline {
 	public void jump() {
 		if (isCollidingWithFloor() && !jumpPressed) {
 			numOfDashesRemaining = numOfDashesTotal;
-			yVel = -10;
+			yVel = -11.5;
 			jumpPressed = true;
 		} else if (isCollidingWithWall() && !jumpPressed && isCollidingWithFloor()) {
 			jumpPressed = true;
 			wallJump = true;
-			xVel = -facingRight * 10;
-			yVel = -10;
+			xVel = -facingRight * 11;
+			yVel = -9.5;
 		} else if (isCollidingWithWall() && !jumpPressed && !isCollidingWithFloor() && !wallJump) {
 			jumpPressed = true;
 			wallJump = true;
-			xVel = -facingRight * 10;
-			yVel = -10;
+			xVel = -facingRight * 11;
+			yVel = -9.5;
 		}
 	}
 
@@ -300,31 +300,32 @@ public class Madeline {
 		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0)) {
 			isDashing = true;
 			numOfDashesRemaining--;
+			int dashVel = 13;
 			if (dir.equals("up")) {
-				yVel = -13;
+				yVel = -dashVel;
 			}
 			if (dir.equals("down")) {
-				yVel = 13;
+				yVel = dashVel;
 			}
 			if (dir.equals("upleft")) {
-				yVel = -12;
-				xVel = -12;
+				yVel = -dashVel;
+				xVel = -dashVel;
 			}
 			if (dir.equals("upright")) {
-				yVel = -12;
-				xVel = 12;
+				yVel = -dashVel;
+				xVel = dashVel;
 			}
 			if (dir.equals("downleft")) {
-				yVel = 12;
-				xVel = -12;
+				yVel = dashVel;
+				xVel = -dashVel;
 			}
 			if (dir.equals("downright")) {
-				yVel = 12;
-				xVel = 12;
+				yVel = dashVel;
+				xVel = dashVel;
 			}
 			if (dir.equals("")) {
 				isDashingHorizontally = true;
-				xVel = 13 * facingRight;
+				xVel = dashVel * facingRight;
 				yVel = 0;
 			}
 			return true;
@@ -464,7 +465,7 @@ public class Madeline {
 	}
 	public void springBounce()
 	{
-		yVel = -14;
+		yVel = -15;
 		numOfDashesRemaining = numOfDashesTotal;
 	}
 

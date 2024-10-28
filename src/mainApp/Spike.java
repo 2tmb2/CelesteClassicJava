@@ -21,11 +21,6 @@ public abstract class Spike extends CollisionObject{
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
-		if (super.isCollidingWall(madelineX, madelineY, facing))
-		{
-			m.death();
-			return true;
-		}
 		return false;
 	}
 	@Override
