@@ -28,7 +28,7 @@ public class RightSpike extends Spike {
 			g2.fillRect(18, 12, 6, 6);
 
 			g2.setColor(SPIKE_BROWN);
-			g2.fillRect(0, -6, 12, 6);
+			g2.fillRect(6, -6, 12, 6);
 
 			g2.translate(0, 24);
 		}
