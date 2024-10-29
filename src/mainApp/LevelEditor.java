@@ -39,7 +39,8 @@ public class LevelEditor extends JComponent {
 		
 		for (int i = 0; i < spriteMap.length; i++) {
 			for (int j = 0; j < spriteMap[0].length; j++) {
-				g.drawImage(image, j * 48, i * 48, j * 48 + 48, i * 48 + 48, spriteMap[i][j].getX(), spriteMap[i][j].getY(), spriteMap[i][j].getX() + 8, j, getFocusCycleRootAncestor());
+				if (spriteMap[i][j] == null) continue;
+				g.drawImage(image, i * 48, j * 48, i * 48 + 48, j * 48 + 48, (spriteMap[i][j].getX() - 768) / 6, spriteMap[i][j].getY() / 6, ((spriteMap[i][j].getX() - 768) / 6) + 8, (spriteMap[i][j].getY() / 6) + 8, null);
 			}
 		}
 		//g.drawImage(image, 768, 0, 768 + (8 * 6), 0 + (8 * 6), 0, 16, 8, 24, null);
