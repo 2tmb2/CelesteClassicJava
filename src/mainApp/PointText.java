@@ -40,20 +40,16 @@ public class PointText {
 		g2.setColor(currentColor);
 
 		// draws a 1
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(6, 0, 6, 6 * 4);
-		g2.fillRect(0, 4 * 6, 6 * 3, 6);
+		BlockyText.draw1(g2);
 
 		// draws 3 0's 24 pixels apart
 		for (int i = 0; i < 3; i++) {
 			g2.translate(24, 0);
-			g2.fillRect(0, 0, 18, 6);
-			g2.fillRect(0, 24, 18, 6);
-			g2.fillRect(0, 0, 6, 24);
-			g2.fillRect(12, 0, 6, 24);
+			BlockyText.draw0(g2);
 		}
 	}
-
+	
+	
 	/**
 	 * Swaps color to whatever color is currently inactive
 	 */
