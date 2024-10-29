@@ -68,95 +68,6 @@ public class Madeline {
 	}
 
 	/**
-	 * Creates a Madeline object
-	 * 
-	 * @param xPos             representing madeline's starting x position
-	 * @param yPos             representing madeline's starting y position
-	 * @param numOfDashesTotal representing madeline's number of available dashes (1
-	 *                         or 2)
-	 * @param c                representing an ArrayList of CollisionObjects
-	 * @param lvl              representing the level component
-	 */
-	public Madeline(int xPos, int yPos, int numOfDashesTotal, ArrayList<CollisionObject> c, LevelComponent lvl) {
-		// initialize starting values
-		this.xPos = xPos;
-		this.yPos = yPos;
-		this.lvl = lvl;
-		this.collisionObjects = c;
-		this.numOfDashesTotal = numOfDashesTotal;
-
-		xVel = 0;
-		yVel = 0;
-		yVelMax = 6;
-		numOfDashesRemaining = 0;
-
-		wallJump = false;
-		jumpPressed = false;
-		isDashing = false;
-		isDashingHorizontally = false;
-
-		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
-		facingRight = 1;
-		canContinue = true;
-		currentlyCollidingHorizontalObject = null;
-	}
-
-	public void setCanCollide(boolean canCollide) {
-		this.canContinue = canCollide;
-	}
-
-	public boolean getCanCollide() {
-		return this.canContinue;
-	}
-
-	public int getXPos() {
-		return this.xPos;
-	}
-
-	public void setXPos(int xPos) {
-		this.xPos = xPos;
-	}
-
-	public int getYPos() {
-		return this.yPos;
-	}
-
-	public void setYPos(int yPos) {
-		this.yPos = yPos;
-	}
-
-	public void setLevel(LevelComponent lvl) {
-		this.lvl = lvl;
-	}
-
-	public void setCollisionObjects(ArrayList<CollisionObject> c) {
-		this.collisionObjects = c;
-	}
-
-	public void setTotalDashes(int totalDashes) {
-		this.numOfDashesTotal = totalDashes;
-	}
-
-	/**
-	 * Increases Madeline's X velocity
-	 */
-	public void increaseX() {
-		if (xVel <= 5 && !wallJump && !isDashing) {
-			xVel += 1.25;
-		}
-	}
-
-	/**
-	 * Decreases Madeline's X velocity
-	 */
-	public void decreaseX() {
-		if (xVel >= -5 && !wallJump && !isDashing) {
-			xVel -= 1.25;
-		}
-
-	}
-
-	/**
 	 * Updates Madelin'es position based on her current velocity, position, and any
 	 * objects she is colliding with
 	 * 
@@ -544,7 +455,7 @@ public class Madeline {
 	 *          coordinates (from 0 to 768)
 	 */
 	public void breakBlock(int x, int y) {
-		lvl.addNewStrawberry(x, y, false);
+		lvl.addNewStrawberry(x, y-10, false);
 		xVel = -facingRight * 7;
 		yVel = -10;
 		yPos -= 10;
@@ -559,6 +470,61 @@ public class Madeline {
 		}
 	}
 
+	public void setCanCollide(boolean canCollide) {
+		this.canContinue = canCollide;
+	}
+
+	public boolean getCanCollide() {
+		return this.canContinue;
+	}
+
+	public int getXPos() {
+		return this.xPos;
+	}
+
+	public void setXPos(int xPos) {
+		this.xPos = xPos;
+	}
+
+	public int getYPos() {
+		return this.yPos;
+	}
+
+	public void setYPos(int yPos) {
+		this.yPos = yPos;
+	}
+
+	public void setLevel(LevelComponent lvl) {
+		this.lvl = lvl;
+	}
+
+	public void setCollisionObjects(ArrayList<CollisionObject> c) {
+		this.collisionObjects = c;
+	}
+
+	public void setTotalDashes(int totalDashes) {
+		this.numOfDashesTotal = totalDashes;
+	}
+
+	/**
+	 * Increases Madeline's X velocity
+	 */
+	public void increaseX() {
+		if (xVel <= 5 && !wallJump && !isDashing) {
+			xVel += 1.25;
+		}
+	}
+
+	/**
+	 * Decreases Madeline's X velocity
+	 */
+	public void decreaseX() {
+		if (xVel >= -5 && !wallJump && !isDashing) {
+			xVel -= 1.25;
+		}
+
+	}
+	
 	/**
 	 * resets the level upon death
 	 */

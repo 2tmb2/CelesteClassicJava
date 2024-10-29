@@ -28,7 +28,7 @@ public class UpSpike extends Spike {
 			g2.fillRect(12, 18, 6, 6);
 
 			g2.setColor(SPIKE_BROWN);
-			g2.fillRect(-6, 24, 6, 18);
+			g2.fillRect(-6, 24, 6, 12);
 
 			g2.translate(24, 0);
 		}

@@ -38,6 +38,7 @@ public class LevelComponent extends JComponent {
 	private int madY;
 	private ArrayList<CollisionObject> hasConnectsAt;
 	private ArrayList<CollisionObject> noConnectsAt;
+	private ArrayList<CollisionObject> otherObject;
 
 	/**
 	 * Creates a LevelComponent Object
@@ -53,8 +54,9 @@ public class LevelComponent extends JComponent {
 		this.main = main;
 		hasConnectsAt = new ArrayList<CollisionObject>();
 		noConnectsAt = new ArrayList<CollisionObject>();
+		otherObject = new ArrayList<CollisionObject>();
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
-		collisionObjects = new ArrayList<CollisionObject>(5000);
+		collisionObjects = new ArrayList<CollisionObject>();
 		// createLevelFromText();
 		levelFromText(levelNum);
 	}
@@ -65,17 +67,16 @@ public class LevelComponent extends JComponent {
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
-		for (CollisionObject c : collisionObjects) {
-			if (!(c instanceof EnvironmentObject))
-				c.drawOn(g2);
-		}
+		
 		for (CollisionObject c : noConnectsAt) {
 			c.drawOn(g2);
 		}
 		for (CollisionObject c : hasConnectsAt) {
 			c.drawOn(g2);
 		}
-
+		for (CollisionObject c : otherObject) {
+			c.drawOn(g2);
+		}
 		m.drawOn(g2);
 		if (pt != null) {
 			pt.drawOn(g2);
@@ -233,82 +234,99 @@ public class LevelComponent extends JComponent {
 	 */
 	public void createLevel() {
 		collisionObjects = new ArrayList<CollisionObject>();
-		m.setCollisionObjects(collisionObjects);
-		String[] objectsData;
-		for (int i = 0; i < 16; i++) {
-			objectsData = levelData[i].split(" ");
-			for (int j = 0; j < objectsData.length; j++) {
-				char firstChar = objectsData[j].charAt(0);
-				char secondChar = objectsData[j].charAt(1);
-				switch (firstChar) {
-				case ('-'):
-					break;
-				case ('['):
-					break;
-				case ('>'):
-					collisionObjects.add(new RightSpike(j * 48, i * 48, (secondChar - '0') * 48, m));
-					break;
-				case ('<'):
-					collisionObjects.add(new LeftSpike(j * 48 + 30, i * 48 - 6, (secondChar - '0') * 48, m));
-					break;
-				case ('^'):
-					collisionObjects.add(new UpSpike(j * 48, i * 48 + 30, (secondChar - '0') * 48, m));
-					break;
-				case ('v'):
-					collisionObjects.add(new DownSpike(j * 48, i * 48 + 0, (secondChar - '0') * 48, m));
-					break;
-				case ('p'):
-					collisionObjects.add(new Spring(j * 48, i * 48, m));
-					break;
-				case ('d'):
-					// add disappearing blocks
-					break;
-				case ('r'):
-					// add balloons (r for refresh dash)
-					break;
-				case ('k'):
-					// add key
-					break;
-				case ('c'):
-					// add chest
-					break;
-				case ('b'):
-					if (!strawberryAlreadyCollected)
-						collisionObjects.add(new BreakableBlock(j * 48, i * 48, 2 * 48, 2 * 48, m));
-					break;
-				case ('s'):
-					if (!strawberryAlreadyCollected) {
-						strawberry = new Strawberry(j * 48 + 24, i * 48 + 18, m);
-						collisionObjects.add(strawberry);
-					}
-					break;
-				case ('w'):
-					if (!strawberryAlreadyCollected) {
-						strawberry = new WingedStrawberry(j * 48 + 24, i * 48 + 18, m);
-						collisionObjects.add(strawberry);
-					}
-					break;
-				case ('m'):
-					madX = j * 48;
-					madY = i * 48;
-					break;
-				default:
-					if (connectionDataAt(i, j).get(0).equals(".")) {
-						noConnectsAt.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
+		if (levelData != null);
+		{
+			m.setCollisionObjects(collisionObjects);
+			String[] objectsData;
+			for (int i = 0; i < 16; i++) {
+				objectsData = levelData[i].split(" ");
+				for (int j = 0; j < objectsData.length; j++) {
+					char firstChar = objectsData[j].charAt(0);
+					char secondChar = objectsData[j].charAt(1);
+					switch (firstChar) {
+					case ('-'):
+						break;
+					case ('['):
+						break;
+					case ('>'):
+						RightSpike r = new RightSpike(j * 48, i * 48, (secondChar - '0') * 48, m);
+						otherObject.add(r);
+						collisionObjects.add(r);
+						break;
+					case ('<'):
+						LeftSpike l = new LeftSpike(j * 48 + 30, i * 48 - 6, (secondChar - '0') * 48, m);
+						collisionObjects.add(l);
+						otherObject.add(l);
+						break;
+					case ('^'):
+						UpSpike u = new UpSpike(j * 48, i * 48 + 30, (secondChar - '0') * 48, m);
+						collisionObjects.add(u);
+						otherObject.add(u);
+						break;
+					case ('v'):
+						DownSpike d = new DownSpike(j * 48, i * 48 + 0, (secondChar - '0') * 48, m);
+						collisionObjects.add(d);
+						otherObject.add(d);
+						break;
+					case ('p'):
+						Spring s = new Spring(j * 48, i * 48, m);
+						collisionObjects.add(s);
+						otherObject.add(s);
+						break;
+					case ('d'):
+						// add disappearing blocks
+						break;
+					case ('r'):
+						// add balloons (r for refresh dash)
+						break;
+					case ('k'):
+						// add key
+						break;
+					case ('c'):
+						// add chest
+						break;
+					case ('b'):
+						if (!strawberryAlreadyCollected)
+						{
+							BreakableBlock b = new BreakableBlock(j * 48, i * 48, 2 * 48, 2 * 48, m);
+							collisionObjects.add(b);
+							otherObject.add(b);
+						}
+						break;
+					case ('s'):
+						if (!strawberryAlreadyCollected) {
+							strawberry = new Strawberry(j * 48 + 24, i * 48 + 18, m);
+							collisionObjects.add(strawberry);
+						}
+						break;
+					case ('w'):
+						if (!strawberryAlreadyCollected) {
+							strawberry = new WingedStrawberry(j * 48 + 24, i * 48 + 18, m);
+							collisionObjects.add(strawberry);
+						}
+						break;
+					case ('m'):
+						madX = j * 48;
+						madY = i * 48;
+						break;
+					default:
+						if (connectionDataAt(i, j).get(0).equals(".")) {
+							noConnectsAt.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
+									(secondChar - '0') * 48, connectionDataAt(i, j)));
+						} else
+							hasConnectsAt.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
+									(secondChar - '0') * 48, connectionDataAt(i, j)));
+						collisionObjects.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
 								(secondChar - '0') * 48, connectionDataAt(i, j)));
-					} else
-						hasConnectsAt.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
-								(secondChar - '0') * 48, connectionDataAt(i, j)));
-					collisionObjects.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
-							(secondChar - '0') * 48, connectionDataAt(i, j)));
+					}
+					//Creates offscreen objects
+					collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48)); //Invisible wall on left side
+					collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48)); //Invisible wall on right side
+					collisionObjects.add(new LevelFinishZone(-48, -48-6, 20*48, 48, m)); //Finish zone on top side
+					collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m)); //Death zone on bottom side
+					m.setCanCollide(true);
+					
 				}
-				//Creates offscreen objects
-				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48)); //Invisible wall on left side
-				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48)); //Invisible wall on right side
-				collisionObjects.add(new LevelFinishZone(-48, -48-6, 20*48, 48, m)); //Finish zone on top side
-				collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m)); //Death zone on bottom side
-				m.setCanCollide(true);
-				
 			}
 		}
 	}
@@ -345,7 +363,8 @@ public class LevelComponent extends JComponent {
 				index++;
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("The file for level " + levelNum + " could not be found");
+			System.err.println("The file for level " + levelNum + " could not be found");
+			return null;
 		}
 		return output;
 	}
