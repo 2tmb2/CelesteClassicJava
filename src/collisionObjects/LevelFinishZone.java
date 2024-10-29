@@ -1,4 +1,6 @@
-package mainApp;
+package collisionObjects;
+
+import mainApp.Madeline;
 
 /**
  * Class: LevelFinishZone Purpose: Create a collision trigger for finishing the

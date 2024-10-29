@@ -1,7 +1,9 @@
-package mainApp;
+package collectables;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import mainApp.Madeline;
 
 public class WingedStrawberry extends Strawberry {
 

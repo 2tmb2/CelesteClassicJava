@@ -1,4 +1,4 @@
-package mainApp;
+package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

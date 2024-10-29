@@ -1,7 +1,9 @@
-package mainApp;
+package spikes;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import mainApp.Madeline;
 
 public class UpSpike extends Spike {
 

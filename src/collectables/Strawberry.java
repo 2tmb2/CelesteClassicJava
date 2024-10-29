@@ -1,7 +1,10 @@
-package mainApp;
+package collectables;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import collisionObjects.CollisionObject;
+import mainApp.Madeline;
 
 public class Strawberry extends CollisionObject {
 
