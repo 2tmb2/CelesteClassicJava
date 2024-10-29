@@ -102,19 +102,12 @@ public class LevelComponent extends JComponent {
 	public void moveMadelineLeft() {
 		m.decreaseX();
 	}
-
+	
 	/**
-	 * Updates Madeline's vertical position based on her current y velocity
+	 * Updates Madeline's position based on her current velocity
 	 */
-	public void moveMadelineVertically() {
-		m.setVerticalPosition();
-	}
-
-	/**
-	 * Updates Madeline's horizontal position based on her current x velocity
-	 */
-	public void moveMadelineHorizontally() {
-		m.setHorizontalPosition();
+	public void moveMadeline() {
+		m.setPosition();
 	}
 
 	/**

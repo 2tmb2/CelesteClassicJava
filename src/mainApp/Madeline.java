@@ -23,6 +23,8 @@ public class Madeline {
 	private LevelComponent lvl;
 	private boolean isNextLevel;
 	private boolean canContinue;
+	private boolean isCollidingWall;
+	private CollisionObject currentlyCollidingHorizontalObject;
 
 	private Color hairColor;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
@@ -32,6 +34,8 @@ public class Madeline {
 	private static final Color TORSO_COLOR = new Color(0, 135, 81);
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
 	private static final Color FACE_COLOR = new Color(255, 204, 170);
+	private static final int X_COLLISION_OFFSET = 6;
+	private static final int Y_COLLISION_OFFSET = 18;
 
 	/**
 	 * Creates an empty Madeline object
@@ -90,6 +94,7 @@ public class Madeline {
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
 		canContinue = true;
+		currentlyCollidingHorizontalObject = null;
 	}
 
 	public void setCanCollide(boolean canCollide) {
@@ -132,7 +137,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (xVel <= 5 && !wallJump) {
+		if (xVel <= 5 && !wallJump && !isDashing) {
 			xVel += 1.25;
 		}
 	}
@@ -141,10 +146,24 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (xVel >= -5 && !wallJump) {
+		if (xVel >= -5 && !wallJump && !isDashing) {
 			xVel -= 1.25;
 		}
 
+	}
+	
+	/**
+	 * Updates Madelin'es position based on her current velocity, position, and any objects she is colliding with
+	 */
+	public void setPosition() {
+		isCollidingWall = isCollidingWithWall();
+		if (!isCollidingWall || Math.abs(xVel) < 0.25) {
+			yVelMax = 6;
+		} else {
+			yVelMax = 2;
+		}
+		setHorizontalPosition();
+		setVerticalPosition();
 	}
 
 	/**
@@ -155,14 +174,25 @@ public class Madeline {
 		if (Math.abs(xVel) <= 2.5) {
 			wallJump = false;
 		}
-		if (!isCollidingWithWall()) {
-			yVelMax = 6;
+		
+		//If Madeline is currently colliding horizontally and moving into that block, set her x position exactly .. pixels away
+		if (!isCollidingWall) currentlyCollidingHorizontalObject = null;
+		if (currentlyCollidingHorizontalObject != null) {
+			if (xVel > 0 && currentlyCollidingHorizontalObject.getX() > xPos) {
+				xPos = currentlyCollidingHorizontalObject.getX() - 42;
+				xVel = .1;
+			} else if (xVel < 0 && currentlyCollidingHorizontalObject.getX() < xPos) {
+				xPos = currentlyCollidingHorizontalObject.getX() + currentlyCollidingHorizontalObject.getWidth() - 6;
+				xVel = -0.1;
+			}
+			return;
+		}
+		if (!isCollidingWall) {
 			xPos += (int) xVel;
 		} else {
-			while (isCollidingWithWall() && Math.abs(xVel) != 0) {
+			while (isCollidingWall && Math.abs(xVel) != 0) {
 				xVel += -.5 * facingRight;
 			}
-			yVelMax = 2;
 		}
 		if (xVel > .25) {
 			xVel -= .5;
@@ -183,11 +213,9 @@ public class Madeline {
 				yVel = 0;
 			}
 			yPos += (int) yVel;
-		} else {
-			yVel = 0;
-		}
+		} 
 		if (isCollidingWithFloor()) {
-			yVel = 0;
+			yVel = 0.0;
 		} else if (yVel < yVelMax) {
 			yVel += 0.5;
 		} else if (yVel > yVelMax) {
@@ -221,11 +249,17 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel, yPos + (int) yVel, facingRight)) {
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
 				if (isNextLevel) {
 					i = collisionObjects.size() + 2;
 					return false;
 				}
+				try {
+					currentlyCollidingHorizontalObject = collisionObjects.get(i);
+				} catch (Exception e) {
+					
+				}
+				
 				return true;
 			}
 		}
@@ -239,7 +273,23 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingFloor(xPos + (int) xVel, yPos + (int) yVel)) {
+			if (collisionObjects.get(i).isCollidingFloor(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks if there is a floor just below Madeline
+	 * Different from Colliding because it does not factor in Madeline's velocity
+	 * This is important because coyote time requires setting Madeline's y velocity to 0 while touching the floor which disables floor collision
+	 * This method can be used instead when a condition requires that Madeline is constantly touching a floor
+	 * @return true if there is a floor below, otherwise false
+	 */
+	public boolean isFloorBelow() {
+		for (int i = 0; i < collisionObjects.size(); i++) {
+			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET, yPos + 5 + Y_COLLISION_OFFSET)) {
 				return true;
 			}
 		}
@@ -253,7 +303,7 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithCeiling() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingCeiling(xPos + (int) xVel, yPos + (int) yVel)) {
+			if (collisionObjects.get(i).isCollidingCeiling(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				return true;
 			}
 		}
@@ -264,16 +314,16 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if (isCollidingWithFloor() && !jumpPressed) {
+		if (isFloorBelow() && !jumpPressed) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = -11.5;
 			jumpPressed = true;
-		} else if (isCollidingWithWall() && !jumpPressed && isCollidingWithFloor()) {
+		} else if (isCollidingWithWall() && !jumpPressed && !isFloorBelow()) {
 			jumpPressed = true;
 			wallJump = true;
 			xVel = -facingRight * 11;
 			yVel = -9.5;
-		} else if (isCollidingWithWall() && !jumpPressed && !isCollidingWithFloor() && !wallJump) {
+		} else if (isCollidingWithWall() && !jumpPressed && !isFloorBelow() && !wallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			xVel = -facingRight * 11;
@@ -361,13 +411,11 @@ public class Madeline {
 			tx.translate(-48, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
-			g2.translate(-xPos, yPos);
+			g2.translate(-roundPos(xPos), roundPos(yPos));
 		} else {
 			// translates g2 to make 0, 0 be the top left of Madeline's head
-			g2.translate(xPos, yPos);
+			g2.translate(roundPos(xPos), roundPos(yPos));
 		}
-
-		g2.drawRect(0, 0, 48, 48);
 		// drawing hair
 		g2.setColor(hairColor);
 		g2.fillRect(6, 0, 36, 6);
@@ -427,6 +475,14 @@ public class Madeline {
 		g2.fillRect(18, 18, 6, 6);
 		g2.fillRect(36, 18, 6, 6);
 
+	}
+	
+	public static int roundPos(int toRound) {
+		if (toRound % 6 <= 2) {
+			return (toRound - (toRound % 6));
+		} else {
+			return (toRound + (6 - (toRound % 6)));
+		}
 	}
 
 	/**

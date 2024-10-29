@@ -93,7 +93,6 @@ public class EnvironmentObject extends CollisionObject {
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.translate(getX(), getY());
-
 		int leftSideModifier = 0;
 		int rightSideModifier = 0;
 		int bottomModifier = 0;
@@ -166,7 +165,6 @@ public class EnvironmentObject extends CollisionObject {
 			g2.fillRect(getWidth() - 6, getHeight() - 6, 6, 6);
 			g2.setColor(OUTER_COLOR);
 		}
-
 		// add detail to the object
 		if (getWidth() > 48 && getHeight() > 48) {
 			largeObjectDetail(g2);

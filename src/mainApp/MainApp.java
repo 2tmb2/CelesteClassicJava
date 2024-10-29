@@ -179,8 +179,7 @@ public class MainApp implements KeyListener{
 		}
 		checkJump();
     	checkDash();
-    	lvl.moveMadelineVertically();
-    	lvl.moveMadelineHorizontally();
+    	lvl.moveMadeline();
     }
     
     private void checkJump()

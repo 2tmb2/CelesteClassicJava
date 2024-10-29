@@ -12,8 +12,8 @@ public class CollisionObject {
 	private int y;
 	private int width;
 	private int height;
-	private static final int MADELINE_WIDTH = 48;
-	private static final int MADELINE_HEIGHT = 42;
+	private static final int MADELINE_WIDTH = 36;
+	private static final int MADELINE_HEIGHT = 24;
 
 	public CollisionObject(int x, int y, int width, int height) {
 		this.x = x;
@@ -37,7 +37,7 @@ public class CollisionObject {
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (madelineX + MADELINE_WIDTH - 5 > x && madelineX + 5 < x + width) {
 			if (madelineY + MADELINE_HEIGHT > y) {
-				if (madelineY + MADELINE_HEIGHT - y <= height) {
+				if (madelineY + MADELINE_HEIGHT <=  y + height) {
 					return true;
 				}
 			}
