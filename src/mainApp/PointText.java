@@ -39,14 +39,7 @@ public class PointText {
 		g2.translate(x - 36, y - translateBy - 20);
 		g2.setColor(currentColor);
 
-		// draws a 1
-		BlockyText.draw1(g2);
-
-		// draws 3 0's 24 pixels apart
-		for (int i = 0; i < 3; i++) {
-			g2.translate(24, 0);
-			BlockyText.draw0(g2);
-		}
+		BlockyText.drawText(g2, "1000");
 	}
 	
 	

@@ -166,18 +166,8 @@ public class MainApp implements KeyListener {
 	 */
 	public void nextLevel() {
 		strawberryAlreadyCollected = false;
-		// ===========================================
-		// WIP: Skips over levels that aren't finished
-		// ===========================================
 		if (currentLevel < 30) {
 			currentLevel++;
-			if (currentLevel == 7 || currentLevel == 11 || currentLevel == 18 || currentLevel == 20
-					|| currentLevel == 22 || currentLevel == 24) {
-				if (currentLevel == 11) {
-					currentLevel++;
-				}
-				currentLevel++;
-			}
 		}
 		levelRefresh();
 	}
