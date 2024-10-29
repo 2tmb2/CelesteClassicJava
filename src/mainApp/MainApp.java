@@ -26,6 +26,7 @@ public class MainApp implements KeyListener {
 
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
+	private ErrorDisplay err;
 	private JFrame frame;
 	private JFrame editor;
 	private int frameSize = 768;
@@ -136,9 +137,13 @@ public class MainApp implements KeyListener {
 		checkPressedKeys = new HashSet<>();
 
 		// resets the level to currentLevel
+			
 		frame.remove(lvl);
 		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
-		frame.add(lvl);
+		if (err == null)
+		{
+			frame.add(lvl);
+		}
 		frame.setVisible(true);
 
 		// starts a 1/4 second timer that, once completed, allows Madeline to move
@@ -190,6 +195,18 @@ public class MainApp implements KeyListener {
     {
     	strawberryAlreadyCollected = true;
     	strawberryCount++;
+    }
+    
+    /**
+     * Displays an error on the screen
+     * @param error
+     */
+    public void displayError(String error)
+    {
+    	err = new ErrorDisplay(error);
+    	frame.add(err);
+    	frame.setVisible(true);
+    	frame.repaint();
     }
     
     /**
@@ -262,11 +279,23 @@ public class MainApp implements KeyListener {
 			
 			// 80 is p
 			if (pressedKeys.contains(80)) {
+				if (err != null)
+				{
+					frame.remove(err);
+					err = null;
+				}
 				nextLevel();
 				canMoveLevels = false;
+				
+				
 			}
 			// 79 is o
 			else if (pressedKeys.contains(79)) {
+				if (err != null)
+				{
+					frame.remove(err);
+					err = null;
+				}
 				previousLevel();
 				canMoveLevels = false;
 			}

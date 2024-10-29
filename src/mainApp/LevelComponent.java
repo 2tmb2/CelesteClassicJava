@@ -334,6 +334,8 @@ public class LevelComponent extends JComponent {
 		}
 		catch (ImproperlyFormattedLevelException e) {
 			System.out.println(e.getMessage());
+			main.displayError(e.getMessage());
+			
 		}
 	}
 	
@@ -379,10 +381,10 @@ public class LevelComponent extends JComponent {
 			}
 			return output;
 		} catch (FileNotFoundException e) {
-			System.out.println("The file for level " + levelNum + " could not be found");
+			main.displayError("The file for level " + levelNum + " could not be found");
 			return null;
 		} catch (ImproperlyFormattedLevelException e) {
-			System.out.println(e.getMessage());
+			main.displayError(e.getMessage());
 			return null;
 		}
 		
