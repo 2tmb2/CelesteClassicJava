@@ -8,12 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Timer;
-
 import javax.swing.JFrame;
 
 /**
@@ -76,7 +74,7 @@ public class MainApp implements KeyListener{
 		
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				levelEditor.doMouseClick(e.getX(), e.getY());
 			}
 		});
