@@ -167,19 +167,22 @@ public class MainApp implements KeyListener{
      */
     private void updateMadelinePosition()
     {
+    	Boolean hasMoved = false;
     	// 68 is d, 39 is right arrow
     	if (pressedKeys.contains(68) || pressedKeys.contains(39))
 		{
 			lvl.moveMadelineRight();
+			hasMoved = true;
 		}
     	// 65 is s, 37 is left arrow
 		if (pressedKeys.contains(65) || pressedKeys.contains(37))
 		{
 			lvl.moveMadelineLeft();
+			hasMoved = true;
 		}
 		checkJump();
     	checkDash();
-    	lvl.moveMadeline();
+    	lvl.moveMadeline(hasMoved);
     }
     
     private void checkJump()

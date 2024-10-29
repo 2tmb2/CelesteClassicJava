@@ -154,23 +154,25 @@ public class Madeline {
 	
 	/**
 	 * Updates Madelin'es position based on her current velocity, position, and any objects she is colliding with
+	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
-	public void setPosition() {
+	public void setPosition(boolean hasMoved) {
 		isCollidingWall = isCollidingWithWall();
 		if (!isCollidingWall || Math.abs(xVel) < 0.25) {
 			yVelMax = 6;
 		} else {
 			yVelMax = 2;
 		}
-		setHorizontalPosition();
+		setHorizontalPosition(hasMoved);
 		setVerticalPosition();
 	}
 
 	/**
 	 * Updates Madeline's horizontal position based on her current velocity,
 	 * position, and any objects she is colliding with
+	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
-	public void setHorizontalPosition() {
+	public void setHorizontalPosition(boolean hasMoved) {
 		if (Math.abs(xVel) <= 2.5) {
 			wallJump = false;
 		}
@@ -187,6 +189,7 @@ public class Madeline {
 			}
 			return;
 		}
+		
 		if (!isCollidingWall) {
 			xPos += (int) xVel;
 		} else {
@@ -195,11 +198,20 @@ public class Madeline {
 			}
 		}
 		if (xVel > .25) {
-			xVel -= .5;
+			if (!hasMoved) {
+				xVel = Math.max(xVel - 1.25, 0);
+			} else {
+				xVel -= .5;
+			}
 			facingRight = 1;
 		} else if (xVel < -.25) {
+			if (!hasMoved) {
+				xVel = Math.min(xVel + 1.25, 0);
+			} else {
+				xVel += .5;
+			}
 			facingRight = -1;
-			xVel += .5;
+			
 		}
 	}
 

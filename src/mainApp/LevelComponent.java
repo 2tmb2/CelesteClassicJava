@@ -105,9 +105,10 @@ public class LevelComponent extends JComponent {
 	
 	/**
 	 * Updates Madeline's position based on her current velocity
+	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
-	public void moveMadeline() {
-		m.setPosition();
+	public void moveMadeline(boolean hasMoved) {
+		m.setPosition(hasMoved);
 	}
 
 	/**
