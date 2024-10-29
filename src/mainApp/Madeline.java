@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
+import collisionObjects.CollisionObject;
+
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
 	private int xPos;

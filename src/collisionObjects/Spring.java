@@ -1,10 +1,12 @@
-package mainApp;
+package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+
+import mainApp.Madeline;
 
 public class Spring extends CollisionObject {
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);

@@ -9,6 +9,18 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
+import collectables.Strawberry;
+import collectables.WingedStrawberry;
+import collisionObjects.BreakableBlock;
+import collisionObjects.CollisionObject;
+import collisionObjects.EnvironmentObject;
+import collisionObjects.LevelFinishZone;
+import collisionObjects.Spring;
+import spikes.DownSpike;
+import spikes.LeftSpike;
+import spikes.RightSpike;
+import spikes.UpSpike;
+
 /**
  * Class: LevelComponent
  */

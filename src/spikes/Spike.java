@@ -1,6 +1,9 @@
-package mainApp;
+package spikes;
 
 import java.awt.Graphics2D;
+
+import collisionObjects.CollisionObject;
+import mainApp.Madeline;
 
 /**
  * Class: Spike
