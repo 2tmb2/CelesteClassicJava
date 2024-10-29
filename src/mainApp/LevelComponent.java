@@ -66,7 +66,7 @@ public class LevelComponent extends JComponent {
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
-		
+
 		for (CollisionObject c : noConnectsAt) {
 			c.drawOn(g2);
 		}
@@ -113,9 +113,10 @@ public class LevelComponent extends JComponent {
 	public void moveMadelineLeft() {
 		m.decreaseX();
 	}
-	
+
 	/**
 	 * Updates Madeline's position based on her current velocity
+	 * 
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void moveMadeline(boolean hasMoved) {
@@ -200,10 +201,11 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
-	 * Head method for loading a level from a file.
-	 * creates a new empty Madeline for the next level (to pass to objects in the level).
-	 * Sets proper dashNum based on level number
-	 * Sets position of Madeline based on level data and gives her the processed list of collision objects
+	 * Head method for loading a level from a file. creates a new empty Madeline for
+	 * the next level (to pass to objects in the level). Sets proper dashNum based
+	 * on level number Sets position of Madeline based on level data and gives her
+	 * the processed list of collision objects
+	 * 
 	 * @param levelNum the String representing the integer level number
 	 */
 	public void levelFromText(String levelNum) {
@@ -216,26 +218,23 @@ public class LevelComponent extends JComponent {
 		m.setXPos(madX);
 		m.setYPos(madY);
 	}
-	
+
 	/**
-	 * Parses the String array of level data for the information of obstacles and objects at each point 
-	 * '-' and '[' are characters representing empty data. There are two symbols for human readability
-	 * '>', '<', '<^', and 'v' are all spikes with corresponding direction
-	 * 'p' is spring
-	 * 'd' is disappearing block
-	 * 'r' is balloon
-	 * 'k' is key
-	 * 'c' is chest
-	 * 'b' is breakable block (always 2x2)
-	 * 's' is strawberry
-	 * 'w' is winged strawberry
-	 * 'm' is madeline's starting position
+	 * Parses the String array of level data for the information of obstacles and
+	 * objects at each point '-' and '[' are characters representing empty data.
+	 * There are two symbols for human readability '>', '<', '<^', and 'v' are all
+	 * spikes with corresponding direction 'p' is spring 'd' is disappearing block
+	 * 'r' is balloon 'k' is key 'c' is chest 'b' is breakable block (always 2x2)
+	 * 's' is strawberry 'w' is winged strawberry 'm' is madeline's starting
+	 * position
 	 */
 	public void createLevel() {
 		try {
 			collisionObjects = new ArrayList<CollisionObject>();
 			m.setCollisionObjects(collisionObjects);
-			if (levelData == null) {return;}
+			if (levelData == null) {
+				return;
+			}
 			String[] objectsData;
 			for (int i = 0; i < 16; i++) {
 				objectsData = levelData[i].split(" ");
@@ -285,8 +284,7 @@ public class LevelComponent extends JComponent {
 						// add chest
 						break;
 					case ('b'):
-						if (!strawberryAlreadyCollected)
-						{
+						if (!strawberryAlreadyCollected) {
 							BreakableBlock b = new BreakableBlock(j * 48, i * 48, 2 * 48, 2 * 48, m);
 							collisionObjects.add(b);
 							otherObject.add(b);
@@ -309,9 +307,9 @@ public class LevelComponent extends JComponent {
 						madY = i * 48;
 						break;
 					default:
-						if (firstChar - '0' < 0 || firstChar - '0' > 10)
-						{
-							throw new ImproperlyFormattedLevelException("Character " + firstChar + " was not recognized");
+						if (firstChar - '0' < 0 || firstChar - '0' > 10) {
+							throw new ImproperlyFormattedLevelException(
+									"Character " + firstChar + " was not recognized");
 						}
 						if (connectionDataAt(i, j).get(0).equals(".")) {
 							noConnectsAt.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
@@ -322,33 +320,35 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(new EnvironmentObject(j * 48, i * 48, (firstChar - '0') * 48,
 								(secondChar - '0') * 48, connectionDataAt(i, j)));
 					}
-					//Creates offscreen objects
-					collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48)); //Invisible wall on left side
-					collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48)); //Invisible wall on right side
-					collisionObjects.add(new LevelFinishZone(-48, -48-6, 20*48, 48, m)); //Finish zone on top side
-					collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m)); //Death zone on bottom side
+					// Creates offscreen objects
+					collisionObjects.add(new CollisionObject(-48, -48, 48, 20 * 48)); // Invisible wall on left side
+					collisionObjects.add(new CollisionObject(16 * 48, -48, 48, 20 * 48)); // Invisible wall on right
+																							// side
+					collisionObjects.add(new LevelFinishZone(-48, -48 - 6, 20 * 48, 48, m)); // Finish zone on top side
+					collisionObjects.add(new UpSpike(-48, 17 * 48, 20 * 48, m)); // Death zone on bottom side
 					m.setCanCollide(true);
-					
+
 				}
 			}
-		}
-		catch (ImproperlyFormattedLevelException e) {
+		} catch (ImproperlyFormattedLevelException e) {
 			System.out.println(e.getMessage());
 			main.displayError(e.getMessage());
-			
+
 		}
 	}
-	
+
 	/**
-	 * Obtains the connection data for a block from the identical position in the connection data map
+	 * Obtains the connection data for a block from the identical position in the
+	 * connection data map
 	 * 
-	 * @param vertical the vertical position of the block
+	 * @param vertical   the vertical position of the block
 	 * @param horizontal the horizontal position of the block
-	 * @return the ArrayList representing the (at most 2) sides a block can connect at
+	 * @return the ArrayList representing the (at most 2) sides a block can connect
+	 *         at
 	 */
 	public ArrayList<String> connectionDataAt(int vertical, int horizontal) {
 		char[] connData = new char[2];
-		String[] dataAtX = levelData[17 + vertical].split(" "); //17 is the offset of the second map from the first map
+		String[] dataAtX = levelData[17 + vertical].split(" "); // 17 is the offset of the second map from the first map
 		ArrayList<String> output = new ArrayList<String>();
 		connData[0] = dataAtX[horizontal].charAt(0);
 		connData[1] = dataAtX[horizontal].charAt(1);
@@ -356,9 +356,10 @@ public class LevelComponent extends JComponent {
 		output.add(Character.toString(connData[1]));
 		return output;
 	}
-	
+
 	/**
 	 * Reads in the level data as an array of Strings corresponding to line number
+	 * 
 	 * @param levelNum the String representing the integer level number
 	 * @return the String array (always length 33) representing the level
 	 */
@@ -368,16 +369,16 @@ public class LevelComponent extends JComponent {
 			int index = 0;
 			while (s1.hasNext()) {
 				String line = s1.nextLine();
-				if (line.length() != 47)
-				{
-					throw new ImproperlyFormattedLevelException("Incorrect line length. Expected length 47 but received length " + line.length());
+				if (line.length() != 47) {
+					throw new ImproperlyFormattedLevelException(
+							"Incorrect line length. Expected length 47 but received length " + line.length());
 				}
 				output[index] = line;
 				index++;
 			}
-			if (index != 33)
-			{
-				throw new ImproperlyFormattedLevelException("Incorrect number of lines. Expected 33 lines but received " + index + " lines");
+			if (index != 33) {
+				throw new ImproperlyFormattedLevelException(
+						"Incorrect number of lines. Expected 33 lines but received " + index + " lines");
 			}
 			return output;
 		} catch (FileNotFoundException e) {
@@ -387,7 +388,7 @@ public class LevelComponent extends JComponent {
 			main.displayError(e.getMessage());
 			return null;
 		}
-		
+
 	}
 
 }
