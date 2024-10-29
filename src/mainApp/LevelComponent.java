@@ -54,7 +54,6 @@ public class LevelComponent extends JComponent {
 		hasConnectsAt = new ArrayList<CollisionObject>();
 		noConnectsAt = new ArrayList<CollisionObject>();
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
-
 		collisionObjects = new ArrayList<CollisionObject>(5000);
 		// createLevelFromText();
 		levelFromText(levelNum);
@@ -306,9 +305,10 @@ public class LevelComponent extends JComponent {
 				//Creates offscreen objects
 				collisionObjects.add(new CollisionObject(-48, -48, 48, 20*48)); //Invisible wall on left side
 				collisionObjects.add(new CollisionObject(16*48, -48, 48, 20*48)); //Invisible wall on right side
-				collisionObjects.add(new LevelFinishZone(-48, -48-18, 20*48, 48, m)); //Finish zone on top side
+				collisionObjects.add(new LevelFinishZone(-48, -48-6, 20*48, 48, m)); //Finish zone on top side
 				collisionObjects.add(new UpSpike(-48, 17*48, 20*48, m)); //Death zone on bottom side
 				m.setCanCollide(true);
+				
 			}
 		}
 	}

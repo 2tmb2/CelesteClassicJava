@@ -2,8 +2,12 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+
+import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 
@@ -23,7 +27,6 @@ public class Madeline {
 	private boolean jumpPressed;
 	private boolean isDashing;
 	private LevelComponent lvl;
-	private boolean isNextLevel;
 	private boolean canContinue;
 	private boolean isCollidingWall;
 	private boolean isCollidingFloor;
@@ -49,7 +52,6 @@ public class Madeline {
 		this.yPos = 0;
 		this.collisionObjects = null;
 		this.numOfDashesTotal = 1;
-
 		xVel = 0;
 		yVel = 0;
 		yVelMax = 6;
@@ -62,7 +64,6 @@ public class Madeline {
 
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
-		isNextLevel = false;
 		canContinue = true;
 	}
 
@@ -154,9 +155,11 @@ public class Madeline {
 		}
 
 	}
-	
+
 	/**
-	 * Updates Madelin'es position based on her current velocity, position, and any objects she is colliding with
+	 * Updates Madelin'es position based on her current velocity, position, and any
+	 * objects she is colliding with
+	 * 
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setPosition(boolean hasMoved) {
@@ -174,28 +177,34 @@ public class Madeline {
 	/**
 	 * Updates Madeline's horizontal position based on her current velocity,
 	 * position, and any objects she is colliding with
+	 * 
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setHorizontalPosition(boolean hasMoved) {
-		//if (wallJump || isCollidingWall) {
-			if (Math.abs(xVel) <= 2.5) {
-				wallJump = false;
-			}
-		//}
-		
-		//If Madeline is currently colliding horizontally and moving into that block, set her x position exactly adjacent to the block
-		if (!isCollidingWall) currentlyCollidingHorizontalObject = null;
+		// if (wallJump || isCollidingWall) {
+		if (Math.abs(xVel) <= 2.5) {
+			wallJump = false;
+		}
+		// }
+
+		// If Madeline is currently colliding horizontally and moving into that block,
+		// set her x position exactly adjacent to the block
+		if (!isCollidingWall)
+			currentlyCollidingHorizontalObject = null;
 		if (currentlyCollidingHorizontalObject != null) {
-			if (xVel > 0 && currentlyCollidingHorizontalObject.getX() > xPos && (Math.abs(xPos + 42 - currentlyCollidingHorizontalObject.getX()) < 10)) {
+			if (xVel > 0 && currentlyCollidingHorizontalObject.getX() > xPos
+					&& (Math.abs(xPos + 42 - currentlyCollidingHorizontalObject.getX()) < 10)) {
 				xPos = currentlyCollidingHorizontalObject.getX() - 42;
 				xVel = .1;
-			} else if (xVel < 0 && currentlyCollidingHorizontalObject.getX() < xPos && (Math.abs(xPos - (currentlyCollidingHorizontalObject.getX() + currentlyCollidingHorizontalObject.getWidth())) < 10)) {
+			} else if (xVel < 0 && currentlyCollidingHorizontalObject.getX() < xPos
+					&& (Math.abs(xPos - (currentlyCollidingHorizontalObject.getX()
+							+ currentlyCollidingHorizontalObject.getWidth())) < 10)) {
 				xPos = currentlyCollidingHorizontalObject.getX() + currentlyCollidingHorizontalObject.getWidth() - 6;
 				xVel = -0.1;
 			}
 			return;
 		}
-		
+
 		if (!isCollidingWall) {
 			xPos += (int) xVel;
 		} else {
@@ -217,7 +226,7 @@ public class Madeline {
 				xVel += .5;
 			}
 			facingRight = -1;
-			
+
 		}
 	}
 
@@ -231,7 +240,7 @@ public class Madeline {
 				yVel = 0;
 			}
 			yPos += (int) yVel;
-		} 
+		}
 		if (isCollidingFloor) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax) {
@@ -267,50 +276,38 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
-				if (isNextLevel) {
-					i = collisionObjects.size() + 2;
-					return false;
-				}
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET,
+					yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
 				try {
 					currentlyCollidingHorizontalObject = collisionObjects.get(i);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public int isTouchingWall() {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
 			if (isTouchingWallRight(object)) {
-				if (isNextLevel) {
-					i = collisionObjects.size() + 2;
-					return 0;
-				}
 				return 1;
 			}
 			if (isTouchingWallLeft(object)) {
-				if (isNextLevel) {
-					i = collisionObjects.size() + 2;
-					return 0;
-				}
-				
 				return -1;
 			}
 		}
 		return 0;
 	}
-	
+
 	public boolean isTouchingWallRight(CollisionObject object) {
 		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET + 2, yPos + Y_COLLISION_OFFSET, facingRight));
 	}
-	
+
 	public boolean isTouchingWallLeft(CollisionObject object) {
 		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET - 2, yPos + Y_COLLISION_OFFSET, facingRight));
 	}
@@ -322,18 +319,21 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingFloor(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET)) {
+			if (collisionObjects.get(i).isCollidingFloor(xPos + (int) xVel + X_COLLISION_OFFSET,
+					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Checks if there is a floor just below Madeline
-	 * Different from Colliding because it does not factor in Madeline's velocity
-	 * This is important because coyote time requires setting Madeline's y velocity to 0 while touching the floor which disables floor collision
-	 * This method can be used instead when a condition requires that Madeline is constantly touching a floor
+	 * Checks if there is a floor just below Madeline Different from Colliding
+	 * because it does not factor in Madeline's velocity This is important because
+	 * coyote time requires setting Madeline's y velocity to 0 while touching the
+	 * floor which disables floor collision This method can be used instead when a
+	 * condition requires that Madeline is constantly touching a floor
+	 * 
 	 * @return true if there is a floor below, otherwise false
 	 */
 	public boolean isFloorBelow() {
@@ -352,7 +352,8 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithCeiling() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingCeiling(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET)) {
+			if (collisionObjects.get(i).isCollidingCeiling(xPos + (int) xVel + X_COLLISION_OFFSET,
+					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				return true;
 			}
 		}
@@ -504,7 +505,7 @@ public class Madeline {
 		// ======================================
 		// END WIP
 		// ======================================
-		
+
 		// drawing face
 		g2.setColor(FACE_COLOR);
 		g2.fillRect(18, 12, 24, 6);
@@ -525,7 +526,7 @@ public class Madeline {
 		g2.fillRect(36, 18, 6, 6);
 
 	}
-	
+
 	public static int roundPos(int toRound) {
 		if (toRound % 6 <= 2) {
 			return (toRound - (toRound % 6));
@@ -581,7 +582,6 @@ public class Madeline {
 	public void nextLevel() {
 		if (!canContinue)
 			return;
-		isNextLevel = true;
 		canContinue = false;
 		// collisionObjects = null;
 		lvl.nextLevel();
