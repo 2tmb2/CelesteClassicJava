@@ -24,6 +24,7 @@ public class Madeline {
 	private boolean isNextLevel;
 	private boolean canContinue;
 	private boolean isCollidingWall;
+	private boolean isCollidingFloor;
 	private CollisionObject currentlyCollidingHorizontalObject;
 
 	private Color hairColor;
@@ -158,6 +159,7 @@ public class Madeline {
 	 */
 	public void setPosition(boolean hasMoved) {
 		isCollidingWall = isCollidingWithWall();
+		isCollidingFloor = isCollidingWithFloor();
 		if (!isCollidingWall || Math.abs(xVel) < 0.25) {
 			yVelMax = 6;
 		} else {
@@ -173,17 +175,19 @@ public class Madeline {
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setHorizontalPosition(boolean hasMoved) {
-		if (Math.abs(xVel) <= 2.5) {
-			wallJump = false;
-		}
+		//if (wallJump || isCollidingWall) {
+			if (Math.abs(xVel) <= 2.5) {
+				wallJump = false;
+			}
+		//}
 		
-		//If Madeline is currently colliding horizontally and moving into that block, set her x position exactly .. pixels away
+		//If Madeline is currently colliding horizontally and moving into that block, set her x position exactly adjacent to the block
 		if (!isCollidingWall) currentlyCollidingHorizontalObject = null;
 		if (currentlyCollidingHorizontalObject != null) {
-			if (xVel > 0 && currentlyCollidingHorizontalObject.getX() > xPos) {
+			if (xVel > 0 && currentlyCollidingHorizontalObject.getX() > xPos && (Math.abs(xPos + 42 - currentlyCollidingHorizontalObject.getX()) < 10)) {
 				xPos = currentlyCollidingHorizontalObject.getX() - 42;
 				xVel = .1;
-			} else if (xVel < 0 && currentlyCollidingHorizontalObject.getX() < xPos) {
+			} else if (xVel < 0 && currentlyCollidingHorizontalObject.getX() < xPos && (Math.abs(xPos - (currentlyCollidingHorizontalObject.getX() + currentlyCollidingHorizontalObject.getWidth())) < 10)) {
 				xPos = currentlyCollidingHorizontalObject.getX() + currentlyCollidingHorizontalObject.getWidth() - 6;
 				xVel = -0.1;
 			}
@@ -198,14 +202,14 @@ public class Madeline {
 			}
 		}
 		if (xVel > .25) {
-			if (!hasMoved) {
+			if (!hasMoved && !wallJump) {
 				xVel = Math.max(xVel - 1.25, 0);
 			} else {
 				xVel -= .5;
 			}
 			facingRight = 1;
 		} else if (xVel < -.25) {
-			if (!hasMoved) {
+			if (!hasMoved && !wallJump) {
 				xVel = Math.min(xVel + 1.25, 0);
 			} else {
 				xVel += .5;
@@ -220,13 +224,13 @@ public class Madeline {
 	 * and any objects she is colliding with
 	 */
 	public void setVerticalPosition() {
-		if (!isCollidingWithFloor() && !isDashingHorizontally) {
+		if (!isCollidingFloor && !isDashingHorizontally) {
 			if (isCollidingWithCeiling() && yVel < 0) {
 				yVel = 0;
 			}
 			yPos += (int) yVel;
 		} 
-		if (isCollidingWithFloor()) {
+		if (isCollidingFloor) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax) {
 			yVel += 0.5;
@@ -269,13 +273,44 @@ public class Madeline {
 				try {
 					currentlyCollidingHorizontalObject = collisionObjects.get(i);
 				} catch (Exception e) {
-					
+					e.printStackTrace();
 				}
 				
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public int isTouchingWall() {
+		CollisionObject object;
+		for (int i = 0; i < collisionObjects.size(); i++) {
+			object = collisionObjects.get(i);
+			if (isTouchingWallRight(object)) {
+				if (isNextLevel) {
+					i = collisionObjects.size() + 2;
+					return 0;
+				}
+				return 1;
+			}
+			if (isTouchingWallLeft(object)) {
+				if (isNextLevel) {
+					i = collisionObjects.size() + 2;
+					return 0;
+				}
+				
+				return -1;
+			}
+		}
+		return 0;
+	}
+	
+	public boolean isTouchingWallRight(CollisionObject object) {
+		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET + 2, yPos + Y_COLLISION_OFFSET, facingRight));
+	}
+	
+	public boolean isTouchingWallLeft(CollisionObject object) {
+		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET - 2, yPos + Y_COLLISION_OFFSET, facingRight));
 	}
 
 	/**

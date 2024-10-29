@@ -43,7 +43,7 @@ public class LevelComponent extends JComponent {
 		noConnectsAt = new ArrayList<CollisionObject>();
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
 
-		collisionObjects = new ArrayList<CollisionObject>();
+		collisionObjects = new ArrayList<CollisionObject>(5000);
 		// createLevelFromText();
 		levelFromText(levelNum);
 	}
