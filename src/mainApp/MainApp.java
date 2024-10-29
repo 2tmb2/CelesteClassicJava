@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +27,7 @@ public class MainApp implements KeyListener{
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
 	private JFrame frame;
+	private JFrame editor;
 	private int frameSize = 768;
 	private int strawberryCount;
 	private int deathCount;
@@ -31,11 +35,16 @@ public class MainApp implements KeyListener{
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
 	
+	private boolean inEditor;
+	private boolean canSwitchEditor;
+	
 	public MainApp() {
 		// sets default values
 		canMoveLevels = true;
+		canSwitchEditor = true;
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
+		inEditor = false;
 		deathCount = 0;
 		strawberryCount = 0;
 		frame = new JFrame();
@@ -52,15 +61,37 @@ public class MainApp implements KeyListener{
 		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
 		frame.add(lvl);
 		frame.setVisible(true);
+		
+		editor = new JFrame();
+		editor.addKeyListener(this);
+		editor.getContentPane().setPreferredSize(new Dimension(frameSize + 850, frameSize));
+		editor.setResizable(false);
+		editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		editor.getContentPane().setBackground(Color.BLACK);
+		editor.pack();
+		editor.setVisible(false);
+		
+		LevelEditor levelEditor = new LevelEditor();
+		editor.add(levelEditor);
+		
+		editor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				levelEditor.doMouseClick(e.getX(), e.getY());
+			}
+		});
 		// creates a timer that fires every 10 milliseconds. This acts as our main game loop.
 		Timer t = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				checkToggleEditor();
 				checkMoveLevels();
 				updateMadelinePosition();
 				lvl.updateAnimations();
+				
 				frame.repaint();
+				editor.repaint();
 			}
 		});
 		t.start();
@@ -108,6 +139,9 @@ public class MainApp implements KeyListener{
     	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
     	{
     		canMoveLevels = true;
+    	}
+    	if (e.getKeyCode() == 76) {
+    		canSwitchEditor = true;
     	}
         pressedKeys.remove(e.getKeyCode());
     }
@@ -255,6 +289,26 @@ public class MainApp implements KeyListener{
         		canMoveLevels = false;
         	}
     	}
+    }
+    
+    private void checkToggleEditor() {
+    	if (canSwitchEditor) {
+    		// 76 is l
+	    	if (pressedKeys.contains(76)) {
+	    		inEditor = !inEditor;
+	    		if (!inEditor) {
+		    		canSwitchEditor = false;
+		    		frame.setVisible(true);
+		    		editor.setVisible(false);
+		    	} else {
+		    		canSwitchEditor = false;
+		    		frame.setVisible(false);
+		    		editor.setVisible(true);
+		    	}
+	    		
+	    	}
+    	}
+    	
     }
 	/**
 	 * ensures: runs the application
