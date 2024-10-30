@@ -20,15 +20,17 @@ public class Balloon extends CollisionObject {
 	int originalY;
 	private Madeline m;
 	private boolean isCollected;
-	
+	private Timer animationTimer;
+	private Timer floatTimer;
+	private Timer respawnTimer;
 	public Balloon(int x, int y, Madeline m)
 	{
-		super(x,y,36,42);
+		super(x,y,42,48);
 		originalY = y;
 		currentFrame = 1;
 		isCollected = false;
 		this.m = m;
-		Timer animationTimer = new Timer(400, new ActionListener() {
+		animationTimer = new Timer(400, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -47,7 +49,7 @@ public class Balloon extends CollisionObject {
 		});
 		increment = 6;
 		animationTimer.start();
-		Timer floatTimer = new Timer(300,new ActionListener() {
+		floatTimer = new Timer(300,new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -150,14 +152,22 @@ public class Balloon extends CollisionObject {
 	{
 		m.resetDashes();
 		isCollected = true;
-		Timer t = new Timer(3000, new ActionListener() {
+		respawnTimer = new Timer(3000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				isCollected = false;
 			}
 		});
-		t.start();
+		respawnTimer.setRepeats(false);
+		respawnTimer.start();
+	}
+	
+	@Override
+	public void stopAllTimers()
+	{
+		animationTimer.stop();
+		floatTimer.stop();
 	}
 	
 }

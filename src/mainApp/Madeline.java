@@ -509,6 +509,13 @@ public class Madeline {
 		this.numOfDashesTotal = totalDashes;
 	}
 
+	public void stopAllTimers()
+	{
+		for (CollisionObject c : collisionObjects)
+		{
+			c.stopAllTimers();
+		}
+	}
 	/**
 	 * Increases Madeline's X velocity
 	 */

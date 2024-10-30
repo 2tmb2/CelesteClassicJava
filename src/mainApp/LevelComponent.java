@@ -101,6 +101,9 @@ public class LevelComponent extends JComponent {
 		main.nextLevel();
 	}
 
+	public void stopAllTimers() {
+		m.stopAllTimers();
+	}
 	/**
 	 * Increases Madeline's X velocity
 	 */
@@ -276,7 +279,7 @@ public class LevelComponent extends JComponent {
 						// add disappearing blocks
 						break;
 					case ('r'):
-						Balloon bal = new Balloon(400,400, m);
+						Balloon bal = new Balloon(j*48,i*48, m);
 						otherObject.add(bal);
 						collisionObjects.add(bal);
 						break;

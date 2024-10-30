@@ -136,6 +136,7 @@ public class MainApp implements KeyListener {
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
 	private void levelRefresh() {
+		lvl.stopAllTimers();
 		// ensures that a button held before the user can move still fires once they are
 		// able to move
 		checkPressedKeys = new HashSet<>();
