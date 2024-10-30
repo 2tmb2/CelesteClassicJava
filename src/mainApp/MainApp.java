@@ -47,6 +47,8 @@ public class MainApp implements KeyListener {
 	private boolean isInitialSpawn;
 	private boolean mouseDown = false;
 	
+	public static long time = 0;
+	
 	public MainApp() {
 		// sets default values
 		canMoveLevels = true;
@@ -103,6 +105,7 @@ public class MainApp implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				time = System.currentTimeMillis();
 				if (mouseDown && inEditor) {
 					levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 				}
@@ -117,7 +120,7 @@ public class MainApp implements KeyListener {
 		});
 		t.start();
 	}
-
+	
 	/**
 	 * Handles pressing a key
 	 */

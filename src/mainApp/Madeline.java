@@ -33,6 +33,7 @@ public class Madeline {
 	private boolean isCollidingFloor;
 	private boolean canDash;
 	private CollisionObject currentlyCollidingHorizontalObject;
+	private long timeSinceDash = 0;
 
 	private Color hairColor;
 	private int hairSwitchFrame;
@@ -152,7 +153,7 @@ public class Madeline {
 	 * and any objects she is colliding with
 	 */
 	public void setVerticalPosition() {
-		if (!isCollidingFloor && !isDashingHorizontally) {
+		if (!isCollidingFloor) {
 			if (isCollidingWithCeiling() && yVel < 0) {
 				yVel = 0;
 			}
@@ -160,27 +161,34 @@ public class Madeline {
 		}
 		if (isCollidingFloor) {
 			yVel = 0.0;
-		} else if (yVel < yVelMax) {
-			yVel += 0.5;
-		} else if (yVel > yVelMax) {
-			if (!isDashing) {
-				yVel = yVelMax;
-			} else {
-				yVel -= .5;
+		} else if (!isDashing) {
+			if (yVel < yVelMax) {
+				yVel += 0.5;
+			} else if (yVel > yVelMax) {
+				if (!isDashing) {
+					yVel = yVelMax;
+				} else {
+					yVel -= .5;
+				}
 			}
 		}
+			
 	}
 
 	/**
 	 * Checks if Madeline is currently in a dashing state
 	 */
 	public void checkIfDashing() {
-		if (Math.abs(xVel) <= 8 && yVel >= 0) {
+		if (MainApp.time > timeSinceDash + 200) {
+			isDashing = false;
+			isDashingHorizontally = false;
+		}
+		/*if (Math.abs(xVel) <= 8 && yVel >= 0) {
 			isDashingHorizontally = false;
 		}
 		if (Math.abs(xVel) <= 4 && Math.abs(yVel) <= yVelMax) {
 			isDashing = false;
-		}
+		}*/
 		if (isCollidingWithFloor()) {
 			numOfDashesRemaining = numOfDashesTotal;
 		}
@@ -313,6 +321,7 @@ public class Madeline {
 	public boolean dash(String dir) {
 		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash) {
 			isDashing = true;
+			timeSinceDash = MainApp.time;
 			numOfDashesRemaining--;
 			canDash = false;
 			int dashVel = 13;
@@ -568,7 +577,7 @@ public class Madeline {
 	}
 
 	public void springBounce() {
-		yVel = -15;
+		yVel -= -15;
 		numOfDashesRemaining = numOfDashesTotal;
 	}
 
