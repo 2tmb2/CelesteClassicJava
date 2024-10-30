@@ -34,6 +34,7 @@ public class LevelComponent extends JComponent {
 	private Strawberry strawberry;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
+	private LevelDisplayText ldt;
 	private String[] levelData;
 	private int madX;
 	private int madY;
@@ -84,6 +85,10 @@ public class LevelComponent extends JComponent {
 		if (strawberry != null) {
 			strawberry.drawOn(g2);
 		}
+		if (ldt != null)
+		{
+			ldt.drawOn(g2);
+		}
 
 	}
 
@@ -118,6 +123,21 @@ public class LevelComponent extends JComponent {
 		m.decreaseX();
 	}
 
+	public void addLevelDisplay(String text)
+	{
+		ldt = new LevelDisplayText(text);
+	}
+	
+	public void removeLevelDisplay()
+	{
+		ldt = null;
+	}
+	
+	public void resetMadelineVelocity()
+	{
+		m.resetVelocity();
+	}
+	
 	/**
 	 * Updates Madeline's position based on her current velocity
 	 * 

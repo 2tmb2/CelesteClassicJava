@@ -40,11 +40,13 @@ public class MainApp implements KeyListener {
 	
 	private boolean inEditor;
 	private boolean canSwitchEditor;
+	private boolean isInitialSpawn;
 	
 	public MainApp() {
 		// sets default values
 		canMoveLevels = true;
 		canSwitchEditor = true;
+		isInitialSpawn = true;
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
@@ -64,8 +66,7 @@ public class MainApp implements KeyListener {
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
 		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
-		frame.add(lvl);
-		frame.setVisible(true);
+		levelRefresh();
 		
 		editor = new JFrame();
 		editor.addKeyListener(this);
@@ -150,14 +151,24 @@ public class MainApp implements KeyListener {
 			frame.add(lvl);
 		}
 		frame.setVisible(true);
-
-		// starts a 1/4 second timer that, once completed, allows Madeline to move
-		Timer madelineMoveTimer = new Timer(250, new ActionListener() {
+		Timer madelineMoveTimer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				checkPressedKeys = pressedKeys;
+				lvl.removeLevelDisplay();
 			}
 		});
+		if (isInitialSpawn)
+		{
+			lvl.addLevelDisplay(currentLevel + "00 m");
+			madelineMoveTimer.setInitialDelay(1000);
+		}
+		else
+		{
+			madelineMoveTimer.setInitialDelay(400);
+		}
+		lvl.resetMadelineVelocity();
+		// starts a 1/4 second timer that, once completed, allows Madeline to move
 		madelineMoveTimer.setRepeats(false);
 		madelineMoveTimer.restart();
 	}
@@ -168,6 +179,7 @@ public class MainApp implements KeyListener {
 	 */
 	public void resetLevel() {
 		deathCount++;
+		isInitialSpawn = false;
 		levelRefresh();
 	}
 
@@ -175,6 +187,7 @@ public class MainApp implements KeyListener {
 	 * Moves to the next level sequentially
 	 */
 	public void nextLevel() {
+		isInitialSpawn = true;
 		strawberryAlreadyCollected = false;
 		if (currentLevel < 30) {
 			currentLevel++;
@@ -186,6 +199,7 @@ public class MainApp implements KeyListener {
 	 * Moves to the previous level
 	 */
 	public void previousLevel() {
+		isInitialSpawn = true;
 		strawberryAlreadyCollected = false;
 		if (currentLevel > 1) {
 			currentLevel--;
@@ -221,7 +235,7 @@ public class MainApp implements KeyListener {
     {
     	Boolean hasMoved = false;
     	// 68 is d, 39 is right arrow
-    	if (pressedKeys.contains(68) || pressedKeys.contains(39))
+    	if (checkPressedKeys.contains(68) || checkPressedKeys.contains(39))
 		{
 			lvl.moveMadelineRight();
 			hasMoved = true;
