@@ -9,16 +9,8 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
-import collectables.Balloon;
-import collectables.Strawberry;
-import collectables.WingedStrawberry;
-import collisionObjects.BreakableBlock;
-import collisionObjects.CollisionObject;
-import collisionObjects.DissappearingBlock;
-import collisionObjects.DissappearingSpring;
-import collisionObjects.EnvironmentObject;
-import collisionObjects.LevelFinishZone;
-import collisionObjects.Spring;
+import collectables.*;
+import collisionObjects.*;
 import spikes.DownSpike;
 import spikes.LeftSpike;
 import spikes.RightSpike;
@@ -162,8 +154,9 @@ public class LevelComponent extends JComponent {
 	 * @param dir
 	 */
 	public void dash(String dir) {
-		if (m.dash(dir) && strawberry instanceof WingedStrawberry) {
-			((WingedStrawberry) strawberry).flyAway();
+		if (m.dash(dir)) {
+			if (strawberry != null)
+				strawberry.flyAway();
 		}
 		// m.dash(dir);
 	}
@@ -207,10 +200,13 @@ public class LevelComponent extends JComponent {
 	 * text associated with that strawberry
 	 */
 	public void collectStrawberry() {
-		pt = new PointText(strawberry.getX(), strawberry.getY());
-		main.collectStrawberry();
-		collisionObjects.remove(strawberry);
-		strawberry = null;
+		if (strawberry != null)
+		{
+			pt = new PointText(strawberry.getX(), strawberry.getY());
+			main.collectStrawberry();
+			collisionObjects.remove(strawberry);
+			strawberry = null;
+		}
 	}
 
 	/**
@@ -426,9 +422,11 @@ public class LevelComponent extends JComponent {
 			return output;
 		} catch (FileNotFoundException e) {
 			main.displayError("The file for level " + levelNum + " could not be found");
+			e.printStackTrace();
 			return null;
 		} catch (ImproperlyFormattedLevelException e) {
 			main.displayError(e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 
