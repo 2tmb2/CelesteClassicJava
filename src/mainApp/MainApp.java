@@ -123,6 +123,10 @@ public class MainApp implements KeyListener {
     	if (e.getKeyCode() == 76) {
     		canSwitchEditor = true;
     	}
+    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
+    	{
+    		lvl.setMadelineCanDash(true);
+    	}
         pressedKeys.remove(e.getKeyCode());
     }
     

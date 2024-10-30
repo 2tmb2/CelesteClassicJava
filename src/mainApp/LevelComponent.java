@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
+import collectables.Balloon;
 import collectables.Strawberry;
 import collectables.WingedStrawberry;
 import collisionObjects.BreakableBlock;
@@ -275,7 +276,9 @@ public class LevelComponent extends JComponent {
 						// add disappearing blocks
 						break;
 					case ('r'):
-						// add balloons (r for refresh dash)
+						Balloon bal = new Balloon(400,400, m);
+						otherObject.add(bal);
+						collisionObjects.add(bal);
 						break;
 					case ('k'):
 						// add key
@@ -335,6 +338,11 @@ public class LevelComponent extends JComponent {
 			main.displayError(e.getMessage());
 
 		}
+	}
+	
+	public void setMadelineCanDash(boolean option)
+	{
+		m.setCanDash(option);
 	}
 
 	/**
