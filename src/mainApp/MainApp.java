@@ -2,6 +2,7 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -23,6 +24,9 @@ import javax.swing.JFrame;
  *         Restrictions: None
  */
 public class MainApp implements KeyListener {
+	
+	//The holiest magic number
+	public static final int PIXEL_DIM = 6;
 
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
@@ -40,6 +44,7 @@ public class MainApp implements KeyListener {
 	
 	private boolean inEditor;
 	private boolean canSwitchEditor;
+	private boolean mouseDown = false;
 	
 	public MainApp() {
 		// sets default values
@@ -82,7 +87,14 @@ public class MainApp implements KeyListener {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				mouseDown = true;
 				levelEditor.doMouseClick(e.getX(), e.getY());
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				mouseDown = false;
+				levelEditor.doMouseRelease(e.getX(), e.getY());
 			}
 		});
 		// creates a timer that fires every 10 milliseconds. This acts as our main game loop.
@@ -90,6 +102,9 @@ public class MainApp implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				if (mouseDown && inEditor) {
+					levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
+				}
 				checkToggleEditor();
 				checkMoveLevels();
 				updateMadelinePosition();
