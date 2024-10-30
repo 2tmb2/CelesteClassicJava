@@ -34,8 +34,8 @@ public class LevelEditor extends JComponent {
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	
-	private static final Color GREEN_COLOR = new Color(14,209, 69);
 	private static final Color BLUE_COLOR = new Color(63, 73, 204);
+	private static final Color GREEN_COLOR = new Color(14,209, 69);
 	private static final int COLLIDER_THICKNESS = 4;
 	private static final BasicStroke RECT_STROKE = new BasicStroke(COLLIDER_THICKNESS);
 	
