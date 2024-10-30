@@ -138,6 +138,10 @@ public class MainApp implements KeyListener {
     	if (e.getKeyCode() == 76) {
     		canSwitchEditor = true;
     	}
+    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
+    	{
+    		lvl.setMadelineCanDash(true);
+    	}
         pressedKeys.remove(e.getKeyCode());
     }
     
@@ -147,6 +151,7 @@ public class MainApp implements KeyListener {
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
 	private void levelRefresh() {
+		lvl.stopAllTimers();
 		// ensures that a button held before the user can move still fires once they are
 		// able to move
 		checkPressedKeys = new HashSet<>();

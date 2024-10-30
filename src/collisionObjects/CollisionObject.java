@@ -22,8 +22,7 @@ public class CollisionObject {
 		this.height = height;
 	}
 
-	public void drawOn(Graphics2D g2) {
-	}
+	public void drawOn(Graphics2D g2) {}
 
 	/**
 	 * Checks if the character located at the given x and y values would be within
@@ -137,6 +136,8 @@ public class CollisionObject {
 		return MADELINE_HEIGHT;
 	}
 
+	public void stopAllTimers() {}
+	
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height

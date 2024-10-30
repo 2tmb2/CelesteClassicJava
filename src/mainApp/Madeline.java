@@ -30,6 +30,7 @@ public class Madeline {
 	private boolean canContinue;
 	private boolean isCollidingWall;
 	private boolean isCollidingFloor;
+	private boolean canDash;
 	private CollisionObject currentlyCollidingHorizontalObject;
 
 	private Color hairColor;
@@ -52,6 +53,7 @@ public class Madeline {
 		this.yPos = 0;
 		this.collisionObjects = null;
 		this.numOfDashesTotal = 1;
+		canDash = true;
 		xVel = 0;
 		yVel = 0;
 		yVelMax = 6;
@@ -307,9 +309,10 @@ public class Madeline {
 	 *            facing.
 	 */
 	public boolean dash(String dir) {
-		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0)) {
+		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash) {
 			isDashing = true;
 			numOfDashesRemaining--;
+			canDash = false;
 			int dashVel = 13;
 			if (dir.equals("up")) {
 				yVel = -dashVel;
@@ -506,6 +509,13 @@ public class Madeline {
 		this.numOfDashesTotal = totalDashes;
 	}
 
+	public void stopAllTimers()
+	{
+		for (CollisionObject c : collisionObjects)
+		{
+			c.stopAllTimers();
+		}
+	}
 	/**
 	 * Increases Madeline's X velocity
 	 */
@@ -545,11 +555,20 @@ public class Madeline {
 		numOfDashesRemaining = numOfDashesTotal;
 	}
 
+	public void resetDashes()
+	{
+		this.numOfDashesRemaining = numOfDashesTotal;
+	}
 	public void nextLevel() {
 		if (!canContinue)
 			return;
 		canContinue = false;
 		// collisionObjects = null;
 		lvl.nextLevel();
+	}
+	
+	public void setCanDash(boolean option)
+	{
+		canDash = option;
 	}
 }
