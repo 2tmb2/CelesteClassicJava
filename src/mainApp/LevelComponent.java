@@ -422,11 +422,9 @@ public class LevelComponent extends JComponent {
 			return output;
 		} catch (FileNotFoundException e) {
 			main.displayError("The file for level " + levelNum + " could not be found");
-			e.printStackTrace();
 			return null;
 		} catch (ImproperlyFormattedLevelException e) {
 			main.displayError(e.getMessage());
-			e.printStackTrace();
 			return null;
 		}
 
