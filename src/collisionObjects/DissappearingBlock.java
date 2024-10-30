@@ -12,9 +12,9 @@ public class DissappearingBlock extends CollisionObject{
 	private static final Color BLOCK_BROWN = new Color(171, 82, 54);
 	private static final Color BLOCK_YELLOW = new Color(255, 163, 0);
 	private static final Color BLOCK_DARK_BLUE = new Color(29, 43, 83);
-	public boolean isVisible;
-	public boolean isDissappearing;
-	public int animationFrame;
+	private boolean isVisible;
+	private boolean isDissappearing;
+	private int animationFrame;
 	
 	public DissappearingBlock(int x, int y)
 	{

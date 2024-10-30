@@ -14,9 +14,9 @@ public class DissappearingSpring extends CollisionObject {
 	private Madeline m;
 	private int springDrawFrame;
 	private Timer restoreTimer;
-	public boolean isVisible;
-	public boolean isDissappearing;
-	public int animationFrame;
+	private boolean isVisible;
+	private boolean isDissappearing;
+	private int animationFrame;
 	
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
 	private static final Color SPRING_LIGHT_YELLOW = new Color(255, 163, 0);
