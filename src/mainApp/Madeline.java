@@ -192,14 +192,9 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET,
-					yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
-				try {
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
+				if (i < collisionObjects.size())
 					currentlyCollidingHorizontalObject = collisionObjects.get(i);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
 				return true;
 			}
 		}
