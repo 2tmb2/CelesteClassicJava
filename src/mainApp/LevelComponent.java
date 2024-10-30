@@ -9,14 +9,8 @@ import java.util.Scanner;
 
 import javax.swing.JComponent;
 
-import collectables.Balloon;
-import collectables.Strawberry;
-import collectables.WingedStrawberry;
-import collisionObjects.BreakableBlock;
-import collisionObjects.CollisionObject;
-import collisionObjects.EnvironmentObject;
-import collisionObjects.LevelFinishZone;
-import collisionObjects.Spring;
+import collectables.*;
+import collisionObjects.*;
 import spikes.DownSpike;
 import spikes.LeftSpike;
 import spikes.RightSpike;
@@ -34,6 +28,7 @@ public class LevelComponent extends JComponent {
 	private Strawberry strawberry;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
+	private LevelDisplayText ldt;
 	private String[] levelData;
 	private int madX;
 	private int madY;
@@ -84,6 +79,10 @@ public class LevelComponent extends JComponent {
 		if (strawberry != null) {
 			strawberry.drawOn(g2);
 		}
+		if (ldt != null)
+		{
+			ldt.drawOn(g2);
+		}
 
 	}
 
@@ -118,6 +117,21 @@ public class LevelComponent extends JComponent {
 		m.decreaseX();
 	}
 
+	public void addLevelDisplay(String text)
+	{
+		ldt = new LevelDisplayText(text);
+	}
+	
+	public void removeLevelDisplay()
+	{
+		ldt = null;
+	}
+	
+	public void resetMadelineVelocity()
+	{
+		m.resetVelocity();
+	}
+	
 	/**
 	 * Updates Madeline's position based on her current velocity
 	 * 
@@ -140,8 +154,9 @@ public class LevelComponent extends JComponent {
 	 * @param dir
 	 */
 	public void dash(String dir) {
-		if (m.dash(dir) && strawberry instanceof WingedStrawberry) {
-			((WingedStrawberry) strawberry).flyAway();
+		if (m.dash(dir)) {
+			if (strawberry != null)
+				strawberry.flyAway();
 		}
 		// m.dash(dir);
 	}
@@ -185,10 +200,13 @@ public class LevelComponent extends JComponent {
 	 * text associated with that strawberry
 	 */
 	public void collectStrawberry() {
-		pt = new PointText(strawberry.getX(), strawberry.getY());
-		main.collectStrawberry();
-		collisionObjects.remove(strawberry);
-		strawberry = null;
+		if (strawberry != null)
+		{
+			pt = new PointText(strawberry.getX(), strawberry.getY());
+			main.collectStrawberry();
+			collisionObjects.remove(strawberry);
+			strawberry = null;
+		}
 	}
 
 	/**
@@ -276,7 +294,18 @@ public class LevelComponent extends JComponent {
 						otherObject.add(s);
 						break;
 					case ('d'):
-						// add disappearing blocks
+						if (secondChar != 'd')
+						{
+							DissappearingSpring dSpring = new DissappearingSpring(j*48,i*48, m);
+							collisionObjects.add(dSpring);
+							otherObject.add(dSpring);
+						}
+						else
+						{
+							DissappearingBlock dBlock = new DissappearingBlock(j*48,i*48);
+							collisionObjects.add(dBlock);
+							otherObject.add(dBlock);
+						}
 						break;
 					case ('r'):
 						Balloon bal = new Balloon(j*48,i*48, m);
@@ -337,7 +366,6 @@ public class LevelComponent extends JComponent {
 				}
 			}
 		} catch (ImproperlyFormattedLevelException e) {
-			System.out.println(e.getMessage());
 			main.displayError(e.getMessage());
 
 		}

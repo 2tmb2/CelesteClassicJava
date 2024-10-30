@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
+import collisionObjects.Spring;
 
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
@@ -34,9 +35,11 @@ public class Madeline {
 	private CollisionObject currentlyCollidingHorizontalObject;
 
 	private Color hairColor;
+	private int hairSwitchFrame;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
-	private static final Color GREEN_HAIR = new Color(0, 0, 0);
+	private static final Color GREEN_HAIR = new Color(0, 228, 54);
+	private static final Color WHITE_HAIR = new Color(255,241,232);
 	private static final Color EYE_COLOR = new Color(29, 43, 83);
 	private static final Color TORSO_COLOR = new Color(0, 135, 81);
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
@@ -53,6 +56,7 @@ public class Madeline {
 		this.yPos = 0;
 		this.collisionObjects = null;
 		this.numOfDashesTotal = 1;
+		hairSwitchFrame = 0;
 		canDash = true;
 		xVel = 0;
 		yVel = 0;
@@ -192,15 +196,12 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET,
-					yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
-				try {
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + (int) yVel + Y_COLLISION_OFFSET, facingRight)) {
+				if (i < collisionObjects.size())
+				{
 					currentlyCollidingHorizontalObject = collisionObjects.get(i);
-				} catch (Exception e) {
-					e.printStackTrace();
+					return true;
 				}
-
-				return true;
 			}
 		}
 		return false;
@@ -227,6 +228,7 @@ public class Madeline {
 	public boolean isTouchingWallLeft(CollisionObject object) {
 		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET - 2, yPos + Y_COLLISION_OFFSET, facingRight));
 	}
+	
 
 	/**
 	 * Checks if Madeline is currently colliding with any floors
@@ -358,9 +360,23 @@ public class Madeline {
 		// updates Madeline's hair color based on her number of dashes remaining
 		if (numOfDashesRemaining == 1) {
 			hairColor = RED_HAIR;
-			numOfDashesRemaining = numOfDashesTotal;
 		} else if (numOfDashesRemaining == 2) {
-			hairColor = GREEN_HAIR;
+			if (hairSwitchFrame == 5)
+			{
+				hairSwitchFrame = 0;
+				if (hairColor.equals(GREEN_HAIR))
+				{
+					hairColor = WHITE_HAIR;
+				}
+				else
+				{
+					hairColor = GREEN_HAIR;
+				}
+			}
+			else
+			{
+				hairSwitchFrame++;
+			}
 		} else {
 			hairColor = BLUE_HAIR;
 		}
@@ -546,6 +562,7 @@ public class Madeline {
 	}
 
 	public void collectStrawberry() {
+		resetDashes();
 		lvl.collectStrawberry();
 	}
 
@@ -561,6 +578,12 @@ public class Madeline {
 	public void resetDashes()
 	{
 		this.numOfDashesRemaining = numOfDashesTotal;
+	}
+	
+	public void resetVelocity()
+	{
+		this.xVel = 0;
+		this.yVel = 0;
 	}
 	public void nextLevel() {
 		if (!canContinue)

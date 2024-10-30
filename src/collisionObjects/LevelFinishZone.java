@@ -31,6 +31,9 @@ public class LevelFinishZone extends CollisionObject {
 	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
+		if (super.isCollidingCeiling(madelineX, madelineY)) {
+			m.nextLevel();
+		}
 		return false;
 	}
 
@@ -39,6 +42,10 @@ public class LevelFinishZone extends CollisionObject {
 	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
+		if (super.isCollidingFloor(madelineX, madelineY))
+		{
+			m.nextLevel();
+		}
 		return false;
 	}
 

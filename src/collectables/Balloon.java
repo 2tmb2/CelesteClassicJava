@@ -21,16 +21,17 @@ public class Balloon extends CollisionObject {
 	private Madeline m;
 	private boolean isCollected;
 	private Timer animationTimer;
-	private Timer floatTimer;
 	private Timer respawnTimer;
+	private double timerTriggerNumber;
 	public Balloon(int x, int y, Madeline m)
 	{
 		super(x,y,42,48);
 		originalY = y;
 		currentFrame = 1;
+		timerTriggerNumber = 0;
 		isCollected = false;
 		this.m = m;
-		animationTimer = new Timer(400, new ActionListener() {
+		animationTimer = new Timer(300, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -45,26 +46,23 @@ public class Balloon extends CollisionObject {
 				{
 					currentFrame = 1;
 				}
+				timerTriggerNumber += 1.5;
+				if (timerTriggerNumber % 1 == 0)
+				{
+					if (getY() + increment >= originalY + 24)
+					{
+						increment = increment * -1;
+					}
+					else if (getY() + increment < originalY)
+					{
+						increment = increment * -1;
+					}
+					setY(getY() + increment);
+				}
 			}
 		});
 		increment = 6;
 		animationTimer.start();
-		floatTimer = new Timer(300,new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (getY() + increment >= originalY + 24)
-				{
-					increment = increment * -1;
-				}
-				else if (getY() + increment < originalY)
-				{
-					increment = increment * -1;
-				}
-				setY(getY() + increment);
-			}
-		});
-		floatTimer.start();
 	}
 	
 	@Override
@@ -167,7 +165,6 @@ public class Balloon extends CollisionObject {
 	public void stopAllTimers()
 	{
 		animationTimer.stop();
-		floatTimer.stop();
 	}
 	
 }

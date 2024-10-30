@@ -112,6 +112,13 @@ public class BreakableBlock extends CollisionObject {
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (exists) {
+			if (super.isCollidingFloor(madelineX, madelineY))
+			{
+				if (m.getIsDashing()) {
+					breakBlock();
+					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
+				}
+			}
 			return super.isCollidingFloor(madelineX, madelineY);
 		}
 		return false;
@@ -127,6 +134,13 @@ public class BreakableBlock extends CollisionObject {
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (exists) {
+			if (super.isCollidingCeiling(madelineX, madelineY))
+			{
+				if (m.getIsDashing()) {
+					breakBlock();
+					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
+				}
+			}
 			return super.isCollidingCeiling(madelineX, madelineY);
 		}
 		return false;

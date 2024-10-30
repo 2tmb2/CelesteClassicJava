@@ -13,15 +13,13 @@ public class Strawberry extends CollisionObject {
 	private static final Color STRAWBERRY_LIGHT_GREEN = new Color(0, 228, 54);
 	private static final Color STRAWBERRY_DARK_RED = new Color(126, 37, 83);
 	private static final Color STRAWBERRY_YELLOW = new Color(255, 163, 0);
-	private static final int WIDTH = 36;
-	private static final int HEIGHT = 48;
 	private int numOfAnimationFrames;
 	private double translateBy;
 	private int currentFrame;
 	private Madeline m;
 
 	public Strawberry(int x, int y, Madeline m) {
-		super(x, y, WIDTH, HEIGHT);
+		super(x, y, 56, 56);
 		this.m = m;
 		setCurrentFrame(0);
 		setNumOfAnimationFrames(80);
@@ -137,4 +135,6 @@ public class Strawberry extends CollisionObject {
 	public void setNumOfAnimationFrames(int numOfAnimationFrames) {
 		this.numOfAnimationFrames = numOfAnimationFrames;
 	}
+	
+	public void flyAway() {}
 }
