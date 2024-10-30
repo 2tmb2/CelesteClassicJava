@@ -64,7 +64,6 @@ public class Spring extends CollisionObject {
 
 	private void frame2(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		// g2.translate(0, 24);
 		g2.setColor(SPRING_DARK_YELLOW);
 		g2.fillRect(0, 0, 6, 6);
 		g2.fillRect(30, 0, 6, 6);
@@ -99,7 +98,6 @@ public class Spring extends CollisionObject {
 	private void bounce() {
 		m.springBounce();
 		drawFrame = 2;
-		// super.setHeight(6);
 		if (getY() == originalY) {
 			super.setY(getY() + 24);
 		}

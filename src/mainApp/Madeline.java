@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
+import collisionObjects.Spring;
 
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
@@ -222,6 +223,7 @@ public class Madeline {
 	public boolean isTouchingWallLeft(CollisionObject object) {
 		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET - 2, yPos + Y_COLLISION_OFFSET, facingRight));
 	}
+	
 
 	/**
 	 * Checks if Madeline is currently colliding with any floors

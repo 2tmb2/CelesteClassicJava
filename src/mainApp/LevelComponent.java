@@ -14,6 +14,8 @@ import collectables.Strawberry;
 import collectables.WingedStrawberry;
 import collisionObjects.BreakableBlock;
 import collisionObjects.CollisionObject;
+import collisionObjects.DissappearingBlock;
+import collisionObjects.DissappearingSpring;
 import collisionObjects.EnvironmentObject;
 import collisionObjects.LevelFinishZone;
 import collisionObjects.Spring;
@@ -296,7 +298,18 @@ public class LevelComponent extends JComponent {
 						otherObject.add(s);
 						break;
 					case ('d'):
-						// add disappearing blocks
+						if (secondChar != 'd')
+						{
+							DissappearingSpring dSpring = new DissappearingSpring(j*48,i*48, m);
+							collisionObjects.add(dSpring);
+							otherObject.add(dSpring);
+						}
+						else
+						{
+							DissappearingBlock dBlock = new DissappearingBlock(j*48,i*48);
+							collisionObjects.add(dBlock);
+							otherObject.add(dBlock);
+						}
 						break;
 					case ('r'):
 						Balloon bal = new Balloon(j*48,i*48, m);
@@ -357,7 +370,6 @@ public class LevelComponent extends JComponent {
 				}
 			}
 		} catch (ImproperlyFormattedLevelException e) {
-			System.out.println(e.getMessage());
 			main.displayError(e.getMessage());
 
 		}
