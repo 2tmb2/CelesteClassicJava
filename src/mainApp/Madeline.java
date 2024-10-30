@@ -148,7 +148,7 @@ public class Madeline {
 	 * and any objects she is colliding with
 	 */
 	public void setVerticalPosition() {
-		if (!isCollidingFloor && !isDashingHorizontally) {
+		if (!isCollidingFloor) {
 			if (isCollidingWithCeiling() && yVel < 0) {
 				yVel = 0;
 			}
@@ -157,7 +157,10 @@ public class Madeline {
 		if (isCollidingFloor) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax) {
-			yVel += 0.5;
+			if  (!isDashing) {
+				yVel += 0.5;
+			}
+			
 		} else if (yVel > yVelMax) {
 			if (!isDashing) {
 				yVel = yVelMax;
