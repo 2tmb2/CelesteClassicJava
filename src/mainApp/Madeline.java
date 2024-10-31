@@ -38,7 +38,7 @@ public class Madeline {
 	private boolean canDash;
 	private boolean canJump;
 	private boolean controlTimerDecreased = false;
-	private boolean noGrav = false;
+	private boolean lowGrav = false;
 	
 	private long timeAtDash;
 	private long timeAtWallJump;
@@ -59,8 +59,17 @@ public class Madeline {
 	private static final int X_COLLISION_OFFSET = 6;
 	private static final int Y_COLLISION_OFFSET = 18;
 	
-	private static final long VERT_DASH_TIME = 200;
-	private static final long HORZ_DASH_TIME = 460;
+	private static final double FRAME_COEFF = (double)MainApp.BETWEEN_FRAMES / 31;
+	
+	private static final long VERT_DASH_TIME = (long)((200.0 / FRAME_COEFF) * .50);
+	private static final long HORZ_DASH_TIME = (long)((460.0 / FRAME_COEFF) * .50);
+	private static final long WALL_JUMP_TIME = (long)((300.0 / FRAME_COEFF) * .50);
+	
+	//After dashing into a wall, how many ms for the player to regain control
+	private static final long WALL_CANCEL_CONTROL_TIME = (long)((100.0 / FRAME_COEFF) * .50);
+	
+	//After a wall jump ends, how many ms does the player have low gravity
+	private static final long LOW_GRAV_TIME = (long)((100.0 / FRAME_COEFF) * .50);
 	
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.42 * (double)MainApp.PIXEL_DIM;
@@ -119,8 +128,9 @@ public class Madeline {
 		} else {
 			yVelMax = WALL_VEL;
 			canJump = true;
+			lowGrav = false;
 			if (!canControl && !controlTimerDecreased) {
-				dashTimer = 100;
+				dashTimer = WALL_CANCEL_CONTROL_TIME;
 				//controlTimerDecreased = true;
 			}
 			isDashingVertically = false;
@@ -181,7 +191,7 @@ public class Madeline {
 	 */
 	public void setVerticalPosition() {
 		double downAcc = GRAVITY;
-		if (noGrav) downAcc *= .5;
+		if (lowGrav) downAcc *= .5;
 		if (isCollidingFloor && !isCollidingWall) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax) {
@@ -227,12 +237,12 @@ public class Madeline {
 			canControl = true;
 			controlTimerDecreased = false;
 		}
-		if (MainApp.time > timeAtWallJump + 300) {
+		if (MainApp.time > timeAtWallJump + WALL_JUMP_TIME) {
 			wallJump = false;
-			noGrav = true;
+			lowGrav = true;
 		}
-		if (MainApp.time > timeAtWallJump + 400) {
-			noGrav = false;
+		if (MainApp.time > timeAtWallJump + WALL_JUMP_TIME + LOW_GRAV_TIME) {
+			lowGrav = false;
 		}
 		if (MainApp.time > timeAtDash + HORZ_DASH_TIME + 0) {
 			useDashDeccel = false;

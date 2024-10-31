@@ -27,6 +27,8 @@ public class MainApp implements KeyListener {
 	
 	//The holiest magic number
 	public static final int PIXEL_DIM = 6;
+	
+	public static final int BETWEEN_FRAMES = 22;
 
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
@@ -106,14 +108,14 @@ public class MainApp implements KeyListener {
 			}
 		});
 		// creates a timer that fires every 33 milliseconds. This acts as our main game loop.
-		Timer t = new Timer(1, new ActionListener() {
+		Timer t = new Timer(BETWEEN_FRAMES, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!byFrame) {
-					time = System.currentTimeMillis();
-					deltaTime = time - previousTime;
-					if (deltaTime < 31) return;
-					previousTime = time;
+					time += BETWEEN_FRAMES;
+					//deltaTime = time - previousTime;
+					//if (deltaTime < 31) return;
+					//previousTime = time;
 					update();
 				}
 			}
