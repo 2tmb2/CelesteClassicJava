@@ -118,8 +118,8 @@ public class BreakableBlock extends CollisionObject {
 					breakBlock();
 					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
 				}
+				return true;
 			}
-			return super.isCollidingFloor(madelineX, madelineY);
 		}
 		return false;
 	}
@@ -139,15 +139,11 @@ public class BreakableBlock extends CollisionObject {
 				if (m.getIsDashing()) {
 					breakBlock();
 					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
+					return false;
 				}
+				return true;
 			}
-			return super.isCollidingCeiling(madelineX, madelineY);
 		}
 		return false;
-	}
-
-	// unused for BreakableBlock since there is nothing to animate
-	@Override
-	public void updateAnimation() {
 	}
 }
