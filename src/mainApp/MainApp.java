@@ -88,7 +88,7 @@ public class MainApp implements KeyListener {
 		editor.pack();
 		editor.setVisible(false);
 		
-		levelEditor = new LevelEditor();
+		levelEditor = new LevelEditor(this);
 		editor.add(levelEditor);
 		
 		editor.addMouseListener(new MouseAdapter() {
@@ -168,6 +168,10 @@ public class MainApp implements KeyListener {
 		
 		frame.repaint();
 		editor.repaint();
+	}
+	
+	public Set<Integer> getKeys() {
+		return pressedKeys;
 	}
     
     public void keyTyped(KeyEvent e) {}
