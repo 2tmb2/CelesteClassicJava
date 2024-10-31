@@ -30,10 +30,12 @@ public class Madeline {
 	private LevelComponent lvl;
 	private boolean canContinue;
 	private boolean isCollidingWall = false;
+	private boolean isTouchingWall = false;
 	private boolean isCollidingFloor;
 	private boolean canDash;
 	
 	private long timeAtDash;
+	private long timeAtWallJump;
 
 	private Color hairColor;
 	private int hairSwitchFrame;
@@ -53,8 +55,9 @@ public class Madeline {
 	private static final double GRAVITY = 0.42 * (double)MainApp.PIXEL_DIM;
 	private static final double TERM_VEL = 2.0 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double WALL_VEL = 0.4 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double JUMP_VEL = -4.0 * (double)MainApp.PIXEL_DIM;
+	private static final double JUMP_VEL = -4.5 * (double)MainApp.PIXEL_DIM;
 	private static final double WALK_SPEED = 2.0 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_VEL = 2.8 * (double)MainApp.PIXEL_DIM;
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 0.5;
 
@@ -93,6 +96,7 @@ public class Madeline {
 	public void setPosition(boolean hasMoved) {
 		isCollidingWall = isCollidingWithWall();
 		isCollidingFloor = isCollidingWithFloor();
+		isTouchingWall = isTouchingWall();
 		if (!isCollidingWall) {
 			yVelMax = TERM_VEL;
 		} else {
@@ -109,7 +113,7 @@ public class Madeline {
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setHorizontalPosition(boolean hasMoved) {
-		if (Math.abs(xVel) <= 2.5) {
+		if (isCollidingWall) {
 			wallJump = false;
 		}
 		if (!hasMoved && !isDashing && !wallJump) {
@@ -182,13 +186,9 @@ public class Madeline {
 			isDashingHorizontally = false;
 			isDashing = false;
 		}
-		
-		/*if (Math.abs(xVel) <= 8 && yVel >= 0) {
-			isDashingHorizontally = false;
+		if (MainApp.time > timeAtWallJump + 300) {
+			wallJump = false;
 		}
-		if (Math.abs(xVel) <= 4 && Math.abs(yVel) <= yVelMax) {
-			isDashing = false;
-		}*/
 		if (isCollidingWithFloor()) {
 			numOfDashesRemaining = numOfDashesTotal;
 		}
@@ -201,7 +201,7 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET, yPos + /*(int) yVel*/ + Y_COLLISION_OFFSET, facingRight)) {
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, facingRight)) {
 				if (i < collisionObjects.size())
 				{
 					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) xPos = collisionObjects.get(i).getX() - WIDTH + 6;
@@ -213,28 +213,17 @@ public class Madeline {
 		return false;
 	}
 
-	public int isTouchingWall() {
+	public boolean isTouchingWall() {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
-			if (isTouchingWallRight(object)) {
-				return 1;
-			}
-			if (isTouchingWallLeft(object)) {
-				return -1;
-			}
+			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight)) {
+				return true;
+			};
+			
 		}
-		return 0;
+		return false;
 	}
-
-	public boolean isTouchingWallRight(CollisionObject object) {
-		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET + 2, yPos + Y_COLLISION_OFFSET, facingRight));
-	}
-
-	public boolean isTouchingWallLeft(CollisionObject object) {
-		return (object.isCollidingWall(xPos + X_COLLISION_OFFSET - 2, yPos + Y_COLLISION_OFFSET, facingRight));
-	}
-	
 
 	/**
 	 * Checks if Madeline is currently colliding with any floors
@@ -243,7 +232,7 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingFloor(xPos /*+ (int) xVel*/ + X_COLLISION_OFFSET,
+			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET,
 					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				if (Math.abs(collisionObjects.get(i).getY() - HEIGHT - yPos) < 20) yPos = collisionObjects.get(i).getY() - HEIGHT;
 				return true;
@@ -277,7 +266,7 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithCeiling() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingCeiling(xPos /*+ (int) xVel*/ + X_COLLISION_OFFSET,
+			if (collisionObjects.get(i).isCollidingCeiling(xPos + X_COLLISION_OFFSET,
 					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				if (Math.abs(collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18 - yPos) < 20) yPos = collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18;
 				return true;
@@ -290,20 +279,16 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if (isFloorBelow() && !jumpPressed) {
+		if (isCollidingFloor && !jumpPressed) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
-		} else if (isCollidingWithWall() && !jumpPressed && !isFloorBelow()) {
+		} else if (isTouchingWall && !jumpPressed && !isCollidingFloor) {
 			jumpPressed = true;
 			wallJump = true;
-			xVel = -facingRight * 11;
-			yVel = -9.5;
-		} else if (isCollidingWithWall() && !jumpPressed && !isFloorBelow() && !wallJump) {
-			jumpPressed = true;
-			wallJump = true;
-			xVel = -facingRight * 11;
-			yVel = -9.5;
+			timeAtWallJump = MainApp.time;
+			xVel = -facingRight * WALL_JUMP_VEL;
+			yVel = JUMP_VEL * .9;
 		}
 	}
 
