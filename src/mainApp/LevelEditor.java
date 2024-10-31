@@ -9,11 +9,19 @@ import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class LevelEditor extends JComponent {
@@ -60,11 +68,13 @@ public class LevelEditor extends JComponent {
 	private ColoredRectangle tempRect;
 	private ArrayList<ColoredRectangle> colliders = new ArrayList<ColoredRectangle>(); //Collision Layer
 	
-	private Point[][] layer1 = new Point[16][16]; //Background Layer
-	private Point[][] layer2 = new Point[16][16]; //Foreground Layer
+	private Point[][] environmentLayer = new Point[16][16]; //Background Layer
+	private Point[][] backgroundLayer = new Point[16][16]; //Foreground Layer
 	private Point[][] layer3 = new Point[16][16]; //Detail Layer
+	
+	private HashMap<List<Integer>, String> data;
 	//private Point[][] layer4 = new Point[16][16]; //Collision Layer
-	private Point[][] layer5 = new Point[16][16]; //Object Layer
+	private Point[][] objectLayer = new Point[16][16]; //Object Layer
 	private Boolean[] renderLayers = new Boolean[] {true,true,true,true,true,false};
 	public LevelEditor(MainApp mainApp) {
 		try {
@@ -115,10 +125,10 @@ public class LevelEditor extends JComponent {
 		}
 		
 		if (renderLayers[0]) {
-			drawLayer(g2, layer1);
+			drawLayer(g2, environmentLayer);
 		}
 		if (renderLayers[1]) {
-			drawLayer(g2, layer2);	
+			drawLayer(g2, backgroundLayer);	
 		}
 		if (renderLayers[2]) {
 			drawLayer(g2, layer3);
@@ -130,7 +140,7 @@ public class LevelEditor extends JComponent {
 			drawColliders(g2, colliders);
 		}
 		if (renderLayers[4]) {
-			drawLayer(g2, layer5);
+			drawLayer(g2, objectLayer);
 		}
 		if (renderLayers[5]) {
 			g.drawImage(grid, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
@@ -152,6 +162,22 @@ public class LevelEditor extends JComponent {
 		for (ColoredRectangle r : colliders) {
 			drawRectangle(g, r);
 		}
+	}
+	
+	public ColoredRectangle getColliderAtPoint(int x, int y)
+	{
+		for (ColoredRectangle r : colliders) {
+			if ((r.getX())/SPRITE_WIDTH == x && (r.getY()/SPRITE_WIDTH) == y)
+			{
+				return r;
+			}
+		}
+		return null;
+	}
+	
+	public String getColliderSize(ColoredRectangle c)
+	{
+		return (int)c.getWidth()/48 + "" + (int)c.getHeight()/48;
 	}
 	
 	public void drawRectangle(Graphics2D g, ColoredRectangle r) {
@@ -190,7 +216,7 @@ public class LevelEditor extends JComponent {
 						newLayer = GAME_WIDTH;
 					}
 					if (selectedLayer == 7) {
-						//doPrint();
+						doPrint();
 					} else {
 						doClear();
 					}
@@ -223,13 +249,13 @@ public class LevelEditor extends JComponent {
 		}
 		else if (x <= GAME_WIDTH && selectedLayer != 4) {
 			if (selectedLayer == 1) {
-				layer1[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				environmentLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 2) {
-				layer2[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				backgroundLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 3) {
 				layer3[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 5) {
-				layer5[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				objectLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			}
 		} else if (x <= GAME_WIDTH && selectedLayer == 4) {
 			topLeft = new Point(x - (x % SPRITE_WIDTH), y - (y % SPRITE_HEIGHT));
@@ -266,10 +292,10 @@ public class LevelEditor extends JComponent {
 	
 	public void doClear() {
 		if (renderLayers[0]) {
-			layer1 = new Point[16][16];
+			environmentLayer = new Point[16][16];
 		}
 		if (renderLayers[1]) {
-			layer2 = new Point[16][16];
+			backgroundLayer = new Point[16][16];
 		}
 		if (renderLayers[2]) {
 			layer3 = new Point[16][16];
@@ -278,19 +304,93 @@ public class LevelEditor extends JComponent {
 			colliders.clear();
 		}
 		if (renderLayers[4]) {
-			layer5 = new Point[16][16];
+			objectLayer = new Point[16][16];
 		}
 	}
 	
 	public void doPrint() {
-		drawDialog = true;
-		while (true) {
-			if (mainApp.getKeys().contains(27)) {
-				clearPrint();
-				return;
+		
+		data = new HashMap<List<Integer>, String>();
+		data.put(Arrays.asList(2,1), "pp");
+		data.put(Arrays.asList(1,1), "^1");
+		data.put(Arrays.asList(6,1), "rr");
+		data.put(Arrays.asList(7,1), "dd");
+		data.put(Arrays.asList(11,1), "v1");
+		data.put(Arrays.asList(11,2), ">1");
+		data.put(Arrays.asList(11,3), "<1");
+		data.put(Arrays.asList(10,1), "ss");
+		data.put(Arrays.asList(8,0), "kk");
+		data.put(Arrays.asList(4,1), "cc");
+		data.put(Arrays.asList(1,0), "mm");
+		data.put(Arrays.asList(0,4), "bb");
+		data.put(Arrays.asList(12,1), "ww");
+		String levelDataString = "";
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
+				if (objectLayer[j][i] != null)
+				{
+					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(768))/SPRITE_WIDTH, (int)objectLayer[j][i].getY()/SPRITE_WIDTH);
+					if (data.get(point) != null)
+					{
+						levelDataString += data.get(point);
+					}
+					else
+					{
+						levelDataString += "--";
+					}
+				}
+				else if (getColliderAtPoint(j,i) != null)
+				{
+					levelDataString += getColliderSize(getColliderAtPoint(j,i));
+				}
+				else
+				{
+					levelDataString += "--";
+				}
+				if (j != 15)
+				{
+					levelDataString += " ";
+				}
+			}
+			levelDataString += "\n";
+		}
+		for (int i = 0; i < environmentLayer.length; i++)
+		{
+			levelDataString += "\n";
+			for (int j = 0; j < environmentLayer[0].length; j++)
+			{
+				if (environmentLayer[j][i] != null)
+					levelDataString += environmentLayer[j][i].getX() + "," + environmentLayer[j][i].getY();
+				else if (backgroundLayer[j][i] != null)
+				{
+					levelDataString += backgroundLayer[j][i].getX() + "," + backgroundLayer[j][i].getY();
+				}
+				else
+					levelDataString += "-";
+				if (j != 15)
+				{
+					levelDataString += " ";
+				}
 			}
 		}
+		System.out.println(levelDataString);
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("src/LevelData/"));
+		chooser.showSaveDialog(chooser);
+		File f = chooser.getSelectedFile();
+		try (FileWriter writer = new FileWriter(f)) {
+			writer.write(levelDataString);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		} catch (NullPointerException e) {
+			//e.printStackTrace();
+		}
 	}
+	
 	
 	public void clearPrint() {
 		drawDialog = false;

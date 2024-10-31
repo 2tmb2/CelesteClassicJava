@@ -58,6 +58,8 @@ public class MainApp implements KeyListener {
 	private boolean isInitialSpawn;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
+
+	private boolean canLoadCustomLevel;
 	
 	
 	public MainApp() {
@@ -83,7 +85,7 @@ public class MainApp implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
-		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
 		levelRefresh();
 		
 		editor = new JFrame();
@@ -201,7 +203,7 @@ public class MainApp implements KeyListener {
 		// resets the level to currentLevel
 			
 		frame.remove(lvl);
-		lvl = new LevelComponent(this, currentLevel + "", strawberryAlreadyCollected);
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
 		if (err == null)
 		{
 			frame.add(lvl);
@@ -278,6 +280,7 @@ public class MainApp implements KeyListener {
      */
     public void displayError(String error)
     {
+    	frame.getContentPane().removeAll();
     	err = new ErrorDisplay(error);
     	frame.add(err);
     	frame.setVisible(true);
@@ -409,6 +412,16 @@ public class MainApp implements KeyListener {
 	    	}
     	}
     	
+    }
+    
+    private void checkLoadCustomLevel()
+    {
+    	if (canLoadCustomLevel) {
+    		if (pressedKeys.contains(1))
+    		{
+    			
+    		}
+    	}
     }
 
 	/**

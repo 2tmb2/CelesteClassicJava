@@ -22,7 +22,7 @@ public class ErrorDisplay extends JComponent {
 			int linesCount = 1;
 			for (int i = 0; i < message.length(); i++)
 			{
-				if (message.indexOf(" ", i) > 29*linesCount)
+				if ((message + " ").indexOf(" ", i) > 29*linesCount)
 				{
 					displayMessage += "&";
 					linesCount++;
