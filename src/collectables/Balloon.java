@@ -17,7 +17,7 @@ public class Balloon extends CollisionObject {
 	private static final Color BALLOON_GREY = new Color(194, 195, 199);
 	private int currentFrame;
 	private int increment;
-	int originalY;
+	private int originalY;
 	private Madeline m;
 	private boolean isCollected;
 	private Timer animationTimer;

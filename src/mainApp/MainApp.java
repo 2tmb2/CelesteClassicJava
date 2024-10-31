@@ -33,6 +33,7 @@ public class MainApp implements KeyListener {
 	private ErrorDisplay err;
 	private JFrame frame;
 	private JFrame editor;
+	private LevelEditor levelEditor;
 	private int frameSize = 768;
 	private int strawberryCount;
 	private int deathCount;
@@ -41,13 +42,17 @@ public class MainApp implements KeyListener {
 	private boolean canMoveLevels;
 	private Set<Integer> checkPressedKeys;
 
+	public static long time = System.currentTimeMillis();
+	public static long startTime = time;
+	public static long deltaTime = 0;
+	public static long previousTime = time;
 	
 	private boolean inEditor;
 	private boolean canSwitchEditor;
 	private boolean isInitialSpawn;
 	private boolean mouseDown = false;
+	private boolean byFrame = false;
 	
-	public static long time = 0;
 	
 	public MainApp() {
 		// sets default values
@@ -84,7 +89,7 @@ public class MainApp implements KeyListener {
 		editor.pack();
 		editor.setVisible(false);
 		
-		LevelEditor levelEditor = new LevelEditor();
+		levelEditor = new LevelEditor(this);
 		editor.add(levelEditor);
 		
 		editor.addMouseListener(new MouseAdapter() {
@@ -100,22 +105,17 @@ public class MainApp implements KeyListener {
 				levelEditor.doMouseRelease(e.getX(), e.getY());
 			}
 		});
-		// creates a timer that fires every 10 milliseconds. This acts as our main game loop.
-		Timer t = new Timer(10, new ActionListener() {
+		// creates a timer that fires every 33 milliseconds. This acts as our main game loop.
+		Timer t = new Timer(1, new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				time = System.currentTimeMillis();
-				if (mouseDown && inEditor) {
-					levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
+			public void actionPerformed(ActionEvent e) {
+				if (!byFrame) {
+					time = System.currentTimeMillis();
+					deltaTime = time - previousTime;
+					if (deltaTime < 31) return;
+					previousTime = time;
+					update();
 				}
-				checkToggleEditor();
-				checkMoveLevels();
-				updateMadelinePosition();
-				lvl.updateAnimations();
-				
-				frame.repaint();
-				editor.repaint();
 			}
 		});
 		t.start();
@@ -127,6 +127,14 @@ public class MainApp implements KeyListener {
 	@Override
 	public synchronized void keyPressed(KeyEvent e) {
 		pressedKeys.add(e.getKeyCode());
+		if (e.getKeyCode() == 70) { //70 is f
+			byFrame = !byFrame;
+		}
+		if (byFrame) {
+			if (e.getKeyCode() == 71) { //71 is g
+				update();
+			}
+		}
 	}
 
 	@Override
@@ -148,6 +156,23 @@ public class MainApp implements KeyListener {
     	}
         pressedKeys.remove(e.getKeyCode());
     }
+	
+	private void update() {
+		if (mouseDown && inEditor) {
+			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
+		}
+		checkToggleEditor();
+		checkMoveLevels();
+		updateMadelinePosition();
+		lvl.updateAnimations();
+		
+		frame.repaint();
+		editor.repaint();
+	}
+	
+	public Set<Integer> getKeys() {
+		return pressedKeys;
+	}
     
     public void keyTyped(KeyEvent e) {}
     

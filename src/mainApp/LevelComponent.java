@@ -165,7 +165,7 @@ public class LevelComponent extends JComponent {
 	 * Checks if Madeline is able to dash
 	 */
 	public void checkIfDashing() {
-		m.checkIfDashing();
+		m.checkState();
 	}
 
 	/**

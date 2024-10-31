@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class ColoredRectangle extends Rectangle {
-	Color color;
+	private Color color;
 	public ColoredRectangle(Point p, Dimension d, Color color) {
 		super(p, d);
 		this.color = color;

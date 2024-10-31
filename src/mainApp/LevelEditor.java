@@ -25,6 +25,7 @@ public class LevelEditor extends JComponent {
 	private BufferedImage checkmark;
 	private BufferedImage ex;
 	private BufferedImage grid;
+	private BufferedImage font;
 	
 	private static final int ATLAS_WIDTH = 128 * MainApp.PIXEL_DIM;
 	private static final int ATLAS_HEIGHT = 88 * MainApp.PIXEL_DIM;
@@ -33,11 +34,17 @@ public class LevelEditor extends JComponent {
 	private static final int GAME_HEIGHT = GAME_WIDTH;
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
+	private static final int FONT_WIDTH = 3;
+	private static final int FONT_HEIGHT = 5;
 	
 	private static final Color BLUE_COLOR = new Color(63, 73, 204);
 	private static final Color GREEN_COLOR = new Color(14,209, 69);
 	private static final int COLLIDER_THICKNESS = 4;
 	private static final BasicStroke RECT_STROKE = new BasicStroke(COLLIDER_THICKNESS);
+	
+	private MainApp mainApp;
+	
+	private boolean drawDialog = false;
 	
 	private int gridX = 0;
 	private int gridY = 0;
@@ -59,7 +66,7 @@ public class LevelEditor extends JComponent {
 	//private Point[][] layer4 = new Point[16][16]; //Collision Layer
 	private Point[][] layer5 = new Point[16][16]; //Object Layer
 	private Boolean[] renderLayers = new Boolean[] {true,true,true,true,true,false};
-	public LevelEditor() {
+	public LevelEditor(MainApp mainApp) {
 		try {
 			map = ImageIO.read(new File("src/Sprites/atlas.png"));
 			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
@@ -68,9 +75,11 @@ public class LevelEditor extends JComponent {
 			checkmark = ImageIO.read(new File("src/Sprites/checkmark.png"));
 			ex = ImageIO.read(new File("src/Sprites/ex.png"));
 			grid = ImageIO.read(new File("src/Sprites/grid.png"));
+			font = ImageIO.read(new File("src/Sprites/font.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.mainApp = mainApp;
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -84,6 +93,13 @@ public class LevelEditor extends JComponent {
 		g2.drawRect(selectedX, selectedY, SPRITE_WIDTH, SPRITE_HEIGHT);
 		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * 6), SPRITE_WIDTH, 1 * 6);
 		
+		if (drawDialog) {
+			drawText(g2, new Point(768, 650), "ESC TO CANCEL");
+			drawText(g2, new Point(768, 700), "LVL: ");
+		} else {
+			g2.setColor(Color.white);
+			g2.fillRect(780, 650, 500, 200);
+		}
 		if (selectedLayer == 7 || selectedLayer == 9) {
 			g.drawImage(confirm, GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6, SPRITE_HEIGHT, null);
 		} else {
@@ -97,6 +113,7 @@ public class LevelEditor extends JComponent {
 				g.drawImage(checkmark, GAME_WIDTH + (i * SPRITE_WIDTH), ATLAS_HEIGHT + 6, SPRITE_WIDTH, SPRITE_HEIGHT,null);
 			}
 		}
+		
 		if (renderLayers[0]) {
 			drawLayer(g2, layer1);
 		}
@@ -137,12 +154,22 @@ public class LevelEditor extends JComponent {
 		}
 	}
 	
-	public void drawRectangle(Graphics2D g2, ColoredRectangle r) {
-		Stroke oldStroke = g2.getStroke();
-		g2.setColor(r.getColor());
-		g2.setStroke(RECT_STROKE);
-		g2.drawRect((int)r.getX() + (COLLIDER_THICKNESS / 2), (int)r.getY() + (COLLIDER_THICKNESS / 4), (int)r.getWidth() - (COLLIDER_THICKNESS ), (int)r.getHeight() - (COLLIDER_THICKNESS));
-		g2.setStroke(oldStroke);
+	public void drawRectangle(Graphics2D g, ColoredRectangle r) {
+		Stroke oldStroke = g.getStroke();
+		g.setColor(r.getColor());
+		g.setStroke(RECT_STROKE);
+		g.drawRect((int)r.getX() + (COLLIDER_THICKNESS / 2), (int)r.getY() + (COLLIDER_THICKNESS / 4), (int)r.getWidth() - (COLLIDER_THICKNESS ), (int)r.getHeight() - (COLLIDER_THICKNESS));
+		g.setStroke(oldStroke);
+	}
+	
+	public void drawText(Graphics2D g, Point location, String text) {
+		text = text.toUpperCase();
+		Point fPoint;
+		for (int i = 0; i < text.length(); i++) {
+			fPoint = FontLocs.getLoc(text.charAt(i));
+			g.drawImage(font, (int)location.getX(), (int)location.getY(), (int)location.getX() + (FONT_WIDTH * MainApp.PIXEL_DIM), (int)location.getY() + (FONT_HEIGHT * MainApp.PIXEL_DIM), (int)fPoint.getX(), (int)fPoint.getY(), (int)fPoint.getX() + FONT_WIDTH, (int)fPoint.getY() + FONT_HEIGHT, null);
+			location.setLocation(location.getX() + (4 * MainApp.PIXEL_DIM), location.getY());
+		}
 	}
 	
 	public void doMouseClick(int x, int y) {
@@ -163,7 +190,7 @@ public class LevelEditor extends JComponent {
 						newLayer = GAME_WIDTH;
 					}
 					if (selectedLayer == 7) {
-						doPrint();
+						//doPrint();
 					} else {
 						doClear();
 					}
@@ -256,6 +283,16 @@ public class LevelEditor extends JComponent {
 	}
 	
 	public void doPrint() {
-		
+		drawDialog = true;
+		while (true) {
+			if (mainApp.getKeys().contains(27)) {
+				clearPrint();
+				return;
+			}
+		}
+	}
+	
+	public void clearPrint() {
+		drawDialog = false;
 	}
 }
