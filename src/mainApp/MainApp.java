@@ -43,6 +43,9 @@ public class MainApp implements KeyListener {
 	private Set<Integer> checkPressedKeys;
 
 	public static long time = System.currentTimeMillis();
+	public static long startTime = time;
+	public static long deltaTime = 0;
+	public static long previousTime = time;
 	
 	private boolean inEditor;
 	private boolean canSwitchEditor;
@@ -101,12 +104,16 @@ public class MainApp implements KeyListener {
 				levelEditor.doMouseRelease(e.getX(), e.getY());
 			}
 		});
-		// creates a timer that fires every 10 milliseconds. This acts as our main game loop.
-		Timer t = new Timer(10, new ActionListener() {
+		// creates a timer that fires every 33 milliseconds. This acts as our main game loop.
+		Timer t = new Timer(1, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				if (!byFrame) {
+					time = System.currentTimeMillis();
+					deltaTime = time - previousTime;
+					if (deltaTime < 31) return;
+					previousTime = time;
 					update();
 				}
 			}
@@ -151,7 +158,6 @@ public class MainApp implements KeyListener {
     }
 	
 	private void update() {
-		time += 10;
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 		}
