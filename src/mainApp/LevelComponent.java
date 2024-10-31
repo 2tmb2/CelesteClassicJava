@@ -260,7 +260,7 @@ public class LevelComponent extends JComponent {
 		levelData = getLevelData("level" + levelNum);
 		createLevel();
 		if (levelNum > 22)
-			m.setTotalDashes(22);
+			m.setTotalDashes(2);
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
 		m.setYPos(madY);
@@ -435,7 +435,7 @@ public class LevelComponent extends JComponent {
 			}
 			return output;
 		} catch (FileNotFoundException e) {
-			main.displayError("The file " + fileName + " could not be found");
+			main.displayError("The file " + fileName + ".txt could not be found");
 			return null;
 		} catch (ImproperlyFormattedLevelException e) {
 			main.displayError(e.getMessage());

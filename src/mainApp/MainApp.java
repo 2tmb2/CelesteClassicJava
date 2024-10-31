@@ -54,6 +54,8 @@ public class MainApp implements KeyListener {
 	private boolean isInitialSpawn;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
+
+	private boolean canLoadCustomLevel;
 	
 	
 	public MainApp() {
@@ -383,6 +385,16 @@ public class MainApp implements KeyListener {
 	    	}
     	}
     	
+    }
+    
+    private void checkLoadCustomLevel()
+    {
+    	if (canLoadCustomLevel) {
+    		if (pressedKeys.contains(1))
+    		{
+    			
+    		}
+    	}
     }
 
 	/**
