@@ -26,16 +26,23 @@ public class Madeline {
 	private ArrayList<CollisionObject> collisionObjects;
 	private boolean wallJump;
 	private boolean jumpPressed;
-	private boolean isDashing;
+	private boolean isDashingVertically;
+	private boolean useDashDeccel = false;
 	private LevelComponent lvl;
 	private boolean canContinue;
 	private boolean isCollidingWall = false;
 	private boolean isTouchingWall = false;
+	private boolean isTouchingFloor = false;
+	private boolean canControl = false;
 	private boolean isCollidingFloor;
 	private boolean canDash;
+	private boolean canJump;
+	private boolean controlTimerDecreased = false;
+	private boolean noGrav = false;
 	
 	private long timeAtDash;
 	private long timeAtWallJump;
+	private long dashTimer = 0;
 
 	private Color hairColor;
 	private int hairSwitchFrame;
@@ -51,17 +58,24 @@ public class Madeline {
 	private static final int HEIGHT = 42;
 	private static final int X_COLLISION_OFFSET = 6;
 	private static final int Y_COLLISION_OFFSET = 18;
+	
+	private static final long VERT_DASH_TIME = 200;
+	private static final long HORZ_DASH_TIME = 460;
+	
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.42 * (double)MainApp.PIXEL_DIM;
 	private static final double TERM_VEL = 2.0 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double WALL_VEL = 0.4 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double JUMP_VEL = -4.5 * (double)MainApp.PIXEL_DIM;
+	private static final double JUMP_VEL = -4.4 * (double)MainApp.PIXEL_DIM;
 	private static final double WALK_SPEED = 2.0 * (double)MainApp.PIXEL_DIM;
 	private static final double WALL_JUMP_VEL = 2.8 * (double)MainApp.PIXEL_DIM;
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 0.5;
+	private static final double DASH_DECCEL = WALK_SPEED * 0.2;
 	private static final double BOUNCE_VEL = JUMP_VEL * 1.20;
 	private static final double BOUNCE_VEL_REDUCE = 0.2;
+	private static final double Y_DASH_VEL = 3.0 * (double)MainApp.PIXEL_DIM;
+	private static final double X_DASH_VEL = Y_DASH_VEL * .9;
 
 	/**
 	 * Creates an empty Madeline object
@@ -81,7 +95,7 @@ public class Madeline {
 
 		wallJump = false;
 		jumpPressed = false;
-		isDashing = false;
+		isDashingVertically = false;
 		isDashingHorizontally = false;
 
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
@@ -99,10 +113,17 @@ public class Madeline {
 		isCollidingWall = isCollidingWithWall();
 		isCollidingFloor = isCollidingWithFloor();
 		isTouchingWall = isTouchingWall();
+		isTouchingFloor = isTouchingFloor();
 		if (!isCollidingWall) {
 			yVelMax = TERM_VEL;
 		} else {
 			yVelMax = WALL_VEL;
+			canJump = true;
+			if (!canControl && !controlTimerDecreased) {
+				dashTimer = 100;
+				//controlTimerDecreased = true;
+			}
+			isDashingVertically = false;
 		}
 		setHorizontalPosition(hasMoved);
 		setVerticalPosition();
@@ -118,9 +139,15 @@ public class Madeline {
 		if (isCollidingWall) {
 			wallJump = false;
 		}
-		if (!hasMoved && !isDashing && !wallJump) {
-			if (xVel > 0) xVel = Math.max(0, xVel - DECCEL);
-			else { xVel = Math.min(0, xVel + DECCEL); }
+		if (!hasMoved && !isDashingHorizontally && !wallJump) {
+			if (useDashDeccel) {
+				if (xVel > 0) xVel = Math.max(0, xVel - DASH_DECCEL);
+				else { xVel = Math.min(0, xVel + DASH_DECCEL); }
+			} else {
+				if (xVel > 0) xVel = Math.max(0, xVel - DECCEL);
+				else { xVel = Math.min(0, xVel + DECCEL); }
+			}
+			
 			
 		}
 		if (isCollidingWall) {
@@ -131,14 +158,14 @@ public class Madeline {
 			xPos += (int) xVel;
 		}
 		if (xVel > .25) {
-			if (!wallJump && !isDashing) {
+			if (!wallJump && !isDashingHorizontally) {
 				xVel = Math.max(xVel - 1.25, 0);
 			} else {
 				xVel -= .5;
 			}
 			facingRight = 1;
 		} else if (xVel < -.25) {
-			if (!wallJump && !isDashing) {
+			if (!wallJump && !isDashingHorizontally) {
 				xVel = Math.min(xVel + 1.25, 0);
 			} else {
 				xVel += .5;
@@ -153,25 +180,30 @@ public class Madeline {
 	 * and any objects she is colliding with
 	 */
 	public void setVerticalPosition() {
+		double downAcc = GRAVITY;
+		if (noGrav) downAcc *= .5;
 		if (isCollidingFloor && !isCollidingWall) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax) {
-			if  (!isDashing) {
+			if  (!isDashingVertically) {
 				if (Math.abs(yVel) > 1.0) {
-					Math.min(yVel += GRAVITY, TERM_VEL);
+					Math.min(yVel += downAcc, TERM_VEL);
 				} else {
-					Math.min(yVel += (GRAVITY * 0.5), TERM_VEL);
+					Math.min(yVel += (downAcc * 0.5), TERM_VEL);
 				}
 				
 			}
 			
 		} else if (yVel > yVelMax) {
-			if (!isDashing) {
+			if (!isDashingVertically) {
 				yVel = yVelMax;
 			} else {
 				yVel -= .5;
 			}
 		}
+		//if (yVel > 0 && isDashingHorizontally) {
+			//yVel = 0;
+		//}
 		if (!isCollidingFloor) {
 			if (isCollidingWithCeiling() && yVel < 0) {
 				yVel = 0;
@@ -184,12 +216,26 @@ public class Madeline {
 	 * Updates Madeline's state
 	 */
 	public void checkState() {
-		if (MainApp.time > timeAtDash + 200) {
+		if (MainApp.time > timeAtDash + VERT_DASH_TIME) {
+			isDashingVertically = false;
+			canJump = true;
+		}
+		if (MainApp.time > timeAtDash + HORZ_DASH_TIME) {
 			isDashingHorizontally = false;
-			isDashing = false;
+		}
+		if (MainApp.time > timeAtDash + dashTimer) {
+			canControl = true;
+			controlTimerDecreased = false;
 		}
 		if (MainApp.time > timeAtWallJump + 300) {
 			wallJump = false;
+			noGrav = true;
+		}
+		if (MainApp.time > timeAtWallJump + 400) {
+			noGrav = false;
+		}
+		if (MainApp.time > timeAtDash + HORZ_DASH_TIME + 0) {
+			useDashDeccel = false;
 		}
 		if (isCollidingWithFloor()) {
 			numOfDashesRemaining = numOfDashesTotal;
@@ -203,7 +249,7 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) xVel + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, facingRight)) {
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, facingRight)) {
 				if (i < collisionObjects.size())
 				{
 					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) xPos = collisionObjects.get(i).getX() - WIDTH + 6;
@@ -252,7 +298,7 @@ public class Madeline {
 	 * 
 	 * @return true if there is a floor below, otherwise false
 	 */
-	public boolean isFloorBelow() {
+	public boolean isTouchingFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET, yPos + 5 + Y_COLLISION_OFFSET)) {
 				return true;
@@ -281,11 +327,11 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if (isCollidingFloor && !jumpPressed) {
+		if (isTouchingFloor && !jumpPressed && canJump) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
-		} else if (isTouchingWall && !jumpPressed && !isCollidingFloor) {
+		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump) {
 			jumpPressed = true;
 			wallJump = true;
 			timeAtWallJump = MainApp.time;
@@ -310,39 +356,48 @@ public class Madeline {
 	 */
 	public boolean dash(String dir) {
 		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash) {
-			isDashing = true;
+			isDashingVertically = true;
+			isDashingHorizontally = true;
+			useDashDeccel = true;
 			numOfDashesRemaining--;
 			canDash = false;
 			timeAtDash = MainApp.time;
-			int dashVel = 13;
+			canControl = false;
+			canJump = false;
 			if (dir.equals("up")) {
-				yVel = -dashVel;
+				yVel = -Y_DASH_VEL;
 				xVel = 0;
+				dashTimer = VERT_DASH_TIME;
 			}
 			if (dir.equals("down")) {
-				yVel = dashVel;
+				yVel = Y_DASH_VEL;
 				xVel = 0;
+				dashTimer = VERT_DASH_TIME;
 			}
 			if (dir.equals("upleft")) {
-				yVel = -dashVel;
-				xVel = -dashVel;
+				yVel = -Y_DASH_VEL;
+				xVel = -X_DASH_VEL;
+				dashTimer = HORZ_DASH_TIME;
 			}
 			if (dir.equals("upright")) {
-				yVel = -dashVel;
-				xVel = dashVel;
+				yVel = -Y_DASH_VEL;
+				xVel = X_DASH_VEL;
+				dashTimer = HORZ_DASH_TIME;
 			}
 			if (dir.equals("downleft")) {
-				yVel = dashVel;
-				xVel = -dashVel;
+				yVel = Y_DASH_VEL;
+				xVel = -X_DASH_VEL;
+				dashTimer = HORZ_DASH_TIME;
 			}
 			if (dir.equals("downright")) {
-				yVel = dashVel;
-				xVel = dashVel;
+				yVel = Y_DASH_VEL;
+				xVel = X_DASH_VEL;
+				dashTimer = HORZ_DASH_TIME;
 			}
 			if (dir.equals("")) {
-				isDashingHorizontally = true;
-				xVel = dashVel * facingRight;
+				xVel = X_DASH_VEL * facingRight * 1.10;
 				yVel = 0;
+				dashTimer = HORZ_DASH_TIME;
 			}
 			return true;
 		}
@@ -537,7 +592,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (!wallJump && !isDashing) {
+		if (!wallJump && canControl) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
 	}
@@ -546,7 +601,7 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (!wallJump && !isDashing) {
+		if (!wallJump && canControl) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
 
@@ -565,7 +620,7 @@ public class Madeline {
 	}
 
 	public boolean getIsDashing() {
-		return isDashing;
+		return isDashingVertically;
 	}
 
 	public void springBounce() {
