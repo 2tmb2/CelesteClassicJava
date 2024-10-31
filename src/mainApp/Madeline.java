@@ -60,6 +60,8 @@ public class Madeline {
 	private static final double WALL_JUMP_VEL = 2.8 * (double)MainApp.PIXEL_DIM;
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 0.5;
+	private static final double BOUNCE_VEL = JUMP_VEL * 1.20;
+	private static final double BOUNCE_VEL_REDUCE = 0.2;
 
 	/**
 	 * Creates an empty Madeline object
@@ -567,7 +569,9 @@ public class Madeline {
 	}
 
 	public void springBounce() {
-		yVel = -15;
+		yVel = BOUNCE_VEL;
+		yPos -= 4 * MainApp.PIXEL_DIM;
+		xVel *= BOUNCE_VEL_REDUCE;
 		numOfDashesRemaining = numOfDashesTotal;
 	}
 

@@ -2,11 +2,9 @@ package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
 
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 public class Spring extends CollisionObject {
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
@@ -15,22 +13,14 @@ public class Spring extends CollisionObject {
 	private Madeline m;
 	private int originalY;
 	private int drawFrame;
-	private Timer restoreTimer;
+	
+	private long timeSinceBounce = MainApp.time;
 
 	public Spring(int x, int y, Madeline m) {
 		super(x + 6, y + 18, 36, 30);
 		this.m = m;
 		originalY = getY();
 		drawFrame = 1;
-		restoreTimer = new Timer(400, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				drawFrame = 1;
-				setY(originalY);
-				setHeight(30);
-			}
-		});
-		restoreTimer.setRepeats(false);
 	}
 
 	@Override
@@ -41,6 +31,11 @@ public class Spring extends CollisionObject {
 			frame1(g2);
 		} else {
 			frame2(g2);
+			if (MainApp.time > timeSinceBounce + 400) {
+				drawFrame = 1;
+				setY(originalY);
+				setHeight(30);
+			}
 		}
 
 	}
@@ -96,11 +91,13 @@ public class Spring extends CollisionObject {
 	}
 
 	private void bounce() {
+		if (MainApp.time < timeSinceBounce + 400) return;
 		m.springBounce();
+		timeSinceBounce = MainApp.time;
 		drawFrame = 2;
 		if (getY() == originalY) {
 			super.setY(getY() + 24);
 		}
-		restoreTimer.start();
+		//restoreTimer.start();
 	}
 }
