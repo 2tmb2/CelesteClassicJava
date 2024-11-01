@@ -2,6 +2,12 @@ package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import mainApp.Madeline;
 
@@ -13,8 +19,11 @@ import mainApp.Madeline;
 public class BreakableBlock extends CollisionObject {
 	private static final Color OUTER_COLOR = new Color(255, 241, 232);
 	private static final Color INNER_COLOR = new Color(41, 172, 253);
+	private static final Point BREAKABLE_BLOCK_SPRITE = new Point(0,192);
 	private boolean exists;
 	private Madeline m;
+	
+	private BufferedImage spriteMap;
 
 	/**
 	 * Creates a Breakable Block object. A breakable block is a block that, upon
@@ -29,6 +38,11 @@ public class BreakableBlock extends CollisionObject {
 	 */
 	public BreakableBlock(int x, int y, int width, int height, Madeline m) {
 		super(x, y, width, height);
+		try {
+			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		exists = true;
 		this.m = m;
 	}
@@ -41,32 +55,10 @@ public class BreakableBlock extends CollisionObject {
 		// exists dictates whether the block has been broken by Madeline or not
 		if (exists) {
 			// duplicates the Graphics2D object so that transformations don't affect future
-			// drawings
+
 			g2 = (Graphics2D) g2.create();
 			g2.translate(getX(), getY());
-
-			// Draws the inner section of the block
-			g2.setColor(INNER_COLOR);
-			g2.fillRect(12, 12, getWidth() - 24, getHeight() - 24);
-
-			// draws the outer section of the block
-			g2.setColor(OUTER_COLOR);
-			// top border
-			g2.fillRect(12, 6, getWidth() - 24, 6);
-			// left border
-			g2.fillRect(6, 6 + 6, 6, getHeight() - 24);
-			// bottom border
-			g2.fillRect(12, 0 + getHeight() - 12, getWidth() - 24, 6);
-			// right border
-			g2.fillRect(getWidth() - 12, 0 + 12, 6, getHeight() - 24);
-
-			// protruding parts (signifies that it can be broken)
-			for (int i = 0; i < getWidth() / 32; i++) {
-				g2.fillRect(0, 18 + 24 * i, 18, 12);
-				g2.fillRect(18 + 24 * i, 0, 12, 18);
-				g2.fillRect(18 + 24 * (getWidth() / 32) - 12, 18 + 24 * i, 18, 12);
-				g2.fillRect(18 + 24 * i, 18 + 24 * (getWidth() / 32) - 12, 12, 18);
-			}
+			g2.drawImage(spriteMap, 0, 0, getWidth(), getHeight(), (int)BREAKABLE_BLOCK_SPRITE.getX(), (int)BREAKABLE_BLOCK_SPRITE.getY() + 1, (int)BREAKABLE_BLOCK_SPRITE.getX() + getWidth(), (int)BREAKABLE_BLOCK_SPRITE.getY() + getHeight(), null);
 		}
 	}
 

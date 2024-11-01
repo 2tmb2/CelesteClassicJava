@@ -46,9 +46,11 @@ public class Madeline {
 	private boolean noGrav = false;
 	private boolean bounceHigh = true;
 	private boolean wallSlide = false;
+	private boolean breakState = false;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
+	private int frameAtBreak;
 	private int dashFrameTimer = 0;
 	
 	private int lifetime = 0;
@@ -69,7 +71,7 @@ public class Madeline {
 	private static final int Y_COLLISION_OFFSET = 18;
 	
 	private static final int VERT_DASH_FRAME = 12;
-	private static final int HORZ_DASH_FRAME = 20;
+	private static final int HORZ_DASH_FRAME = 24;
 	private static final int WALL_JUMP_FRAME = 16;
 	
 	//After dashing into a wall, how many ms for the player to regain control
@@ -84,23 +86,33 @@ public class Madeline {
 	//How many frames to float in a pure horizontal dash
 	private static final int HORZ_DASH_HOVER = 11;
 	
+	//How many frames after breaking block horizontally until can control
+	private static final int BREAK_CONTROL_TIMER = 9;
+	
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.1 * (double)MainApp.PIXEL_DIM;
 	private static final double TERM_VEL = 1.0 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double WALL_VEL = 0.2 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double JUMP_VEL = -1.975 * (double)MainApp.PIXEL_DIM;
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
+	
 	private static final double WALL_JUMP_X_VEL = 1.2 * (double)MainApp.PIXEL_DIM;
 	private static final double WALL_JUMP_Y_VEL = -1.90 * (double)MainApp.PIXEL_DIM;
+	
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
 	private static final double DASH_DECCEL = WALK_SPEED * 1.0;
+	
 	private static final double BOUNCE_VEL = JUMP_VEL * 1.27;
 	private static final double BOUNCE_VEL_REDUCE = 1.0;
 	private static final double BOUNCE_DASH_COEFF = 0.3;
+	
+	private static final double BREAK_VEL_X = 1.1 * (double)MainApp.PIXEL_DIM;
+	private static final double BREAK_VEL_Y = -1.1 * (double)MainApp.PIXEL_DIM;
+	
 	private static final double Y_DASH_VEL = 2.35 * (double)MainApp.PIXEL_DIM;
 	private static final double DIAG_DASH_Y_COEFF = 0.97;
-	private static final double X_DASH_VEL = Y_DASH_VEL * .65;
+	private static final double X_DASH_VEL = Y_DASH_VEL * .53;
 	private static final double DIAG_DASH_X_COEFF = 1.075;
 
 	/**
@@ -199,7 +211,7 @@ public class Madeline {
 	public void setHorizontalVelocity(boolean hasMoved) {
 		if (xVel > 0) { facingRight = 1; }
 		else if (xVel < 0) { facingRight = -1; }
-		if ((!hasMoved || Math.abs(xVel) > WALK_SPEED) && !isDashingHorizontally && !wallJump) {
+		if ((!hasMoved || Math.abs(xVel) > WALK_SPEED) && !isDashingHorizontally && !wallJump && !breakState) {
 			if (useDashDeccel) {
 				if (xVel > 0) {
 					xVel = Math.max(0, xVel - DASH_DECCEL);
@@ -216,7 +228,7 @@ public class Madeline {
 			
 			
 		}
-		if (isCollidingWall) {
+		if (isCollidingWall && !breakState) {
 			xVel = 0;
 		}
 	}
@@ -226,7 +238,7 @@ public class Madeline {
 		boolean noHover = false;
 		if (isDashingDiagonally && lifetime > frameAtDash + VERT_DASH_FRAME) {
 			noHover = true;
-			downAcc *= 1.1;
+			downAcc *= 1.05;
 		}
 		if (lowGrav) downAcc *= .5;
 		if (isCollidingFloor && !isCollidingWall) {
@@ -276,6 +288,9 @@ public class Madeline {
 			}
 			wallJump = false;
 			
+		}
+		if (lifetime > frameAtBreak + BREAK_CONTROL_TIMER) {
+			breakState = false;
 		}
 		if (lifetime > frameAtWallJump + WALL_JUMP_FRAME + LOW_GRAV_FRAME) {
 			lowGrav = false;
@@ -612,9 +627,13 @@ public class Madeline {
 	 */
 	public void breakBlock(int x, int y) {
 		lvl.addNewStrawberry(x, y-10, false);
-		xVel = -facingRight * 7;
-		yVel = -10;
-		yPos -= 10;
+		if (isDashingHorizontally) {
+			frameAtBreak = lifetime;
+			breakState = true;
+			xVel = -facingRight * BREAK_VEL_X;
+		}
+		yVel = BREAK_VEL_Y;
+		//yPos -= 10;
 	}
 
 	/**
@@ -673,7 +692,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (!wallJump && canControl && !isTouchingWallRight) {
+		if (!wallJump && canControl && !isTouchingWallRight && !breakState) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
 		if (isTouchingWallRight) wallSlide = true;
@@ -683,7 +702,7 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (!wallJump && canControl && !isTouchingWallLeft) {
+		if (!wallJump && canControl && !isTouchingWallLeft && !breakState) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
 		if (isTouchingWallLeft) wallSlide = true;
@@ -698,12 +717,13 @@ public class Madeline {
 	}
 
 	public void collectStrawberry() {
+		if (breakState) return;
 		resetDashes();
 		lvl.collectStrawberry();
 	}
 
 	public boolean getIsDashing() {
-		return isDashingVertically;
+		return isDashingVertically || isDashingHorizontally;
 	}
 
 	public void springBounce() {
