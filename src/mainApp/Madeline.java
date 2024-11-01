@@ -544,30 +544,30 @@ public class Madeline {
 		// WIP
 		// ======================================
 		// draws the velocity-affected section of Madeline's hair
-		double xModifier = -2 * Math.abs(xVel);
-		if (Math.abs(xVel) >= 3) {
-			xModifier = (Math.abs(xVel) / xVel) * 3 * -2 * facingRight;
-		}
-		double yModifier = 0;
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 0, 6, 6);
-
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 6, 12, 6);
-
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 12, 18, 6);
-
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 18, 24, 6);
-
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(12, 24, 30, 6);
-
-		g2.translate(xModifier, yModifier);
-		g2.fillRect(24, 30, 18, 6);
-
-		g2.translate(-6 * xModifier, -6 * yModifier);
+//		double xModifier = -2 * Math.abs(xVel);
+//		if (Math.abs(xVel) >= 3) {
+//			xModifier = (Math.abs(xVel) / xVel) * 3 * -2 * facingRight;
+//		}
+//		double yModifier = 0;
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(12, 0, 6, 6);
+//
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(12, 6, 12, 6);
+//
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(12, 12, 18, 6);
+//
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(12, 18, 24, 6);
+//
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(12, 24, 30, 6);
+//
+//		g2.translate(xModifier, yModifier);
+//		g2.fillRect(24, 30, 18, 6);
+//
+//		g2.translate(-6 * xModifier, -6 * yModifier);
 
 		// ======================================
 		// END WIP
