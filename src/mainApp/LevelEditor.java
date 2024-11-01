@@ -207,6 +207,7 @@ public class LevelEditor extends JComponent {
 			if (y < ATLAS_HEIGHT) {
 				selectedX = gridX;
 				selectedY = gridY;
+				System.out.println("x: " + selectedX + ", y: " + selectedY);
 			} else if (y > ATLAS_HEIGHT + (OPTIONS_Y / 2) && y < ATLAS_HEIGHT + OPTIONS_Y) {
 				newLayer = gridX;
 				newSelectedLayer = ((newLayer - GAME_WIDTH) / SPRITE_WIDTH);
@@ -258,9 +259,16 @@ public class LevelEditor extends JComponent {
 				objectLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			}
 		} else if (x <= GAME_WIDTH && selectedLayer == 4) {
+			Color rectColor;
+			if (selectedX == 1488 && selectedY == 432)
+			{
+				rectColor = BLUE_COLOR;
+			}
+			else
+				rectColor = GREEN_COLOR;
 			topLeft = new Point(x - (x % SPRITE_WIDTH), y - (y % SPRITE_HEIGHT));
 			botRight = new Point();
-			tempRect = new ColoredRectangle(topLeft, new Dimension((int)(botRight.getX() - topLeft.getX()),(int)(botRight.getX() - topLeft.getX())), GREEN_COLOR);
+			tempRect = new ColoredRectangle(topLeft, new Dimension((int)(botRight.getX() - topLeft.getX()),(int)(botRight.getX() - topLeft.getX())), rectColor);
 		}
 	}
 	
@@ -342,7 +350,7 @@ public class LevelEditor extends JComponent {
 				}
 				else if (getColliderAtPoint(j,i) != null)
 				{
-					levelDataString += getColliderSize(getColliderAtPoint(j,i));
+					levelDataString += getColliderAtPoint(j,i).getIsIce() + getColliderSize(getColliderAtPoint(j,i));
 				}
 				else
 				{
@@ -383,12 +391,12 @@ public class LevelEditor extends JComponent {
 			writer.write(levelDataString);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		} catch (NullPointerException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	

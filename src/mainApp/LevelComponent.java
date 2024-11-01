@@ -367,10 +367,14 @@ public class LevelComponent extends JComponent {
 						madX = j * MainApp.PIXEL_DIM * 8;
 						madY = i * MainApp.PIXEL_DIM * 8;
 						break;
+					case ('I'):
+						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (secondChar - '0') * 8*MainApp.PIXEL_DIM,
+								(objectsData[j].charAt(2) - '0') * 8*MainApp.PIXEL_DIM, false, true));
+						break;
 					default:
 						if (firstChar - '0' < 0 || firstChar - '0' > 10) {
 							throw new ImproperlyFormattedLevelException(
-									"Character " + firstChar + " was not recognized");
+									"Character " + firstChar + " was not recognized in level creation");
 						}
 						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (firstChar - '0') * 8*MainApp.PIXEL_DIM,
 								(secondChar - '0') * 8*MainApp.PIXEL_DIM, true, true));
@@ -422,10 +426,6 @@ public class LevelComponent extends JComponent {
 			int index = 0;
 			while (s1.hasNext()) {
 				String line = s1.nextLine();
-				if (index <= 15 && line.length() != 47) {
-					throw new ImproperlyFormattedLevelException(
-							"Incorrect line length. Expected length 47 but received length " + line.length());
-				}
 				output[index] = line;
 				index++;
 			}

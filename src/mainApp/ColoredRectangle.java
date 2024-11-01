@@ -6,7 +6,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class ColoredRectangle extends Rectangle {
+	private static final Color BLUE_COLOR = new Color(63, 73, 204);
+	private static final Color GREEN_COLOR = new Color(14,209, 69);
 	private Color color;
+	
 	public ColoredRectangle(Point p, Dimension d, Color color) {
 		super(p, d);
 		this.color = color;
@@ -23,5 +26,13 @@ public class ColoredRectangle extends Rectangle {
 	
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public String getIsIce()
+	{
+		if (color.equals(GREEN_COLOR))
+			return "";
+		else
+			return "I";
 	}
 }

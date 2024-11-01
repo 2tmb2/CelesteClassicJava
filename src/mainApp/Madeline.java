@@ -94,7 +94,7 @@ public class Madeline {
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.1 * (double)MainApp.PIXEL_DIM;
 	private static final double TERM_VEL = 1.0 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double WALL_VEL = 0.2 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double WALL_VEL = 0.25 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double JUMP_VEL = -1.975 * (double)MainApp.PIXEL_DIM;
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
 	
