@@ -535,10 +535,10 @@ public class Madeline {
 		}
 		// drawing hair
 		g2.setColor(hairColor);
-		g2.fillRect(6, 0, 36, 6);
-		g2.fillRect(0, 6, 48, 18);
-		g2.fillRect(0, 24, 12, 6);
-		g2.fillRect(6, 30, 6, 6);
+		g2.fillRect(MainApp.PIXEL_DIM, 0, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
+		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 		// ======================================
 		// WIP
@@ -575,30 +575,30 @@ public class Madeline {
 
 		// drawing face
 		g2.setColor(FACE_COLOR);
-		g2.fillRect(18, 12, 24, 6);
-		g2.fillRect(12, 18, 30, 12);
+		g2.fillRect(3*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM);
 
 		// drawing torso
 		g2.setColor(TORSO_COLOR);
-		g2.fillRect(12, 30, 24, 6);
+		g2.fillRect(2*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 		// drawing legs
 		g2.setColor(LEG_COLOR);
-		g2.fillRect(12, 36, 6, 6);
-		g2.fillRect(30, 36, 6, 6);
+		g2.fillRect(2*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(5*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 		// drawing eyes
 		g2.setColor(EYE_COLOR);
-		g2.fillRect(18, 18, 6, 6);
-		g2.fillRect(36, 18, 6, 6);
+		g2.fillRect(3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(6*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 	}
 
 	public static int roundPos(int toRound) {
-		if (toRound % 6 <= 2) {
-			return (toRound - (toRound % 6));
+		if (toRound % MainApp.PIXEL_DIM <= 2) {
+			return (toRound - (toRound % MainApp.PIXEL_DIM));
 		} else {
-			return (toRound + (6 - (toRound % 6)));
+			return (toRound + (MainApp.PIXEL_DIM - (toRound % MainApp.PIXEL_DIM)));
 		}
 	}
 
