@@ -69,7 +69,7 @@ public class Madeline {
 	private static final int Y_COLLISION_OFFSET = 18;
 	
 	private static final int VERT_DASH_FRAME = 12;
-	private static final int HORZ_DASH_FRAME = 22;
+	private static final int HORZ_DASH_FRAME = 20;
 	private static final int WALL_JUMP_FRAME = 16;
 	
 	//After dashing into a wall, how many ms for the player to regain control
@@ -95,12 +95,12 @@ public class Madeline {
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
 	private static final double DASH_DECCEL = WALK_SPEED * 1.0;
-	private static final double BOUNCE_VEL = JUMP_VEL * 1.10;
+	private static final double BOUNCE_VEL = JUMP_VEL * 1.27;
 	private static final double BOUNCE_VEL_REDUCE = 1.0;
 	private static final double BOUNCE_DASH_COEFF = 0.3;
 	private static final double Y_DASH_VEL = 2.35 * (double)MainApp.PIXEL_DIM;
 	private static final double DIAG_DASH_Y_COEFF = 0.97;
-	private static final double X_DASH_VEL = Y_DASH_VEL * .60;
+	private static final double X_DASH_VEL = Y_DASH_VEL * .65;
 	private static final double DIAG_DASH_X_COEFF = 1.075;
 
 	/**
@@ -716,6 +716,9 @@ public class Madeline {
 		yPos -= 4 * MainApp.PIXEL_DIM;
 		xVel *= BOUNCE_VEL_REDUCE;
 		numOfDashesRemaining = numOfDashesTotal;
+		//canDash = true;
+		//canControl = true;
+		dashFrameTimer = lifetime - 1000;
 	}
 
 	public void resetDashes()
