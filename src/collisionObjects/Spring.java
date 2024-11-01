@@ -7,7 +7,6 @@ import mainApp.Madeline;
 import mainApp.MainApp;
 
 public class Spring extends CollisionObject {
-	private static final long REACTIVATION_TIME = (long)(400.0 * MainApp.FRAME_COEFF);
 	private static final long REACTIVATION_FRAME = 12;
 	
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
@@ -17,8 +16,6 @@ public class Spring extends CollisionObject {
 	private int originalY;
 	private int drawFrame;
 	private int currentFrame;
-	
-	private long timeSinceBounce = MainApp.time;
 
 	public Spring(int x, int y, Madeline m) {
 		super(x + 6, y + 18, 36, 30);

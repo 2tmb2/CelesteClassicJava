@@ -17,8 +17,6 @@ import mainApp.Madeline;
  * dashed into
  */
 public class BreakableBlock extends CollisionObject {
-	private static final Color OUTER_COLOR = new Color(255, 241, 232);
-	private static final Color INNER_COLOR = new Color(41, 172, 253);
 	private static final Point BREAKABLE_BLOCK_SPRITE = new Point(0,192);
 	private boolean exists;
 	private Madeline m;

@@ -2,119 +2,94 @@ package collectables;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 public class Balloon extends CollisionObject {
 	
-	private static final Color BALLOON_PINK = new Color(255, 0, 77);
-	private static final Color BALLOON_WHITE = new Color(255, 241, 232);
-	private static final Color BALLOON_GREY = new Color(194, 195, 199);
+	private static final Point BALLOON_TOP_SPRITE = new Point(288,48);
+	private static final Point BALLOON_BOTTOM_ONE = new Point(624, 0);
+	private static final Point BALLOON_BOTTOM_TWO = new Point(672, 0);
+	private static final Point BALLOON_BOTTOM_THREE = new Point(720, 0);
+	
+	private static final int RESPAWN_FRAMES = 120;
+	private static final int ANIMATION_DELTA = 28;
+	private static final int PERIOD = 192; //How many frames to hover up and then back down
+	private static final double AMPLITUDE = 1.5 * (double)MainApp.PIXEL_DIM; //Amplitude of periodic motion
+	
+	private static final int BALLOON_TOP_WIDTH = 48;
+	private static final int BALLOON_TOP_HEIGHT = 48;
+	
+	private static final int BALLOON_BOTTOM_WIDTH = 48;
+	private static final int BALLOON_BOTTOM_HEIGHT = 48;
+	
+	private BufferedImage spriteMap;
+	private int timeAtCollect = 0;
+	private int lifetime = 0;
 	private int currentFrame;
-	private int increment;
-	private int originalY;
+	private int verticalDelta = 0;
 	private Madeline m;
 	private boolean isCollected;
-	private Timer animationTimer;
-	private Timer respawnTimer;
-	private double timerTriggerNumber;
 	public Balloon(int x, int y, Madeline m)
 	{
 		super(x,y,42,48);
-		originalY = y;
-		currentFrame = 1;
-		timerTriggerNumber = 0;
+		try {
+			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		currentFrame = 0;
 		isCollected = false;
 		this.m = m;
-		animationTimer = new Timer(300, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (currentFrame == 1) {
-					currentFrame = 2;
-				}
-				else if (currentFrame == 2)
-				{
-					currentFrame = 3;
-				}
-				else
-				{
-					currentFrame = 1;
-				}
-				timerTriggerNumber += 1.5;
-				if (timerTriggerNumber % 1 == 0)
-				{
-					if (getY() + increment >= originalY + 24)
-					{
-						increment = increment * -1;
-					}
-					else if (getY() + increment < originalY)
-					{
-						increment = increment * -1;
-					}
-					setY(getY() + increment);
-				}
-			}
-		});
-		increment = 6;
-		animationTimer.start();
 	}
 	
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
+		lifetime++;
+		if (lifetime > timeAtCollect + RESPAWN_FRAMES) isCollected = false;
+		if (lifetime % ANIMATION_DELTA == 0) {
+			currentFrame++;
+			currentFrame = currentFrame % 3;
+		}
+		verticalDelta = Madeline.roundPos(((int)(-AMPLITUDE * Math.cos(Math.PI * (double)lifetime / (double)(PERIOD / 2)) + AMPLITUDE)));
 		if (!isCollected)
 		{
 			g2 = (Graphics2D)g2.create();
 			g2.translate(getX(), getY());
 			
-			g2.setColor(BALLOON_PINK);
-			g2.fillRect(6,0,24,6);
-			g2.fillRect(0,6,36,30);
-			g2.fillRect(6,36,24,6);
-			
-			g2.setColor(BALLOON_WHITE);
-			g2.fillRect(6,12,6,6);
-			
-			g2.setColor(BALLOON_GREY);
-			if (currentFrame == 1)
+			g2.drawImage(spriteMap, 0, 0 - verticalDelta, BALLOON_TOP_WIDTH, BALLOON_TOP_HEIGHT - verticalDelta, (int)BALLOON_TOP_SPRITE.getX(), (int)BALLOON_TOP_SPRITE.getY() + 1, (int)BALLOON_TOP_SPRITE.getX() + BALLOON_TOP_WIDTH, (int)BALLOON_TOP_SPRITE.getY() + BALLOON_TOP_HEIGHT, null);
+			if (currentFrame == 0)
 			{
-				drawStemFrame1(g2);
+				drawStemFrame(g2,BALLOON_BOTTOM_ONE);
 			}
-			else if (currentFrame == 2)
+			else if (currentFrame == 1)
 			{
-				drawStemFrame2(g2);
+				drawStemFrame(g2,BALLOON_BOTTOM_TWO);
 			}
 			else
 			{
-				drawStemFrame3(g2);
+				drawStemFrame(g2,BALLOON_BOTTOM_THREE);
 			}
 		}
 	}
 	
-	private void drawStemFrame1(Graphics2D g2)
+	private void drawStemFrame(Graphics2D g2, Point spritePoint)
 	{
-		g2.fillRect(18,42,6,18);
-		g2.fillRect(12,60,6,24);
+		g2.drawImage(spriteMap, 0, BALLOON_TOP_HEIGHT - verticalDelta, BALLOON_TOP_WIDTH, BALLOON_TOP_HEIGHT + BALLOON_BOTTOM_HEIGHT - verticalDelta, (int)spritePoint.getX(), (int)spritePoint.getY() + 1, (int)spritePoint.getX() + BALLOON_BOTTOM_WIDTH, (int)spritePoint.getY() + BALLOON_BOTTOM_HEIGHT, null);
 	}
 	
-	private void drawStemFrame2(Graphics2D g2)
-	{
-		g2.fillRect(12,42,6,18);
-		g2.fillRect(18,60,6,24);
-	}
-	
-	private void drawStemFrame3(Graphics2D g2)
-	{
-		g2.fillRect(18,42,6,6);
-		g2.fillRect(12,48,6,24);
-		g2.fillRect(18,72,6,12);
-	}
 	
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
@@ -150,21 +125,7 @@ public class Balloon extends CollisionObject {
 	{
 		m.resetDashes();
 		isCollected = true;
-		respawnTimer = new Timer(3000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				isCollected = false;
-			}
-		});
-		respawnTimer.setRepeats(false);
-		respawnTimer.start();
-	}
-	
-	@Override
-	public void stopAllTimers()
-	{
-		animationTimer.stop();
+		timeAtCollect = lifetime;
 	}
 	
 }
