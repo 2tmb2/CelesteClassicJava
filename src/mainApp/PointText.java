@@ -36,7 +36,7 @@ public class PointText {
 		// creates a copy of the Graphics2D object so that translations don't affect
 		// future drawings
 		g2 = (Graphics2D) g2.create();
-		g2.translate(x - 36, y - translateBy - 20);
+		g2.translate(x - 6*MainApp.PIXEL_DIM, y - translateBy - 20);
 		g2.setColor(currentColor);
 
 		BlockyText.drawText(g2, "1000");

@@ -304,46 +304,46 @@ public class LevelComponent extends JComponent {
 					case ('['):
 						break;
 					case ('>'):
-						RightSpike r = new RightSpike(j * 48, i * 48, (secondChar - '0') * 48, m);
+						RightSpike r = new RightSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
 						otherObject.add(r);
 						collisionObjects.add(r);
 						break;
 					case ('<'):
-						LeftSpike l = new LeftSpike(j * 48 + 30, i * 48 - 6, (secondChar - '0') * 48, m);
+						LeftSpike l = new LeftSpike(j * MainApp.PIXEL_DIM * 8 + 5*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 - 6, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
 						collisionObjects.add(l);
 						otherObject.add(l);
 						break;
 					case ('^'):
-						UpSpike u = new UpSpike(j * 48, i * 48 + 30, (secondChar - '0') * 48, m);
+						UpSpike u = new UpSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8 + 5*MainApp.PIXEL_DIM, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
 						collisionObjects.add(u);
 						otherObject.add(u);
 						break;
 					case ('v'):
-						DownSpike d = new DownSpike(j * 48, i * 48 + 0, (secondChar - '0') * 48, m);
+						DownSpike d = new DownSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8 + 0, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
 					case ('p'):
-						Spring s = new Spring(j * 48, i * 48, m);
+						Spring s = new Spring(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, m);
 						collisionObjects.add(s);
 						otherObject.add(s);
 						break;
 					case ('d'):
 						if (secondChar != 'd')
 						{
-							DissappearingSpring dSpring = new DissappearingSpring(j*48,i*48, m);
+							DissappearingSpring dSpring = new DissappearingSpring(j*8*MainApp.PIXEL_DIM,i*8*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(dSpring);
 							otherObject.add(dSpring);
 						}
 						else
 						{
-							DissappearingBlock dBlock = new DissappearingBlock(j*48,i*48);
+							DissappearingBlock dBlock = new DissappearingBlock(j*8*MainApp.PIXEL_DIM,i*8*MainApp.PIXEL_DIM);
 							collisionObjects.add(dBlock);
 							otherObject.add(dBlock);
 						}
 						break;
 					case ('r'):
-						Balloon bal = new Balloon(j*48,i*48, m);
+						Balloon bal = new Balloon(j*MainApp.PIXEL_DIM*8,i * MainApp.PIXEL_DIM * 8, m);
 						otherObject.add(bal);
 						collisionObjects.add(bal);
 						break;
@@ -355,41 +355,41 @@ public class LevelComponent extends JComponent {
 						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected) {
-							BreakableBlock b = new BreakableBlock(j * 48, i * 48, 2 * 48, 2 * 48, m);
+							BreakableBlock b = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(b);
 							otherObject.add(b);
 						}
 						break;
 					case ('s'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new Strawberry(j * 48 + 24, i * 48 + 18, m);
+							strawberry = new Strawberry(j * MainApp.PIXEL_DIM * 8 + 4*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 + 3*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('w'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new WingedStrawberry(j * 48 + 24, i * 48 + 18, m);
+							strawberry = new WingedStrawberry(j * MainApp.PIXEL_DIM * 8 + 4*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 + 3*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('m'):
-						madX = j * 48;
-						madY = i * 48;
+						madX = j * MainApp.PIXEL_DIM * 8;
+						madY = i * MainApp.PIXEL_DIM * 8;
 						break;
 					default:
 						if (firstChar - '0' < 0 || firstChar - '0' > 10) {
 							throw new ImproperlyFormattedLevelException(
 									"Character " + firstChar + " was not recognized");
 						}
-						collisionObjects.add(new CollisionObject(j * 48, i * 48, (firstChar - '0') * 48,
-								(secondChar - '0') * 48));
+						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (firstChar - '0') * 8*MainApp.PIXEL_DIM,
+								(secondChar - '0') * 8*MainApp.PIXEL_DIM));
 					}
 					// Creates offscreen objects
-					collisionObjects.add(new CollisionObject(-48, -48, 48, 20 * 48)); // Invisible wall on left side
-					collisionObjects.add(new CollisionObject(16 * 48, -48, 48, 20 * 48)); // Invisible wall on right
+					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM)); // Invisible wall on left side
+					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM)); // Invisible wall on right
 																							// side
-					collisionObjects.add(new LevelFinishZone(-48, -48 - 6, 20 * 48, 48, m)); // Finish zone on top side
-					collisionObjects.add(new UpSpike(-48, 17 * 48, 20 * 48, m)); // Death zone on bottom side
+					collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
+					collisionObjects.add(new UpSpike(-8*MainApp.PIXEL_DIM, 17 * 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, m)); // Death zone on bottom side
 					m.setCanCollide(true);
 				}
 			}

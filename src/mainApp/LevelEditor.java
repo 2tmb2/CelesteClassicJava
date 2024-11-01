@@ -330,7 +330,7 @@ public class LevelEditor extends JComponent {
 			for (int j = 0; j < 16; j++) {
 				if (objectLayer[j][i] != null)
 				{
-					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(768))/SPRITE_WIDTH, (int)objectLayer[j][i].getY()/SPRITE_WIDTH);
+					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(128*MainApp.PIXEL_DIM))/SPRITE_WIDTH, (int)objectLayer[j][i].getY()/SPRITE_WIDTH);
 					if (data.get(point) != null)
 					{
 						levelDataString += data.get(point);

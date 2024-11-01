@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 public class DownSpike extends Spike {
 
@@ -18,19 +19,19 @@ public class DownSpike extends Spike {
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX(), getY() - 6);
-		for (int i = 0; i < getWidth() / 24; i++) {
+		g2.translate(getX(), getY() - MainApp.PIXEL_DIM);
+		for (int i = 0; i < getWidth() / (4*MainApp.PIXEL_DIM); i++) {
 			g2.setColor(SPIKE_GREY);
-			g2.fillRect(0, 6, 18, 18);
+			g2.fillRect(0, MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
 
 			g2.setColor(SPIKE_WHITE);
-			g2.fillRect(6, 12, 6, 24);
-			g2.fillRect(12, 18, 6, 6);
+			g2.fillRect(MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM);
+			g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 			g2.setColor(SPIKE_BROWN);
-			g2.fillRect(18, 6, 6, 12);
+			g2.fillRect(3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM);
 
-			g2.translate(24, 0);
+			g2.translate(4*MainApp.PIXEL_DIM, 0);
 		}
 	}
 	

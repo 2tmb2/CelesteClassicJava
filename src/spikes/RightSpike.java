@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 public class RightSpike extends Spike {
 
@@ -12,37 +13,37 @@ public class RightSpike extends Spike {
 	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
 
 	public RightSpike(int x, int y, int height, Madeline m) {
-		super(x, y, 18, height, m);
+		super(x, y, 3*MainApp.PIXEL_DIM, height, m);
 	}
 
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX() - 6, getY() + 6);
-		for (int i = 0; i < getHeight() / 24; i++) {
+		g2.translate(getX() - MainApp.PIXEL_DIM, getY() + MainApp.PIXEL_DIM);
+		for (int i = 0; i < getHeight() / (4*MainApp.PIXEL_DIM); i++) {
 			g2.setColor(SPIKE_GREY);
-			g2.fillRect(6, 0, 18, 18);
+			g2.fillRect(MainApp.PIXEL_DIM, 0, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
 
 			g2.setColor(SPIKE_WHITE);
-			g2.fillRect(12, 6, 24, 6);
-			g2.fillRect(18, 12, 6, 6);
+			g2.fillRect(2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+			g2.fillRect(3*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
 			g2.setColor(SPIKE_BROWN);
-			g2.fillRect(6, -6, 12, 6);
+			g2.fillRect(MainApp.PIXEL_DIM, -MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 
-			g2.translate(0, 24);
+			g2.translate(0, 4*MainApp.PIXEL_DIM);
 		}
 	}
 
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		// gives a grace period at the top of the spike
-		return super.isCollidingFloor(madelineX, madelineY - 12);
+		return super.isCollidingFloor(madelineX, madelineY - 2*MainApp.PIXEL_DIM);
 	}
 
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		// gives a grace period at the bottom of the spike
-		return super.isCollidingCeiling(madelineX, madelineY + 12);
+		return super.isCollidingCeiling(madelineX, madelineY + 2*MainApp.PIXEL_DIM);
 	}
 }

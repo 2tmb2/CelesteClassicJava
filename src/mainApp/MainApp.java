@@ -387,16 +387,6 @@ public class MainApp implements KeyListener {
     	}
     	
     }
-    
-    private void checkLoadCustomLevel()
-    {
-    	if (canLoadCustomLevel) {
-    		if (pressedKeys.contains(1))
-    		{
-    			
-    		}
-    	}
-    }
 
 	/**
 	 * ensures: runs the application
