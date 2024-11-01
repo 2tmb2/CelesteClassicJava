@@ -218,7 +218,6 @@ public class Madeline {
 		}
 		if (isCollidingWall) {
 			xVel = 0;
-			System.out.println("setting to 0");
 		}
 	}
 	
