@@ -18,7 +18,7 @@ public class DissappearingBlock extends CollisionObject{
 	
 	public DissappearingBlock(int x, int y)
 	{
-		super(x,y,48,48);
+		super(x,y,48,48, true, true);
 		isVisible = true;
 		animationFrame = 0;
 		

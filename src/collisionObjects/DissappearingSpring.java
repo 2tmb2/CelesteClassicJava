@@ -28,7 +28,7 @@ public class DissappearingSpring extends CollisionObject {
 	
 	public DissappearingSpring(int x, int y, Madeline m)
 	{
-		super(x,y,48,96);
+		super(x,y,48,96, true, true);
 		this.m = m;
 		isVisible = true;
 		animationFrame = 0;

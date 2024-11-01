@@ -19,7 +19,7 @@ public class Strawberry extends CollisionObject {
 	private Madeline m;
 
 	public Strawberry(int x, int y, Madeline m) {
-		super(x, y, 56, 56);
+		super(x, y, 56, 56, false, false);
 		this.m = m;
 		setCurrentFrame(0);
 		setNumOfAnimationFrames(80);

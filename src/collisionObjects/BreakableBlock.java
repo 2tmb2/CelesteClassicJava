@@ -35,7 +35,7 @@ public class BreakableBlock extends CollisionObject {
 	 *               interacting with the BreakableBlock
 	 */
 	public BreakableBlock(int x, int y, int width, int height, Madeline m) {
-		super(x, y, width, height);
+		super(x, y, width, height, true, true);
 		try {
 			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 		} catch (IOException e) {

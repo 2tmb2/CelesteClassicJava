@@ -15,7 +15,7 @@ public abstract class Spike extends CollisionObject{
 	
 	public Spike(int x, int y, int width, int height, Madeline m)
 	{
-		super(x, y, width, height);
+		super(x, y, width, height, false, false);
 		this.m = m;
 	}
 	@Override

@@ -37,18 +37,10 @@ public class LevelComponent extends JComponent {
 	private Point[][] layer;
 	private int madX;
 	private int madY;
-	private ArrayList<CollisionObject> hasConnectsAt;
-	private ArrayList<CollisionObject> noConnectsAt;
 	private ArrayList<CollisionObject> otherObject;
-	private static final int ATLAS_WIDTH = 128 * MainApp.PIXEL_DIM;
-	private static final int ATLAS_HEIGHT = 88 * MainApp.PIXEL_DIM;
-	private static final int OPTIONS_Y = 16 * MainApp.PIXEL_DIM;
 	private static final int GAME_WIDTH = 768;
-	private static final int GAME_HEIGHT = GAME_WIDTH;
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
-	private static final int FONT_WIDTH = 3;
-	private static final int FONT_HEIGHT = 5;
 	private BufferedImage scaledMap;
 	/**
 	 * Creates a LevelComponent Object
@@ -62,8 +54,6 @@ public class LevelComponent extends JComponent {
 	 */
 	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected) {
 		this.main = main;
-		hasConnectsAt = new ArrayList<CollisionObject>();
-		noConnectsAt = new ArrayList<CollisionObject>();
 		otherObject = new ArrayList<CollisionObject>();
 		try {
 			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
@@ -83,6 +73,7 @@ public class LevelComponent extends JComponent {
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
+		
 		drawLayer(g2, layer);
 		for (CollisionObject c : otherObject) {
 			c.drawOn(g2);
@@ -382,11 +373,11 @@ public class LevelComponent extends JComponent {
 									"Character " + firstChar + " was not recognized");
 						}
 						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (firstChar - '0') * 8*MainApp.PIXEL_DIM,
-								(secondChar - '0') * 8*MainApp.PIXEL_DIM));
+								(secondChar - '0') * 8*MainApp.PIXEL_DIM, true, true));
 					}
 					// Creates offscreen objects
-					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM)); // Invisible wall on left side
-					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM)); // Invisible wall on right
+					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on left side
+					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on right
 																							// side
 					collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
 					collisionObjects.add(new UpSpike(-8*MainApp.PIXEL_DIM, 17 * 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, m)); // Death zone on bottom side

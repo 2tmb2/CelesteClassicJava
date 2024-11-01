@@ -14,12 +14,16 @@ public class CollisionObject {
 	private int height;
 	private static final int MADELINE_WIDTH = 36;
 	private static final int MADELINE_HEIGHT = 24;
+	private boolean canSlide;
+	private boolean canWallJump;
 
-	public CollisionObject(int x, int y, int width, int height) {
+	public CollisionObject(int x, int y, int width, int height, boolean canSlide, boolean canWallJump) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.canSlide = canSlide;
+		this.canWallJump = canWallJump;
 	}
 
 	public void drawOn(Graphics2D g2) {}
@@ -136,6 +140,16 @@ public class CollisionObject {
 		return MADELINE_HEIGHT;
 	}
 
+	public boolean getCanSlide()
+	{
+		return canSlide;
+	}
+	
+	public boolean getCanWallJump()
+	{
+		return canWallJump;
+	}
+	
 	public void stopAllTimers() {}
 	
 	/**

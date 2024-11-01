@@ -43,7 +43,7 @@ public class Balloon extends CollisionObject {
 	private boolean isCollected;
 	public Balloon(int x, int y, Madeline m)
 	{
-		super(x,y,42,48);
+		super(x,y,42,48, false, false);
 		try {
 			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 		} catch (IOException e) {

@@ -57,6 +57,7 @@ public class Madeline {
 
 	private Color hairColor;
 	private int hairSwitchFrame;
+	private boolean canWallJump;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
@@ -150,13 +151,14 @@ public class Madeline {
 	public void setPosition() {
 		//if (Math.abs(xVel) > 0.1) System.out.println(xVel);
 		lifetime++;
-		isCollidingWall = isCollidingWithWall();
 		isCollidingFloor = isCollidingWithFloor();
 		isTouchingWallLeft = isTouchingWall(-1);
 		isTouchingWallRight = isTouchingWall(1);
 		isCollidingCeiling = isCollidingWithCeiling();
 		isTouchingWall = isTouchingWallLeft || isTouchingWallRight;
 		isTouchingFloor = isTouchingFloor();
+		isCollidingWall = isCollidingWithWall();
+		setCanSlide();
 		if (isCollidingWall) {
 			canJump = true;
 			lowGrav = false;
@@ -173,7 +175,7 @@ public class Madeline {
 		}
 		if (wallSlide) {
 			yVelMax = WALL_VEL;
-			wallSlide = false;
+			//wallSlide = false;
 		} else {
 			yVelMax = TERM_VEL;
 		}
@@ -311,7 +313,7 @@ public class Madeline {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
-		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump) {
+		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && canWallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			frameAtWallJump = lifetime;
@@ -406,8 +408,10 @@ public class Madeline {
 			if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, facingRight)) {
 				if (i < collisionObjects.size())
 				{
-					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) xPos = collisionObjects.get(i).getX() - WIDTH + 6;
-					else if (Math.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20){ xPos = collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() - 6; }
+					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) 
+						xPos = collisionObjects.get(i).getX() - WIDTH + 6;
+					else if (Math.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
+						xPos = collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() - 6;
 					return true;
 				}
 			}
@@ -415,6 +419,18 @@ public class Madeline {
 		return false;
 	}
 
+	public void setCanSlide() {
+		for (CollisionObject c : collisionObjects)
+		{
+			if (c.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight))
+			{
+				wallSlide = c.getCanSlide();
+				return;
+			}
+		}
+		wallSlide = false;
+	}
+	
 	/**
 	 * Checks if Madeline is directly adjacent to a wall (not moving into one)
 	 * 
@@ -427,7 +443,6 @@ public class Madeline {
 			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight)) {
 				return true;
 			};
-			
 		}
 		return false;
 	}
@@ -443,9 +458,9 @@ public class Madeline {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
 			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, side)) {
+				canWallJump = object.getCanWallJump();
 				return true;
 			};
-			
 		}
 		return false;
 	}
@@ -695,7 +710,7 @@ public class Madeline {
 		if (!wallJump && canControl && !isTouchingWallRight && !breakState) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
-		if (isTouchingWallRight) wallSlide = true;
+		//if (isTouchingWallRight) wallSlide = true;
 	}
 
 	/**
@@ -705,7 +720,7 @@ public class Madeline {
 		if (!wallJump && canControl && !isTouchingWallLeft && !breakState) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
-		if (isTouchingWallLeft) wallSlide = true;
+		//if (isTouchingWallLeft) wallSlide = true;
 
 	}
 	

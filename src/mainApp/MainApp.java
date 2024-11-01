@@ -30,7 +30,8 @@ public class MainApp implements KeyListener {
 	
 	public static final int BETWEEN_FRAMES = 22;
 	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
-
+	private static final Color BACKGROUND_PINK = new Color(126, 37, 83);
+	private static final Color BACKGROUND_BLACK = new Color(0, 0, 0);
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
 	private ErrorDisplay err;
@@ -166,7 +167,14 @@ public class MainApp implements KeyListener {
 		updateMadelinePosition();
 		updateMadelineVelocity();
 		lvl.updateAnimations();
-		
+		if (currentLevel >= 23)
+		{
+			frame.getContentPane().setBackground(BACKGROUND_PINK);
+		}
+		else
+		{
+			frame.getContentPane().setBackground(BACKGROUND_BLACK);
+		}
 		frame.repaint();
 		editor.repaint();
 	}
