@@ -45,14 +45,9 @@ public class MainApp implements KeyListener {
 	private boolean canMoveLevels;
 	private Set<Integer> checkPressedKeys;
 	
-	private int updateVel = 0;
 
 	public static long time = System.currentTimeMillis();
-	public static long startTime = time;
-	public static long deltaTime = 0;
-	public static long previousTime = time;
-	public static long systemTime = time;
-	
+
 	private boolean inEditor;
 	private boolean canSwitchEditor;
 	private boolean isInitialSpawn;
@@ -118,14 +113,7 @@ public class MainApp implements KeyListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!byFrame) {
-					//System.out.println("Since last: " + (systemTime - previousTime));
-					if (systemTime - previousTime < 13 * 1000000 || systemTime - previousTime > 17 * 1000000) {
-						//System.out.println("Lag spike: " + (systemTime - previousTime));
-					}
-					systemTime = System.currentTimeMillis();
 					update();
-					System.out.println(systemTime - previousTime);
-					previousTime = systemTime;
 				}
 			}
 		});
@@ -143,6 +131,7 @@ public class MainApp implements KeyListener {
 		}
 		if (byFrame) {
 			if (e.getKeyCode() == 71) { //71 is g
+				update();
 				update();
 			}
 		}
@@ -169,20 +158,17 @@ public class MainApp implements KeyListener {
     }
 	
 	private void update() {
-		time += BETWEEN_FRAMES / 2;
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 		}
 		checkToggleEditor();
 		checkMoveLevels();
 		updateMadelinePosition();
-		if (updateVel == 1) updateMadelineVelocity();
+		updateMadelineVelocity();
 		lvl.updateAnimations();
 		
 		frame.repaint();
 		editor.repaint();
-		if (updateVel == 0) { updateVel++; }
-		else updateVel--;
 	}
 	
 	public Set<Integer> getKeys() {
@@ -292,21 +278,9 @@ public class MainApp implements KeyListener {
      */
     private void updateMadelinePosition()
     {
-    	Boolean hasMoved = false;
-    	// 68 is d, 39 is right arrow
-    	if (checkPressedKeys.contains(68) || checkPressedKeys.contains(39))
-		{
-			lvl.moveMadelineRight();
-			hasMoved = true;
-		}
-		// 65 is s, 37 is left arrow
-		if (checkPressedKeys.contains(65) || checkPressedKeys.contains(37)) {
-			lvl.moveMadelineLeft();
-			hasMoved = true;
-		}
 		checkJump();
 		checkDash();
-		lvl.moveMadeline(hasMoved);
+		lvl.moveMadeline();
 	}
     
     private void updateMadelineVelocity() {

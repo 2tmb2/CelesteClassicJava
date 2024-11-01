@@ -152,8 +152,8 @@ public class LevelComponent extends JComponent {
 	 * 
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
-	public void moveMadeline(boolean hasMoved) {
-		m.setPosition(hasMoved);
+	public void moveMadeline() {
+		m.setPosition();
 	}
 	
 	/**
