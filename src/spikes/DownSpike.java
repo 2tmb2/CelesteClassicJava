@@ -20,7 +20,7 @@ public class DownSpike extends Spike {
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.translate(getX(), getY() - MainApp.PIXEL_DIM);
-		for (int i = 0; i < getWidth() / 4*MainApp.PIXEL_DIM; i++) {
+		for (int i = 0; i < getWidth() / (4*MainApp.PIXEL_DIM); i++) {
 			g2.setColor(SPIKE_GREY);
 			g2.fillRect(0, MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
 
