@@ -29,6 +29,7 @@ public class MainApp implements KeyListener {
 	public static final int PIXEL_DIM = 6;
 	
 	public static final int BETWEEN_FRAMES = 22;
+	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
 
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
@@ -43,12 +44,10 @@ public class MainApp implements KeyListener {
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
 	private Set<Integer> checkPressedKeys;
+	
 
 	public static long time = System.currentTimeMillis();
-	public static long startTime = time;
-	public static long deltaTime = 0;
-	public static long previousTime = time;
-	
+
 	private boolean inEditor;
 	private boolean canSwitchEditor;
 	private boolean isInitialSpawn;
@@ -110,14 +109,10 @@ public class MainApp implements KeyListener {
 			}
 		});
 		// creates a timer that fires every 33 milliseconds. This acts as our main game loop.
-		Timer t = new Timer(BETWEEN_FRAMES, new ActionListener() {
+		Timer t = new Timer(11, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!byFrame) {
-					time += BETWEEN_FRAMES;
-					//deltaTime = time - previousTime;
-					//if (deltaTime < 31) return;
-					//previousTime = time;
 					update();
 				}
 			}
@@ -136,6 +131,7 @@ public class MainApp implements KeyListener {
 		}
 		if (byFrame) {
 			if (e.getKeyCode() == 71) { //71 is g
+				update();
 				update();
 			}
 		}
@@ -168,6 +164,7 @@ public class MainApp implements KeyListener {
 		checkToggleEditor();
 		checkMoveLevels();
 		updateMadelinePosition();
+		updateMadelineVelocity();
 		lvl.updateAnimations();
 		
 		frame.repaint();
@@ -281,6 +278,12 @@ public class MainApp implements KeyListener {
      */
     private void updateMadelinePosition()
     {
+		checkJump();
+		checkDash();
+		lvl.moveMadeline();
+	}
+    
+    private void updateMadelineVelocity() {
     	Boolean hasMoved = false;
     	// 68 is d, 39 is right arrow
     	if (checkPressedKeys.contains(68) || checkPressedKeys.contains(39))
@@ -293,10 +296,8 @@ public class MainApp implements KeyListener {
 			lvl.moveMadelineLeft();
 			hasMoved = true;
 		}
-		checkJump();
-		checkDash();
-		lvl.moveMadeline(hasMoved);
-	}
+		lvl.accelMadeline(hasMoved);
+    }
 
 	private void checkJump() {
 		// 74 is j, 67 is c

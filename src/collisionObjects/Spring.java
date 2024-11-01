@@ -7,12 +7,16 @@ import mainApp.Madeline;
 import mainApp.MainApp;
 
 public class Spring extends CollisionObject {
+	private static final long REACTIVATION_TIME = (long)(400.0 * MainApp.FRAME_COEFF);
+	private static final long REACTIVATION_FRAME = 12;
+	
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
 	private static final Color SPRING_LIGHT_YELLOW = new Color(255, 163, 0);
 	private static final Color SPRING_GREY = new Color(95, 87, 79);
 	private Madeline m;
 	private int originalY;
 	private int drawFrame;
+	private int currentFrame;
 	
 	private long timeSinceBounce = MainApp.time;
 
@@ -27,11 +31,12 @@ public class Spring extends CollisionObject {
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.translate(getX(), getY());
+		currentFrame++;
 		if (drawFrame == 1) {
 			frame1(g2);
 		} else {
 			frame2(g2);
-			if (MainApp.time > timeSinceBounce + 400) {
+			if (currentFrame > REACTIVATION_FRAME) {
 				drawFrame = 1;
 				setY(originalY);
 				setHeight(30);
@@ -91,9 +96,9 @@ public class Spring extends CollisionObject {
 	}
 
 	private void bounce() {
-		if (MainApp.time < timeSinceBounce + 400) return;
+		if (currentFrame < REACTIVATION_FRAME) return;
 		m.springBounce();
-		timeSinceBounce = MainApp.time;
+		currentFrame = 1;
 		drawFrame = 2;
 		if (getY() == originalY) {
 			super.setY(getY() + 24);
