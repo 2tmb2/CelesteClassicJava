@@ -525,7 +525,7 @@ public class Madeline {
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			// moves the transform left by 48 pixels to adjust for the difference in x/y
 			// location
-			tx.translate(-48, 0);
+			tx.translate(-8*MainApp.PIXEL_DIM, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
 			g2.translate(-roundPos(xPos), roundPos(yPos));
