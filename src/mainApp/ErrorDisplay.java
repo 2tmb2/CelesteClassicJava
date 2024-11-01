@@ -13,7 +13,7 @@ public class ErrorDisplay extends JComponent {
 	public ErrorDisplay(String message)
 	{
 		displayMessage = "";
-		if (message.length() <= 30)
+		if (message.length() <= 5*MainApp.PIXEL_DIM)
 		{
 			displayMessage = message;
 		}
@@ -22,7 +22,7 @@ public class ErrorDisplay extends JComponent {
 			int linesCount = 1;
 			for (int i = 0; i < message.length(); i++)
 			{
-				if ((message + " ").indexOf(" ", i) > 29*linesCount)
+				if ((message + " ").indexOf(" ", i) > (5*MainApp.PIXEL_DIM-1)*linesCount)
 				{
 					displayMessage += "&";
 					linesCount++;
