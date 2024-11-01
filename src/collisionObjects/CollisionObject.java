@@ -17,6 +17,15 @@ public class CollisionObject {
 	private boolean canSlide;
 	private boolean canWallJump;
 
+	/**
+	 * Creates an invisible collision object
+	 * @param x representing the x value of the top left corner of the object
+	 * @param y representing the y value of the top left corner of the object
+	 * @param width representing the width of the object
+	 * @param height representing the height of the object
+	 * @param canSlide true if Madeline should be able to slide on the object, otherwise false
+	 * @param canWallJump true if Madeline should be able to wall jump on the object, otherwise false
+	 */
 	public CollisionObject(int x, int y, int width, int height, boolean canSlide, boolean canWallJump) {
 		this.x = x;
 		this.y = y;

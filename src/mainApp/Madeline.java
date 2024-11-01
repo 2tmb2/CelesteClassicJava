@@ -58,6 +58,7 @@ public class Madeline {
 	private Color hairColor;
 	private int hairSwitchFrame;
 	private boolean canWallJump;
+	private boolean isMoving;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
@@ -125,6 +126,7 @@ public class Madeline {
 		this.yPos = 0;
 		this.collisionObjects = null;
 		this.numOfDashesTotal = 1;
+		this.isMoving = false;
 		hairSwitchFrame = 0;
 		canDash = true;
 		xVel = 0;
@@ -186,8 +188,6 @@ public class Madeline {
 	/**
 	 * Updates Madeline's horizontal position based on her current velocity,
 	 * position, and any objects she is colliding with
-	 * 
-	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setHorizontalPosition() {
 		if (!isCollidingWall) {
@@ -206,6 +206,7 @@ public class Madeline {
 	}
 	
 	public void setVelocity(boolean hasMoved) {
+		this.isMoving = hasMoved;
 		setHorizontalVelocity(hasMoved);
 		setVerticalVelocity();
 	}
@@ -420,15 +421,10 @@ public class Madeline {
 	}
 
 	public void setCanSlide() {
-		for (CollisionObject c : collisionObjects)
+		if (!(isTouchingWall() && isMoving))
 		{
-			if (c.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight))
-			{
-				wallSlide = c.getCanSlide();
-				return;
-			}
+			wallSlide = false;
 		}
-		wallSlide = false;
 	}
 	
 	/**
@@ -441,6 +437,7 @@ public class Madeline {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
 			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight)) {
+				wallSlide = object.getCanSlide();
 				return true;
 			};
 		}
