@@ -363,7 +363,7 @@ public class LevelComponent extends JComponent {
 								chest = new Chest();
 							}
 							chest.setX(j*MainApp.PIXEL_DIM*8);
-							chest.setY(i*MainApp.PIXEL_DIM*8 + MainApp.PIXEL_DIM*2);
+							chest.setY(i*MainApp.PIXEL_DIM*8);
 						}
 						break;
 					case ('b'):

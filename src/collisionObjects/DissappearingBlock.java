@@ -181,7 +181,7 @@ public class DissappearingBlock extends CollisionObject{
 			{
 				isVisible = false;
 				isDissappearing = false;
-				Timer reappearTimer = new Timer(3000, new ActionListener() {
+				Timer reappearTimer = new Timer(2000, new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
 						animationFrame = 0;
