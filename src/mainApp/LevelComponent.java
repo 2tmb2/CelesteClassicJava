@@ -1,5 +1,6 @@
 package mainApp;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -44,6 +45,7 @@ public class LevelComponent extends JComponent {
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private BufferedImage scaledMap;
 	private int madelineTotalDashes;
+	private ArrayList<Cloud> clouds;
 	/**
 	 * Creates a LevelComponent Object
 	 * 
@@ -54,7 +56,8 @@ public class LevelComponent extends JComponent {
 	 *                                   strawberry in the level has already been
 	 *                                   collected and false otherwise.
 	 */
-	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected) {
+	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds) {
+		this.clouds = clouds;
 		this.main = main;
 		otherObject = new ArrayList<CollisionObject>();
 		try {
@@ -75,7 +78,10 @@ public class LevelComponent extends JComponent {
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
-		
+		for (Cloud c : clouds)
+		{
+			c.drawOn(g2);
+		}
 		drawLayer(g2, layer);
 		for (CollisionObject c : otherObject) {
 			c.drawOn(g2);

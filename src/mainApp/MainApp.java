@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,9 @@ public class MainApp implements KeyListener {
 	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
 	private static final Color BACKGROUND_PINK = new Color(126, 37, 83);
 	private static final Color BACKGROUND_BLACK = new Color(0, 0, 0);
+	private static final Color BLUE_CLOUDS = new Color(29, 43, 83);
+	private static final Color PINK_CLOUDS = new Color(255, 119, 168);
+	private Color cloudColor;
 	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
 	private ErrorDisplay err;
@@ -45,7 +49,7 @@ public class MainApp implements KeyListener {
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
 	private Set<Integer> checkPressedKeys;
-	
+	private ArrayList<Cloud> clouds;
 
 	public static long time = System.currentTimeMillis();
 
@@ -60,6 +64,7 @@ public class MainApp implements KeyListener {
 	
 	public MainApp() {
 		// sets default values
+		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitchEditor = true;
 		isInitialSpawn = true;
@@ -81,7 +86,14 @@ public class MainApp implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
+		
+		clouds = new ArrayList<Cloud>();
+        for (int i = 0; i <= 16; i++)
+        {
+        	clouds.add(new Cloud(0, (int)(Math.random()*128*MainApp.PIXEL_DIM), MainApp.PIXEL_DIM + (int)(Math.random() * 4), 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM), cloudColor));
+        }
+        
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds);
 		levelRefresh();
 		
 		editor = new JFrame();
@@ -189,6 +201,20 @@ public class MainApp implements KeyListener {
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
 	private void levelRefresh() {
+		if (currentLevel >= 23)
+		{
+			for (Cloud c : clouds)
+			{
+				c.setColor(PINK_CLOUDS);
+			}
+		}
+		else
+		{
+			for (Cloud c : clouds)
+			{
+				c.setColor(BLUE_CLOUDS);
+			}
+		}
 		lvl.stopAllTimers();
 		// ensures that a button held before the user can move still fires once they are
 		// able to move
@@ -197,7 +223,8 @@ public class MainApp implements KeyListener {
 		// resets the level to currentLevel
 			
 		frame.remove(lvl);
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected);
+		
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds);
 		if (err == null)
 		{
 			frame.add(lvl);
