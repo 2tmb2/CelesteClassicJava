@@ -137,6 +137,9 @@ public class CollisionObject {
 		this.y = y;
 	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
 	public void setHeight(int y) {
 		this.height = y;
 	}

@@ -776,4 +776,13 @@ public class Madeline {
 	{
 		canDash = option;
 	}
+	
+	public double getYVelocity() {
+		return yVel;
+	}
+	
+	public void moveWithCloud(int x)
+	{
+		this.xPos += x;
+	}
 }

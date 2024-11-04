@@ -335,6 +335,8 @@ public class LevelEditor extends JComponent {
 		data.put(Arrays.asList(12,1), "ww");
 		data.put(Arrays.asList(5,1), "dp");
 		data.put(Arrays.asList(1,9), "m2");
+		data.put(Arrays.asList(11, 0), "lr");
+		data.put(Arrays.asList(12,0), "ll");
 		String levelDataString = "";
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
