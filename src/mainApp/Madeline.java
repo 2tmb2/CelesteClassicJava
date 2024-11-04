@@ -421,10 +421,15 @@ public class Madeline {
 	}
 
 	public void setCanSlide() {
-		if (!(isTouchingWall() && isMoving))
-		{
-			wallSlide = false;
+		CollisionObject object;
+		for (int i = 0; i < collisionObjects.size(); i++) {
+			object = collisionObjects.get(i);
+			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight) && isMoving) {
+				wallSlide = object.getCanSlide();
+				return;
+			};
 		}
+		wallSlide = false;
 	}
 	
 	/**
@@ -433,14 +438,6 @@ public class Madeline {
 	 * @return true if she is colliding with a wall on either side, otherwise false
 	 */
 	public boolean isTouchingWall() {
-		CollisionObject object;
-		for (int i = 0; i < collisionObjects.size(); i++) {
-			object = collisionObjects.get(i);
-			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight)) {
-				wallSlide = object.getCanSlide();
-				return true;
-			};
-		}
 		return false;
 	}
 	
@@ -646,6 +643,11 @@ public class Madeline {
 		}
 		yVel = BREAK_VEL_Y;
 		//yPos -= 10;
+	}
+	
+	public void openChest(int x, int y)
+	{
+		lvl.addNewStrawberry(x, y-30,  false);
 	}
 
 	/**

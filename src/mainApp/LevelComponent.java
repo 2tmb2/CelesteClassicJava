@@ -30,6 +30,7 @@ public class LevelComponent extends JComponent {
 	private MainApp main;
 	private ArrayList<CollisionObject> collisionObjects;
 	private Strawberry strawberry;
+	private Chest chest;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
 	private LevelDisplayText ldt;
@@ -42,6 +43,7 @@ public class LevelComponent extends JComponent {
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private BufferedImage scaledMap;
+	private int madelineTotalDashes;
 	/**
 	 * Creates a LevelComponent Object
 	 * 
@@ -78,17 +80,23 @@ public class LevelComponent extends JComponent {
 		for (CollisionObject c : otherObject) {
 			c.drawOn(g2);
 		}
-		m.drawOn(g2);
 		if (pt != null) {
 			pt.drawOn(g2);
 		}
 		if (strawberry != null) {
 			strawberry.drawOn(g2);
 		}
+		if (chest != null)
+		{
+			chest.drawOn(g2);
+		}
+		m.drawOn(g2);
+		
 		if (ldt != null)
 		{
 			ldt.drawOn(g2);
 		}
+		
 
 	}
 
@@ -259,8 +267,7 @@ public class LevelComponent extends JComponent {
 		m = new Madeline(this);
 		levelData = getLevelData("level" + levelNum);
 		createLevel();
-		if (levelNum > 22)
-			m.setTotalDashes(2);
+		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
 		m.setYPos(madY);
@@ -339,10 +346,25 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(bal);
 						break;
 					case ('k'):
-						// add key
+						if (!strawberryAlreadyCollected) {
+							if (chest == null)
+							{
+								chest = new Chest();
+							}
+							Key k = new Key(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, chest, m);
+							collisionObjects.add(k);
+							otherObject.add(k);
+						}
 						break;
 					case ('c'):
-						// add chest
+						if (!strawberryAlreadyCollected) {
+							if (chest == null)
+							{
+								chest = new Chest();
+							}
+							chest.setX(j*MainApp.PIXEL_DIM*8);
+							chest.setY(i*MainApp.PIXEL_DIM*8 + MainApp.PIXEL_DIM*2);
+						}
 						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected) {
@@ -364,6 +386,10 @@ public class LevelComponent extends JComponent {
 						}
 						break;
 					case ('m'):
+						if (secondChar == '2')
+							madelineTotalDashes = 2;
+						else
+							madelineTotalDashes = 1;
 						madX = j * MainApp.PIXEL_DIM * 8;
 						madY = i * MainApp.PIXEL_DIM * 8;
 						break;

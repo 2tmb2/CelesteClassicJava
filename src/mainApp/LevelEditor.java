@@ -68,6 +68,7 @@ public class LevelEditor extends JComponent {
 	private ColoredRectangle tempRect;
 	private ArrayList<ColoredRectangle> colliders = new ArrayList<ColoredRectangle>(); //Collision Layer
 	
+	private Graphics2D g2;
 	private Point[][] environmentLayer = new Point[16][16]; //Background Layer
 	private Point[][] backgroundLayer = new Point[16][16]; //Foreground Layer
 	private Point[][] layer3 = new Point[16][16]; //Detail Layer
@@ -95,7 +96,7 @@ public class LevelEditor extends JComponent {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		
+		this.g2 = g2;
 		g2.setColor(Color.white);
 		g2.fillRect(GAME_WIDTH, 0, 850, GAME_WIDTH);
 		g.drawImage(scaledMap,GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
@@ -207,7 +208,6 @@ public class LevelEditor extends JComponent {
 			if (y < ATLAS_HEIGHT) {
 				selectedX = gridX;
 				selectedY = gridY;
-				System.out.println("x: " + selectedX + ", y: " + selectedY);
 			} else if (y > ATLAS_HEIGHT + (OPTIONS_Y / 2) && y < ATLAS_HEIGHT + OPTIONS_Y) {
 				newLayer = gridX;
 				newSelectedLayer = ((newLayer - GAME_WIDTH) / SPRITE_WIDTH);
@@ -329,10 +329,11 @@ public class LevelEditor extends JComponent {
 		data.put(Arrays.asList(10,1), "ss");
 		data.put(Arrays.asList(8,0), "kk");
 		data.put(Arrays.asList(4,1), "cc");
-		data.put(Arrays.asList(1,0), "mm");
+		data.put(Arrays.asList(1,0), "m1");
 		data.put(Arrays.asList(0,4), "bb");
 		data.put(Arrays.asList(12,1), "ww");
 		data.put(Arrays.asList(5,1), "dp");
+		data.put(Arrays.asList(1,9), "m2");
 		String levelDataString = "";
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
@@ -403,5 +404,28 @@ public class LevelEditor extends JComponent {
 	
 	public void clearPrint() {
 		drawDialog = false;
+	}
+	
+	
+	// WIP, covering objects that shouldn't be placed in the selected layer
+	private void coverPosition(Graphics2D g2, int x, int y, int numberOfRows, int numberOfColumns)
+	{
+//		coverPosition(g2, 3, 0, 5, 1);
+//		coverPosition(g2, 9, 0, 2, 1);
+//		coverPosition(g2, 13, 0, 3, 1);
+//		coverPosition(g2, 0, 1, 1, 1);
+//		coverPosition(g2, 3, 1, 1, 1);
+//		coverPosition(g2, 0, 2, 11, 7);
+//		coverPosition(g2, 2, 9, 14, 1);
+//		coverPosition(g2, 0, 10, 16, 1);
+//		coverPosition(g2, 0, 8, 16, 1);
+//		coverPosition(g2, 0, 4, 16, 5);
+//		coverPosition(g2, 2, 0, 1, 1);
+//		coverPosition(g2, 13, 1, 3, 3);
+//		coverPosition(g2, 12, 2, 1, 2);
+//		coverPosition(g2, 8, 1, 2, 1);
+		g2 = (Graphics2D)g2.create();
+		g2.setColor(Color.WHITE);
+		g2.fillRect(x*SPRITE_WIDTH + (128*MainApp.PIXEL_DIM), y*SPRITE_WIDTH, SPRITE_WIDTH*numberOfRows, SPRITE_WIDTH*numberOfColumns);
 	}
 }
