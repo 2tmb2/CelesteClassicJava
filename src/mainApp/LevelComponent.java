@@ -31,6 +31,7 @@ public class LevelComponent extends JComponent {
 	private MainApp main;
 	private ArrayList<CollisionObject> collisionObjects;
 	private Strawberry strawberry;
+	private BreakableBlock bb;
 	private Chest chest;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
@@ -98,13 +99,14 @@ public class LevelComponent extends JComponent {
 			chest.drawOn(g2);
 		}
 		m.drawOn(g2);
-		
+		if (bb != null)
+		{
+			bb.drawOn(g2);
+		}
 		if (ldt != null)
 		{
 			ldt.drawOn(g2);
 		}
-		
-
 	}
 
 	/**
@@ -388,9 +390,8 @@ public class LevelComponent extends JComponent {
 						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected) {
-							BreakableBlock b = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
-							collisionObjects.add(b);
-							otherObject.add(b);
+							bb = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
+							collisionObjects.add(bb);
 						}
 						break;
 					case ('s'):
