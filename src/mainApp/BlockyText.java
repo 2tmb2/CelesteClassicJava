@@ -134,6 +134,9 @@ public class BlockyText {
 				case ":":
 					drawColon(g2);
 					break;
+				case "-":
+					drawDash(g2);
+					break;
 				case " ":
 					break;
 				default:
@@ -558,5 +561,13 @@ public class BlockyText {
 	{
 		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
 		g2.fillRect(0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+	}
+	
+	/**
+	 * Draws a - onto g2
+	 */
+	private static void drawDash(Graphics2D g2)
+	{
+		g2.fillRect(0,MainApp.PIXEL_DIM*2,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
 	}
 }

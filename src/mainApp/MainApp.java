@@ -61,6 +61,7 @@ public class MainApp implements KeyListener {
 	private boolean canLoadCustomLevel;
 	
 	private long startTime;
+	private long endTime;
 	
 	public MainApp() {
 		// sets default values
@@ -74,6 +75,7 @@ public class MainApp implements KeyListener {
 		strawberryCount = 0;
 		completeWithoutMovingLevels = true;
 		startTime = System.currentTimeMillis();
+		endTime = 0;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input
 		frame.addKeyListener(this);
@@ -253,6 +255,10 @@ public class MainApp implements KeyListener {
 		strawberryAlreadyCollected = false;
 		if (currentLevel < 31) {
 			currentLevel++;
+		}
+		if (currentLevel == 31 && endTime == 0)
+		{
+			endTime = System.currentTimeMillis();
 		}
 		levelRefresh();
 	}
