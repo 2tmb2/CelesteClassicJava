@@ -854,4 +854,9 @@ public class Madeline {
 		}
 		return hairColor;
 	}
+	
+	public void displayFinalText()
+	{
+		lvl.finalScore();
+	}
 }

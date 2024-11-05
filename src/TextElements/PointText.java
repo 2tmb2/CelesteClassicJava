@@ -1,7 +1,9 @@
-package mainApp;
+package TextElements;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import mainApp.MainApp;
 
 /**
  * Class: PointText Purpose: Display the text 1000 upon collecting a strawberry

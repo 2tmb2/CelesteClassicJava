@@ -1,10 +1,12 @@
-package mainApp;
+package TextElements;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
+
+import mainApp.MainApp;
 
 public class ErrorDisplay extends JComponent {
 	

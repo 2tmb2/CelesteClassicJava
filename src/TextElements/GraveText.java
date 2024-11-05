@@ -1,9 +1,9 @@
-package collisionObjects;
+package TextElements;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import mainApp.BlockyText;
+import collisionObjects.CollisionObject;
 import mainApp.MainApp;
 
 public class GraveText extends CollisionObject {

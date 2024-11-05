@@ -14,6 +14,10 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import TextElements.FinalScoreText;
+import TextElements.GraveText;
+import TextElements.LevelDisplayText;
+import TextElements.PointText;
 import collectables.*;
 import collisionObjects.*;
 import spikes.DownSpike;
@@ -39,6 +43,7 @@ public class LevelComponent extends JComponent {
 	private PointText pt;
 	private GraveText gt;
 	private LevelDisplayText ldt;
+	private FinalScoreText fst;
 	private String[] levelData;
 	private Point[][] layer;
 	private int madX;
@@ -51,6 +56,10 @@ public class LevelComponent extends JComponent {
 	private BufferedImage scaledMap;
 	private int madelineTotalDashes;
 	private ArrayList<Cloud> clouds;
+	private Long timeDiff;
+	private int strawberryCount;
+	private int deathCount;
+	private boolean isIncomplete;
 	/**
 	 * Creates a LevelComponent Object
 	 * 
@@ -61,10 +70,14 @@ public class LevelComponent extends JComponent {
 	 *                                   strawberry in the level has already been
 	 *                                   collected and false otherwise.
 	 */
-	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds) {
+	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds, Long timeDiff, int strawberryCount, int deathCount, boolean isIncomplete) {
 		this.levelNum = levelNum;
 		this.clouds = clouds;
 		this.main = main;
+		this.timeDiff = timeDiff;
+		this.strawberryCount = strawberryCount;
+		this.deathCount = deathCount;
+		this.isIncomplete = isIncomplete;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		try {
@@ -129,6 +142,10 @@ public class LevelComponent extends JComponent {
 		{
 			ldt.drawOn(g2);
 		}
+		if (fst != null)
+		{
+			fst.drawOn(g2);
+		}
 	}
 
 	/**
@@ -143,6 +160,10 @@ public class LevelComponent extends JComponent {
 	 */
 	public void nextLevel() {
 		main.nextLevel();
+		if (levelNum <= 31)
+		{
+			finalScore();
+		}
 		spawnMaddy = new SpawningMadeline(madX, 0, Color.RED);
 	}
 
@@ -367,6 +388,11 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
+					case ('f'):
+						FinishFlag f = new FinishFlag(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						collisionObjects.add(f);
+						otherObject.add(f);
+						break;
 					case ('p'):
 						Spring s = new Spring(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, m);
 						collisionObjects.add(s);
@@ -566,6 +592,10 @@ public class LevelComponent extends JComponent {
 
 	}
 	
+	public void finalScore()
+	{
+		fst = new FinalScoreText(timeDiff, strawberryCount, deathCount, isIncomplete);
+	}
 	
 	public void setMadelineCanDash(boolean option)
 	{

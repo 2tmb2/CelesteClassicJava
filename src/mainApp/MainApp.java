@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Timer;
+
+import TextElements.ErrorDisplay;
+
 import javax.swing.JFrame;
 
 /**
@@ -48,7 +51,6 @@ public class MainApp implements KeyListener {
 	private int currentLevel;
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
-	private boolean completeWithoutMovingLevels;
 	private ArrayList<Cloud> clouds;
 
 	public static long time = System.currentTimeMillis();
@@ -68,12 +70,11 @@ public class MainApp implements KeyListener {
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitchEditor = true;
-		currentLevel = 1;
+		currentLevel = 23;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
 		strawberryCount = 0;
-		completeWithoutMovingLevels = true;
 		startTime = System.currentTimeMillis();
 		endTime = 0;
 		frame = new JFrame();
@@ -92,10 +93,10 @@ public class MainApp implements KeyListener {
 		clouds = new ArrayList<Cloud>();
         for (int i = 0; i <= 16; i++)
         {
-        	clouds.add(new Cloud(0, (int)(Math.random()*128*MainApp.PIXEL_DIM), MainApp.PIXEL_DIM + (int)(Math.random() * 4), 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM), cloudColor));
+        	clouds.add(new Cloud(0, Madeline.roundPos((int)(Math.random()*128*MainApp.PIXEL_DIM)), MainApp.PIXEL_DIM + (int)(Math.random() * 4), 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM), cloudColor));
         }
         
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds);
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
 		levelRefresh();
 		
 		editor = new JFrame();
@@ -160,7 +161,6 @@ public class MainApp implements KeyListener {
     	}
     	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
     	{
-    		completeWithoutMovingLevels = false;
     		startTime = 0;
     		canMoveLevels = true;
     	}
@@ -228,7 +228,7 @@ public class MainApp implements KeyListener {
 			
 		frame.remove(lvl);
 		
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds);
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
 		if (err == null)
 		{
 			frame.add(lvl);
@@ -282,7 +282,7 @@ public class MainApp implements KeyListener {
     	strawberryAlreadyCollected = true;
     	strawberryCount++;
     }
-    
+
     /**
      * Displays an error on the screen
      * @param error
@@ -410,7 +410,7 @@ public class MainApp implements KeyListener {
     	}
     	
     }
-
+    
 	/**
 	 * ensures: runs the application
 	 * 
@@ -418,6 +418,6 @@ public class MainApp implements KeyListener {
 	 */
 	public static void main(String[] args) {
 		new MainApp();
-	} // main
+	}
 
 }
