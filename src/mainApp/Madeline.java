@@ -2,12 +2,8 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-
-import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 import collisionObjects.Spring;
@@ -47,6 +43,7 @@ public class Madeline {
 	private boolean bounceHigh = true;
 	private boolean wallSlide = false;
 	private boolean breakState = false;
+	private boolean isFullySpawned = false;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
@@ -142,6 +139,14 @@ public class Madeline {
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
 		canContinue = true;
+		
+		if (numOfDashesRemaining == 1) {
+			hairColor = RED_HAIR;
+		} else if (numOfDashesRemaining == 2) {
+			hairColor = GREEN_HAIR;
+		} else {
+			hairColor = BLUE_HAIR;
+		}
 	}
 
 	/**
@@ -160,6 +165,17 @@ public class Madeline {
 		isTouchingWall = isTouchingWallLeft || isTouchingWallRight;
 		isTouchingFloor = isTouchingFloor();
 		isCollidingWall = isCollidingWithWall();
+//		}
+//		else
+//		{
+//			isCollidingFloor = false;
+//			isTouchingWallLeft = false;
+//			isTouchingWallRight = false;
+//			isCollidingCeiling = false;
+//			isTouchingWall = false;
+//			isTouchingFloor = false;
+//			isCollidingWall = false;
+//		}
 		setCanSlide();
 		if (isCollidingWall) {
 			canJump = true;
@@ -338,7 +354,7 @@ public class Madeline {
 	 *            facing.
 	 */
 	public boolean dash(String dir) {
-		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash) {
+		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash && isFullySpawned) {
 			useDashDeccel = true;
 			numOfDashesRemaining--;
 			canDash = false;
@@ -469,6 +485,8 @@ public class Madeline {
 			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET,
 					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
 				if (Math.abs(collisionObjects.get(i).getY() - HEIGHT - yPos) < 20) yPos = collisionObjects.get(i).getY() - HEIGHT;
+				lvl.removeLevelDisplay();
+				isFullySpawned = true;
 				return true;
 			}
 		}
@@ -487,6 +505,8 @@ public class Madeline {
 	public boolean isTouchingFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET, yPos + 5 + Y_COLLISION_OFFSET)) {
+				isFullySpawned = true;
+				lvl.removeLevelDisplay();
 				return true;
 			}
 		}
@@ -706,7 +726,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (!wallJump && canControl && !isTouchingWallRight && !breakState) {
+		if (!wallJump && canControl && !isTouchingWallRight && !breakState && isFullySpawned) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
 		//if (isTouchingWallRight) wallSlide = true;
@@ -716,7 +736,7 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (!wallJump && canControl && !isTouchingWallLeft && !breakState) {
+		if (!wallJump && canControl && !isTouchingWallLeft && !breakState && isFullySpawned) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
 		//if (isTouchingWallLeft) wallSlide = true;
@@ -784,5 +804,16 @@ public class Madeline {
 	public void moveWithCloud(int x)
 	{
 		this.xPos += x;
+	}
+	public Color getHairColor()
+	{
+		if (numOfDashesRemaining == 1) {
+			hairColor = RED_HAIR;
+		} else if (numOfDashesRemaining == 2) {
+			hairColor = GREEN_HAIR;
+		} else {
+			hairColor = BLUE_HAIR;
+		}
+		return hairColor;
 	}
 }

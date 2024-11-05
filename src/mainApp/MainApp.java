@@ -48,14 +48,13 @@ public class MainApp implements KeyListener {
 	private int currentLevel;
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
-	private Set<Integer> checkPressedKeys;
+	private boolean completeWithoutMovingLevels;
 	private ArrayList<Cloud> clouds;
 
 	public static long time = System.currentTimeMillis();
 
 	private boolean inEditor;
 	private boolean canSwitchEditor;
-	private boolean isInitialSpawn;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
 
@@ -67,13 +66,12 @@ public class MainApp implements KeyListener {
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitchEditor = true;
-		isInitialSpawn = true;
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
 		strawberryCount = 0;
-		checkPressedKeys = pressedKeys;
+		completeWithoutMovingLevels = true;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input
 		frame.addKeyListener(this);
@@ -158,6 +156,7 @@ public class MainApp implements KeyListener {
     	}
     	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
     	{
+    		completeWithoutMovingLevels = false;
     		canMoveLevels = true;
     	}
     	if (e.getKeyCode() == 76) {
@@ -218,7 +217,7 @@ public class MainApp implements KeyListener {
 		lvl.stopAllTimers();
 		// ensures that a button held before the user can move still fires once they are
 		// able to move
-		checkPressedKeys = new HashSet<>();
+		//pressedKeys = new HashSet<>();
 
 		// resets the level to currentLevel
 			
@@ -230,26 +229,9 @@ public class MainApp implements KeyListener {
 			frame.add(lvl);
 		}
 		frame.setVisible(true);
-		Timer madelineMoveTimer = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				checkPressedKeys = pressedKeys;
-				lvl.removeLevelDisplay();
-			}
-		});
-		if (isInitialSpawn)
-		{
-			lvl.addLevelDisplay(currentLevel + "00 m");
-			madelineMoveTimer.setInitialDelay(1000);
-		}
-		else
-		{
-			madelineMoveTimer.setInitialDelay(400);
-		}
+		lvl.setDisplayMadeline(false);
+		lvl.addLevelDisplay(currentLevel + "00 m");
 		lvl.resetMadelineVelocity();
-		// starts a 1/4 second timer that, once completed, allows Madeline to move
-		madelineMoveTimer.setRepeats(false);
-		madelineMoveTimer.restart();
 	}
 
 	/**
@@ -258,7 +240,6 @@ public class MainApp implements KeyListener {
 	 */
 	public void resetLevel() {
 		deathCount++;
-		isInitialSpawn = false;
 		levelRefresh();
 	}
 
@@ -266,9 +247,8 @@ public class MainApp implements KeyListener {
 	 * Moves to the next level sequentially
 	 */
 	public void nextLevel() {
-		isInitialSpawn = true;
 		strawberryAlreadyCollected = false;
-		if (currentLevel < 30) {
+		if (currentLevel < 31) {
 			currentLevel++;
 		}
 		levelRefresh();
@@ -278,7 +258,6 @@ public class MainApp implements KeyListener {
 	 * Moves to the previous level
 	 */
 	public void previousLevel() {
-		isInitialSpawn = true;
 		strawberryAlreadyCollected = false;
 		if (currentLevel > 1) {
 			currentLevel--;
@@ -321,13 +300,13 @@ public class MainApp implements KeyListener {
     private void updateMadelineVelocity() {
     	Boolean hasMoved = false;
     	// 68 is d, 39 is right arrow
-    	if (checkPressedKeys.contains(68) || checkPressedKeys.contains(39))
+    	if (pressedKeys.contains(68) || pressedKeys.contains(39))
 		{
 			lvl.moveMadelineRight();
 			hasMoved = true;
 		}
 		// 65 is s, 37 is left arrow
-		if (checkPressedKeys.contains(65) || checkPressedKeys.contains(37)) {
+		if (pressedKeys.contains(65) || pressedKeys.contains(37)) {
 			lvl.moveMadelineLeft();
 			hasMoved = true;
 		}
@@ -336,7 +315,7 @@ public class MainApp implements KeyListener {
 
 	private void checkJump() {
 		// 74 is j, 67 is c
-		if (checkPressedKeys.contains(74) || checkPressedKeys.contains(67)) {
+		if (pressedKeys.contains(74) || pressedKeys.contains(67)) {
 			lvl.madelineJump();
 		}
 	}
@@ -348,22 +327,22 @@ public class MainApp implements KeyListener {
 	private void checkDash() {
 		lvl.checkIfDashing();
 		// 75 is k, 88 is x
-		if (checkPressedKeys.contains(75) || checkPressedKeys.contains(88)) {
-			if ((checkPressedKeys.contains(87) && checkPressedKeys.contains(68))
-					|| (checkPressedKeys.contains(38) && checkPressedKeys.contains(39))) {
+		if (pressedKeys.contains(75) || pressedKeys.contains(88)) {
+			if ((pressedKeys.contains(87) && pressedKeys.contains(68))
+					|| (pressedKeys.contains(38) && pressedKeys.contains(39))) {
 				lvl.dash("upright");
-			} else if ((checkPressedKeys.contains(87) && checkPressedKeys.contains(65))
-					|| (checkPressedKeys.contains(38) && checkPressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(87) && pressedKeys.contains(65))
+					|| (pressedKeys.contains(38) && pressedKeys.contains(37))) {
 				lvl.dash("upleft");
-			} else if ((checkPressedKeys.contains(68) && checkPressedKeys.contains(83))
-					|| (checkPressedKeys.contains(40) && checkPressedKeys.contains(39))) {
+			} else if ((pressedKeys.contains(68) && pressedKeys.contains(83))
+					|| (pressedKeys.contains(40) && pressedKeys.contains(39))) {
 				lvl.dash("downright");
-			} else if ((checkPressedKeys.contains(65) && checkPressedKeys.contains(83))
-					|| (checkPressedKeys.contains(40) && checkPressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(65) && pressedKeys.contains(83))
+					|| (pressedKeys.contains(40) && pressedKeys.contains(37))) {
 				lvl.dash("downleft");
-			} else if (checkPressedKeys.contains(83) || checkPressedKeys.contains(40)) {
+			} else if (pressedKeys.contains(83) || pressedKeys.contains(40)) {
 				lvl.dash("down");
-			} else if (checkPressedKeys.contains(87) || checkPressedKeys.contains(38)) {
+			} else if (pressedKeys.contains(87) || pressedKeys.contains(38)) {
 				lvl.dash("up");
 			} else {
 				lvl.dash("");
@@ -377,7 +356,7 @@ public class MainApp implements KeyListener {
 	 */
 	private void checkMoveLevels() {
 		if (canMoveLevels) {
-			// pressedKeys is checked instead of checkPressedKeys to allow the user to
+			// pressedKeys is checked instead of pressedKeys to allow the user to
 			// switch to alternate levels without waiting for the spawn timer
 			
 			// 80 is p
