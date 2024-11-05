@@ -45,6 +45,7 @@ public class Madeline {
 	private boolean breakState = false;
 	private boolean isCoyote = true;
 	private boolean isFullySpawned = false;
+	private boolean canRechargeDash = true;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
@@ -96,6 +97,9 @@ public class Madeline {
 	//How much to multiply gravity by when in coyote time
 	private static final double COYOTE_ACCEL_COEFF = 1.00;
 	
+	//How many frames until Madeline can regain her dash
+	private static final int DASH_RECHARGE_FRAMES = 5;
+	
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.1 * (double)MainApp.PIXEL_DIM;
 	private static final double TERM_VEL = 0.94 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
@@ -104,7 +108,7 @@ public class Madeline {
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double WALL_JUMP_X_VEL = 1.2 * (double)MainApp.PIXEL_DIM;
-	private static final double WALL_JUMP_Y_VEL = -1.90 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_Y_VEL = -1.75 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
@@ -118,7 +122,7 @@ public class Madeline {
 	private static final double BREAK_VEL_Y = -1.1 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double Y_DASH_VEL = 2.35 * (double)MainApp.PIXEL_DIM;
-	private static final double DIAG_DASH_Y_COEFF = 0.97;
+	private static final double DIAG_DASH_Y_COEFF = 1.00;
 	private static final double X_DASH_VEL = Y_DASH_VEL * .53;
 	private static final double DIAG_DASH_X_COEFF = 1.075;
 
@@ -300,6 +304,11 @@ public class Madeline {
 	 * Updates Madeline's state
 	 */
 	public void checkState() {
+		if (lifetime > frameAtDash + DASH_RECHARGE_FRAMES) {
+			canRechargeDash = true;
+		} else {
+			canRechargeDash = false;
+		}
 		if (lifetime > frameAtDash + BOUNCE_RECOVERY_FRAME) {
 			bounceHigh = true;
 		}
@@ -339,7 +348,7 @@ public class Madeline {
 		if (lifetime > frameAtDash + HORZ_DASH_FRAME + 0) {
 			useDashDeccel = false;
 		}
-		if (isTouchingFloor) {
+		if (isTouchingFloor && canRechargeDash) {
 			numOfDashesRemaining = numOfDashesTotal;
 		}
 	}

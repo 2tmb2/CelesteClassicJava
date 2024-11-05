@@ -38,14 +38,22 @@ public class LeftSpike extends Spike {
 
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
+		if (getMadeline().getXVelocity() < 0) return false;
 		// gives a grace period at the top of the spike
 		return super.isCollidingFloor(madelineX, madelineY - 2*MainApp.PIXEL_DIM);
 	}
 
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
+		if (getMadeline().getXVelocity() < 0) return false;
 		// gives a grace period at the bottom of the spike
 		return super.isCollidingCeiling(madelineX, madelineY + 2*MainApp.PIXEL_DIM);
 	}
+	
+	/*@Override
+	public boolean isCollidingWall(int madelinX, int madelineY, int facing) {
+		if (getMadeline().getXVelocity() < 0) return false;
+		return super.isCollidingWall(madelineY, madelineY, facing);
+	}*/
 
 }
