@@ -33,7 +33,9 @@ public class LevelComponent extends JComponent {
 	private Strawberry strawberry;
 	private BreakableBlock bb;
 	private Chest chest;
+	private SpawningMadeline spawnMaddy;
 	private boolean strawberryAlreadyCollected;
+	private boolean displayMadeline;
 	private PointText pt;
 	private LevelDisplayText ldt;
 	private String[] levelData;
@@ -60,6 +62,7 @@ public class LevelComponent extends JComponent {
 	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds) {
 		this.clouds = clouds;
 		this.main = main;
+		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		try {
 			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
@@ -91,6 +94,15 @@ public class LevelComponent extends JComponent {
 		if (pt != null) {
 			pt.drawOn(g2);
 		}
+		if (spawnMaddy != null)
+		{
+			spawnMaddy.drawOn(g2);
+			if(!spawnMaddy.getMovingUp())
+			{
+				this.setDisplayMadeline(true);
+				spawnMaddy = null;
+			}
+		}
 		if (strawberry != null) {
 			strawberry.drawOn(g2);
 		}
@@ -98,7 +110,10 @@ public class LevelComponent extends JComponent {
 		{
 			chest.drawOn(g2);
 		}
-		m.drawOn(g2);
+		if (displayMadeline)
+		{
+			m.drawOn(g2);
+		}
 		if (bb != null)
 		{
 			bb.drawOn(g2);
@@ -110,7 +125,7 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
-	 * Resets the level
+	 * Resets the 
 	 */
 	public void resetLevel() {
 		main.resetLevel();
@@ -121,6 +136,7 @@ public class LevelComponent extends JComponent {
 	 */
 	public void nextLevel() {
 		main.nextLevel();
+		spawnMaddy = new SpawningMadeline(madX, 0, Color.RED);
 	}
 
 	public void stopAllTimers() {
@@ -155,13 +171,18 @@ public class LevelComponent extends JComponent {
 		m.resetVelocity();
 	}
 	
+	public void setDisplayMadeline(boolean b)
+	{
+		this.displayMadeline = b;
+	}
 	/**
 	 * Updates Madeline's position based on her current velocity
 	 * 
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void moveMadeline() {
-		m.setPosition();
+		if (displayMadeline)
+			m.setPosition();
 	}
 	
 	/**
@@ -170,14 +191,16 @@ public class LevelComponent extends JComponent {
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void accelMadeline(boolean hasMoved) {
-		m.setVelocity(hasMoved);
+		if (displayMadeline)
+			m.setVelocity(hasMoved);
 	}
 
 	/**
 	 * Makes Madeline jump (if she is able)
 	 */
 	public void madelineJump() {
-		m.jump();
+		if (displayMadeline)
+			m.jump();
 	}
 
 	/**
@@ -186,7 +209,7 @@ public class LevelComponent extends JComponent {
 	 * @param dir
 	 */
 	public void dash(String dir) {
-		if (m.dash(dir)) {
+		if (m.dash(dir) && displayMadeline) {
 			if (strawberry != null)
 				strawberry.flyAway();
 		}
@@ -267,9 +290,10 @@ public class LevelComponent extends JComponent {
 		levelData = getLevelData(fileName);
 		createLevel();
 		m.setTotalDashes(1);
+		m.resetDashes();
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
-		m.setYPos(madY);
+		m.setYPos(madY - 48);
 	}
 	
 	public void levelFromText(int levelNum) {
@@ -279,7 +303,9 @@ public class LevelComponent extends JComponent {
 		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
-		m.setYPos(madY);
+		m.setYPos(madY-36);
+		m.resetDashes();
+		spawnMaddy = new SpawningMadeline(madX, madY - 36, m.getHairColor());
 	}
 
 	
