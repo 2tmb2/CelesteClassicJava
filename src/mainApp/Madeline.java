@@ -43,12 +43,14 @@ public class Madeline {
 	private boolean bounceHigh = true;
 	private boolean wallSlide = false;
 	private boolean breakState = false;
+	private boolean isCoyote = true;
 	private boolean isFullySpawned = false;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
 	private int frameAtBreak;
 	private int dashFrameTimer = 0;
+	private int coyoteTimer = 0;
 	
 	private int lifetime = 0;
 
@@ -88,9 +90,15 @@ public class Madeline {
 	//How many frames after breaking block horizontally until can control
 	private static final int BREAK_CONTROL_TIMER = 9;
 	
+	//How many frames of coyote time
+	private static final int COYOTE_FRAMES = 7;
+	
+	//How much to multiply gravity by when in coyote time
+	private static final double COYOTE_ACCEL_COEFF = 1.00;
+	
 	private static final double MOVEMENT_COEFF = 1.5;
 	private static final double GRAVITY = 0.1 * (double)MainApp.PIXEL_DIM;
-	private static final double TERM_VEL = 1.0 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double TERM_VEL = 0.94 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double WALL_VEL = 0.25 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
 	private static final double JUMP_VEL = -1.975 * (double)MainApp.PIXEL_DIM;
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
@@ -156,7 +164,6 @@ public class Madeline {
 	 * @param hasMoved whether a key has been pressed to move Madeline
 	 */
 	public void setPosition() {
-		//if (Math.abs(xVel) > 0.1) System.out.println(xVel);
 		lifetime++;
 		isCollidingFloor = isCollidingWithFloor();
 		isTouchingWallLeft = isTouchingWall(-1);
@@ -177,6 +184,10 @@ public class Madeline {
 //			isCollidingWall = false;
 //		}
 		setCanSlide();
+		if (isTouchingFloor) {
+			coyoteTimer = lifetime;
+			isCoyote = true;
+		}
 		if (isCollidingWall) {
 			canJump = true;
 			lowGrav = false;
@@ -255,7 +266,13 @@ public class Madeline {
 	public void setVerticalVelocity() {
 		double downAcc = GRAVITY;
 		boolean noHover = false;
-		if (isDashingDiagonally && lifetime > frameAtDash + VERT_DASH_FRAME) {
+		if (isCoyote) {
+			downAcc *= COYOTE_ACCEL_COEFF;
+		}
+		if (isTouchingFloor && yVel >= 0) {
+			yVel = 0;
+		}
+		if ((isDashingDiagonally && lifetime > frameAtDash + VERT_DASH_FRAME)) {
 			noHover = true;
 			downAcc *= 1.05;
 		}
@@ -293,6 +310,11 @@ public class Madeline {
 		if (lifetime > frameAtDash + HORZ_DASH_FRAME) {
 			isDashingHorizontally = false;
 		}
+		if (lifetime > coyoteTimer + COYOTE_FRAMES && isCoyote) {
+			isCoyote = false;
+		} else if (isCoyote){
+			isCoyote = true;
+		}
 		if (lifetime > frameAtDash + dashFrameTimer) {
 			canControl = true;
 			controlTimerDecreased = false;
@@ -317,7 +339,7 @@ public class Madeline {
 		if (lifetime > frameAtDash + HORZ_DASH_FRAME + 0) {
 			useDashDeccel = false;
 		}
-		if (isCollidingWithFloor()) {
+		if (isTouchingFloor) {
 			numOfDashesRemaining = numOfDashesTotal;
 		}
 	}
@@ -326,10 +348,12 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if (isTouchingFloor && !jumpPressed && canJump) {
+		if ((isTouchingFloor && !jumpPressed && canJump) || isCoyote) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
+			isCoyote = false;
+			coyoteTimer -= COYOTE_FRAMES;
 		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && canWallJump) {
 			jumpPressed = true;
 			wallJump = true;
@@ -504,7 +528,7 @@ public class Madeline {
 	 */
 	public boolean isTouchingFloor() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET, yPos + 5 + Y_COLLISION_OFFSET)) {
+			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET, yPos + 1 + Y_COLLISION_OFFSET)) {
 				isFullySpawned = true;
 				lvl.removeLevelDisplay();
 				return true;
@@ -747,6 +771,7 @@ public class Madeline {
 	 * resets the level upon death
 	 */
 	public void death() {
+		//if (!isCollidingFloor && !isCollidingWall && !isCollidingCeiling) return;
 		lvl.resetLevel();
 	}
 
@@ -799,6 +824,10 @@ public class Madeline {
 	
 	public double getYVelocity() {
 		return yVel;
+	}
+	
+	public double getXVelocity() {
+		return xVel;
 	}
 	
 	public void moveWithCloud(int x)

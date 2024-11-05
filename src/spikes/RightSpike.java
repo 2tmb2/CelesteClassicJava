@@ -37,12 +37,15 @@ public class RightSpike extends Spike {
 
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
+		System.out.println(getMadeline().getXVelocity());
+		if (getMadeline().getXVelocity() > 0) return false;
 		// gives a grace period at the top of the spike
 		return super.isCollidingFloor(madelineX, madelineY - 2*MainApp.PIXEL_DIM);
 	}
 
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
+		if (getMadeline().getXVelocity() > 0) return false;
 		// gives a grace period at the bottom of the spike
 		return super.isCollidingCeiling(madelineX, madelineY + 2*MainApp.PIXEL_DIM);
 	}
