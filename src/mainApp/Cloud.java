@@ -25,7 +25,7 @@ public class Cloud {
 		if (x > 128*MainApp.PIXEL_DIM)
 		{
 			x = -width;
-			y = (int)(Math.random() * 120*MainApp.PIXEL_DIM) + 4*MainApp.PIXEL_DIM;
+			y = Madeline.roundPos((int)(Math.random() * 120*MainApp.PIXEL_DIM) + 4*MainApp.PIXEL_DIM);
 		}
 		
 	}
