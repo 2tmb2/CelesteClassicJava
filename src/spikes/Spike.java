@@ -53,4 +53,8 @@ public abstract class Spike extends CollisionObject{
 	}
 	@Override
 	public void updateAnimation() {}
+	
+	public Madeline getMadeline() {
+		return this.m;
+	}
 }

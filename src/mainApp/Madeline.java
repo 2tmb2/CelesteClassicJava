@@ -806,6 +806,10 @@ public class Madeline {
 		return yVel;
 	}
 	
+	public double getXVelocity() {
+		return xVel;
+	}
+	
 	public void moveWithCloud(int x)
 	{
 		this.xPos += x;
