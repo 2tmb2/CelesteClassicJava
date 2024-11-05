@@ -31,6 +31,7 @@ public class LevelComponent extends JComponent {
 	private MainApp main;
 	private ArrayList<CollisionObject> collisionObjects;
 	private Strawberry strawberry;
+	private BreakableBlock bb;
 	private Chest chest;
 	private boolean strawberryAlreadyCollected;
 	private PointText pt;
@@ -82,10 +83,11 @@ public class LevelComponent extends JComponent {
 		{
 			c.drawOn(g2);
 		}
-		drawLayer(g2, layer);
+		drawBackgroundLayer(g2, layer);
 		for (CollisionObject c : otherObject) {
 			c.drawOn(g2);
 		}
+		drawForegroundLayer(g2, layer);
 		if (pt != null) {
 			pt.drawOn(g2);
 		}
@@ -97,13 +99,14 @@ public class LevelComponent extends JComponent {
 			chest.drawOn(g2);
 		}
 		m.drawOn(g2);
-		
+		if (bb != null)
+		{
+			bb.drawOn(g2);
+		}
 		if (ldt != null)
 		{
 			ldt.drawOn(g2);
 		}
-		
-
 	}
 
 	/**
@@ -332,6 +335,19 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(s);
 						otherObject.add(s);
 						break;
+					case ('l'):
+						CloudPlatform c;
+						if (secondChar == 'l')
+						{
+							c = new CloudPlatform(j*8*MainApp.PIXEL_DIM, i*8*MainApp.PIXEL_DIM, m, -1);
+						}
+						else
+						{
+							c = new CloudPlatform(j*8*MainApp.PIXEL_DIM, i*8*MainApp.PIXEL_DIM, m, 1);
+						}
+						collisionObjects.add(c);
+						otherObject.add(c);
+						break;
 					case ('d'):
 						if (secondChar != 'd')
 						{
@@ -374,9 +390,8 @@ public class LevelComponent extends JComponent {
 						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected) {
-							BreakableBlock b = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
-							collisionObjects.add(b);
-							otherObject.add(b);
+							bb = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
+							collisionObjects.add(bb);
 						}
 						break;
 					case ('s'):
@@ -436,12 +451,45 @@ public class LevelComponent extends JComponent {
 	}
 	
 	
-	public void drawLayer(Graphics2D g, Point[][] layer) {
+	public void drawForegroundLayer(Graphics2D g, Point[][] layer) {
 		for (int i = 0; i < layer.length; i++) {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
 				//For some reason there is a vertical offset of 1 when drawing the sprites, so the source y1 is increased by 1
-				g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+				if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1))
+					if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+						if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+							if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+								if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+									if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+										if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+											if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
+												if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
+													if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5))
+													{
+														g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+													}
+			}			
+		}
+	}
+	
+	public void drawBackgroundLayer(Graphics2D g, Point[][] layer) {
+		for (int i = 0; i < layer.length; i++) {
+			for (int j = 0; j < layer[0].length; j++) {
+				if (layer[i][j] == null) continue;
+				if (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1)
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
+				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5)))
+				{
+					g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+				}
 			}
 		}
 	}
