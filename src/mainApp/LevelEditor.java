@@ -202,7 +202,6 @@ public class LevelEditor extends JComponent {
 	public void doMouseClick(int x, int y) {
 		x -= 8;
 		y -= 30;
-		System.out.println("x: " + selectedX + ", y: " + selectedY);
 		if (x > GAME_WIDTH && x < GAME_WIDTH + ATLAS_WIDTH) {
 			gridX = x - (x % SPRITE_WIDTH);
 			gridY = y - (y % SPRITE_HEIGHT);

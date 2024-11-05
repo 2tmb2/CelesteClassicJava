@@ -37,11 +37,13 @@ public class LevelComponent extends JComponent {
 	private boolean strawberryAlreadyCollected;
 	private boolean displayMadeline;
 	private PointText pt;
+	private GraveText gt;
 	private LevelDisplayText ldt;
 	private String[] levelData;
 	private Point[][] layer;
 	private int madX;
 	private int madY;
+	private int levelNum;
 	private ArrayList<CollisionObject> otherObject;
 	private static final int GAME_WIDTH = 768;
 	private static final int SPRITE_WIDTH = 48;
@@ -60,6 +62,7 @@ public class LevelComponent extends JComponent {
 	 *                                   collected and false otherwise.
 	 */
 	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds) {
+		this.levelNum = levelNum;
 		this.clouds = clouds;
 		this.main = main;
 		displayMadeline = false;
@@ -118,6 +121,10 @@ public class LevelComponent extends JComponent {
 		{
 			bb.drawOn(g2);
 		}
+		if (gt != null)
+		{
+			gt.drawOn(g2);
+		}
 		if (ldt != null)
 		{
 			ldt.drawOn(g2);
@@ -156,9 +163,13 @@ public class LevelComponent extends JComponent {
 		m.decreaseX();
 	}
 
-	public void addLevelDisplay(String text)
+	public void addLevelDisplay(String text, long startTime)
 	{
-		ldt = new LevelDisplayText(text);
+		if (levelNum == 12)
+			text = "Old Site";
+		else if (levelNum == 31)
+			text = "Summit";
+		ldt = new LevelDisplayText(text, startTime);
 	}
 	
 	public void removeLevelDisplay()
@@ -392,6 +403,11 @@ public class LevelComponent extends JComponent {
 						Balloon bal = new Balloon(j*MainApp.PIXEL_DIM*8,i * MainApp.PIXEL_DIM * 8, m);
 						otherObject.add(bal);
 						collisionObjects.add(bal);
+						break;
+					case ('g'):
+						GraveText g = new GraveText(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8);
+						collisionObjects.add(g);
+						gt = g;
 						break;
 					case ('k'):
 						if (!strawberryAlreadyCollected) {

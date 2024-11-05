@@ -60,6 +60,7 @@ public class MainApp implements KeyListener {
 
 	private boolean canLoadCustomLevel;
 	
+	private long startTime;
 	
 	public MainApp() {
 		// sets default values
@@ -72,6 +73,7 @@ public class MainApp implements KeyListener {
 		deathCount = 0;
 		strawberryCount = 0;
 		completeWithoutMovingLevels = true;
+		startTime = System.currentTimeMillis();
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input
 		frame.addKeyListener(this);
@@ -157,6 +159,7 @@ public class MainApp implements KeyListener {
     	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
     	{
     		completeWithoutMovingLevels = false;
+    		startTime = 0;
     		canMoveLevels = true;
     	}
     	if (e.getKeyCode() == 76) {
@@ -230,7 +233,7 @@ public class MainApp implements KeyListener {
 		}
 		frame.setVisible(true);
 		lvl.setDisplayMadeline(false);
-		lvl.addLevelDisplay(currentLevel + "00 m");
+		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
 		lvl.resetMadelineVelocity();
 	}
 
