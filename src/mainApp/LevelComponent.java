@@ -60,6 +60,7 @@ public class LevelComponent extends JComponent {
 	private int strawberryCount;
 	private int deathCount;
 	private boolean isIncomplete;
+	
 	/**
 	 * Creates a LevelComponent Object
 	 * 
