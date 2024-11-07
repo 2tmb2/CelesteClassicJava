@@ -32,6 +32,7 @@ public class Balloon extends CollisionObject {
 	
 	private BufferedImage spriteMap;
 	private int timeAtCollect = 0;
+	private int originalY = 0;
 	private int lifetime = 0;
 	private int currentFrame;
 	private int verticalDelta = 0;
@@ -40,6 +41,7 @@ public class Balloon extends CollisionObject {
 	public Balloon(int x, int y, Madeline m)
 	{
 		super(x,y,42,48, false, false);
+		originalY = y;
 		try {
 			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 		} catch (IOException e) {
@@ -60,6 +62,7 @@ public class Balloon extends CollisionObject {
 			currentFrame = currentFrame % 3;
 		}
 		verticalDelta = Madeline.roundPos(((int)(-AMPLITUDE * Math.cos(Math.PI * (double)lifetime / (double)(PERIOD / 2)) + AMPLITUDE)));
+		//this.setY(originalY + verticalDelta);
 		if (!isCollected)
 		{
 			g2 = (Graphics2D)g2.create();
@@ -81,6 +84,11 @@ public class Balloon extends CollisionObject {
 		}
 	}
 	
+	/**
+	 * Draws the stem of the balloon with the sprite at spritePoint
+	 * @param g2 graphics object to draw on
+	 * @param spritePoint location of sprite to draw on sprite sheet
+	 */
 	private void drawStemFrame(Graphics2D g2, Point spritePoint)
 	{
 		g2.drawImage(spriteMap, 0, BALLOON_TOP_HEIGHT - verticalDelta, BALLOON_TOP_WIDTH, BALLOON_TOP_HEIGHT + BALLOON_BOTTOM_HEIGHT - verticalDelta, (int)spritePoint.getX(), (int)spritePoint.getY() + 1, (int)spritePoint.getX() + BALLOON_BOTTOM_WIDTH, (int)spritePoint.getY() + BALLOON_BOTTOM_HEIGHT, null);
@@ -117,6 +125,9 @@ public class Balloon extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Collects the balloon, starting the inactivity timer
+	 */
 	private void collected()
 	{
 		if (m.getCurrentDashNum() != m.getTotalDashNum())
