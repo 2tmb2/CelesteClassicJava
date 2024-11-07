@@ -21,6 +21,11 @@ public class Chest {
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final int CHEST_LOCATION_X = 960;
 	private static final int CHEST_LOCATION_Y = 48;
+	
+	/**
+	 * Creates a Chest at the center of the screen
+	 * Chests dissappear when the key is collected, revealing a Strawberry
+	 */
 	public Chest()
 	{
 		x = 768/2;
@@ -33,14 +38,26 @@ public class Chest {
 		}
 	}
 	
+	/**
+	 * Sets the x-location of the chest
+	 */
 	public void setX(int x)
 	{
 		this.x =x ;
 	}
+	
+	/**
+	 * Sets the y-location of the chest
+	 */
 	public void setY(int y)
 	{
 		this.y = y;
 	}
+	
+	/**
+	 * If the key hasn't been collected, draws the chest onto g2 based on it's sprite
+	 * @param g2
+	 */
 	public void drawOn(Graphics2D g2)
 	{
 		if (shouldDraw)
@@ -50,6 +67,10 @@ public class Chest {
 		}
 	}
 	
+	/**
+	 * Collects the given chest
+	 * @param m representing the current Madeline object
+	 */
 	public void collect(Madeline m)
 	{
 		shouldDraw = false;

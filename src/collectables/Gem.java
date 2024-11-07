@@ -22,6 +22,12 @@ public class Gem extends CollisionObject {
 	private static final int GEM_LOCATION_X = 1056;
 	private static final int GEM_LOCATION_Y = 288;
 	
+	/**
+	 * Creates a Gem object that, when collected, gives Madeline her 2nd dash
+	 * @param x representing the x value of where to spawn the Gem
+	 * @param y representing the Y value of where to spawn the gem
+	 * @param m representing the current Madeline object
+	 */
 	public Gem(int x, int y, Madeline m)
 	{
 		super(x,y,8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, false, false);
@@ -34,6 +40,9 @@ public class Gem extends CollisionObject {
 		this.m = m;
 	}
 	
+	/**
+	 * if it hasn't already been collected, draws the gem onto g2
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
@@ -44,6 +53,9 @@ public class Gem extends CollisionObject {
 		}
 	}
 	
+	/**
+	 * Ensures collision with the wall if the gem hasn't already been collected
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -56,6 +68,9 @@ public class Gem extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Ensures collision with the floor if the gem hasn't already been collected
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
@@ -68,6 +83,9 @@ public class Gem extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Ensures collision with the ceiling if the gem hasn't already been collected
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{

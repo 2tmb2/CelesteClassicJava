@@ -458,7 +458,7 @@ public class LevelComponent extends JComponent {
 							{
 								chest = new Chest();
 							}
-							chest.setX(j*MainApp.PIXEL_DIM*8 - 24);
+							chest.setX(j*MainApp.PIXEL_DIM*8);
 							chest.setY(i*MainApp.PIXEL_DIM*8);
 						}
 						break;
