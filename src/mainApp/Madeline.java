@@ -357,7 +357,7 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if ((isTouchingFloor && !jumpPressed && canJump) || isCoyote) {
+		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned) || (isCoyote && isFullySpawned)) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
