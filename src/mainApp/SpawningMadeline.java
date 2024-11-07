@@ -11,6 +11,7 @@ public class SpawningMadeline {
 	private Color hairColor;
 	private boolean movingUp;
 	
+	private static final int MOVE_UP_SPEED = 10;
 	private static final Color EYE_COLOR = new Color(29, 43, 83);
 	private static final Color TORSO_COLOR = new Color(0, 135, 81);
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
@@ -31,7 +32,7 @@ public class SpawningMadeline {
 
 		if (movingUp && y > maxHeight)
 		{
-			y -= 8;
+			y -= MOVE_UP_SPEED;
 		}
 		else
 		{
