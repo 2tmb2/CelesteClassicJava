@@ -2,8 +2,12 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+
+import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 import collisionObjects.Spring;
@@ -46,6 +50,7 @@ public class Madeline {
 	private boolean isCoyote = true;
 	private boolean isFullySpawned = false;
 	private boolean canRechargeDash = true;
+	private boolean canMove = true;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
@@ -357,7 +362,7 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned) || (isCoyote && isFullySpawned)) {
+		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned && canMove) || (isCoyote && isFullySpawned && canMove)) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
@@ -387,7 +392,7 @@ public class Madeline {
 	 *            facing.
 	 */
 	public boolean dash(String dir) {
-		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash && isFullySpawned) {
+		if (numOfDashesRemaining > 0 && !(numOfDashesRemaining == 0) && canDash && isFullySpawned && canMove) {
 			useDashDeccel = true;
 			numOfDashesRemaining--;
 			canDash = false;
@@ -747,6 +752,10 @@ public class Madeline {
 	public void setTotalDashes(int totalDashes) {
 		this.numOfDashesTotal = totalDashes;
 	}
+	
+	public void setCloudsPink() {
+		lvl.setCloudsPink();
+	}
 
 	public void stopAllTimers()
 	{
@@ -759,7 +768,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (!wallJump && canControl && !isTouchingWallRight && !breakState && isFullySpawned) {
+		if (!wallJump && canControl && !isTouchingWallRight && !breakState && isFullySpawned && canMove) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
 		//if (isTouchingWallRight) wallSlide = true;
@@ -769,7 +778,7 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (!wallJump && canControl && !isTouchingWallLeft && !breakState && isFullySpawned) {
+		if (!wallJump && canControl && !isTouchingWallLeft && !breakState && isFullySpawned && canMove) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
 		//if (isTouchingWallLeft) wallSlide = true;
@@ -858,5 +867,40 @@ public class Madeline {
 	public void displayFinalText()
 	{
 		lvl.finalScore();
+	}
+	
+	private int timerI = 0;
+	
+	public void openBigChest(int x, int y)
+	{
+		this.canMove = false;
+		xVel = 0;
+		yVel = 0;
+		final Color[] backgroundColorList = {new Color(171, 81, 51), new Color(93, 87, 77), Color.BLACK, new Color(28, 42, 80), new Color(125, 36, 81), new Color(0, 134, 80)};
+		Timer t = new Timer(150, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timerI++;
+				if (timerI >= backgroundColorList.length)
+				{
+					timerI = 0;
+				}
+				lvl.setBackgroundColor(backgroundColorList[timerI]);
+			}
+		});
+		Timer stopTimer = new Timer(2500, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				t.setRepeats(false);
+				t.stop();
+				lvl.spawnNewGem(x, y);
+				lvl.setBackgroundColor(new Color(125, 36, 81));
+				lvl.setCloudsPink();
+				canMove = true;
+			}
+		});
+		t.start();
+		stopTimer.setRepeats(false);
+		stopTimer.start();
 	}
 }

@@ -70,7 +70,7 @@ public class MainApp implements KeyListener {
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitchEditor = true;
-		currentLevel = 1;
+		currentLevel = 22;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
@@ -183,14 +183,6 @@ public class MainApp implements KeyListener {
 		updateMadelinePosition();
 		updateMadelineVelocity();
 		lvl.updateAnimations();
-		if (currentLevel >= 23)
-		{
-			frame.getContentPane().setBackground(BACKGROUND_PINK);
-		}
-		else
-		{
-			frame.getContentPane().setBackground(BACKGROUND_BLACK);
-		}
 		frame.repaint();
 		editor.repaint();
 	}
@@ -237,6 +229,14 @@ public class MainApp implements KeyListener {
 		lvl.setDisplayMadeline(false);
 		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
 		lvl.resetMadelineVelocity();
+		if (currentLevel >= 23)
+		{
+			frame.getContentPane().setBackground(BACKGROUND_PINK);
+		}
+		else
+		{
+			frame.getContentPane().setBackground(BACKGROUND_BLACK);
+		}
 	}
 
 	/**
@@ -409,6 +409,20 @@ public class MainApp implements KeyListener {
 	    	}
     	}
     	
+    }
+    
+    public void setCloudsPink()
+    {
+    	for (Cloud c : clouds)
+		{
+			c.setColor(PINK_CLOUDS);
+		}
+    }
+    
+    public void setBackgroundColor(Color c)
+    {
+    	frame.getContentPane().setBackground(c);
+    	frame.setVisible(true);
     }
     
 	/**

@@ -399,6 +399,11 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(s);
 						otherObject.add(s);
 						break;
+					case ('n'):
+						Gem gem = new Gem(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						collisionObjects.add(gem);
+						otherObject.add(gem);
+						break;
 					case ('l'):
 						CloudPlatform c;
 						if (secondChar == 'l')
@@ -475,6 +480,10 @@ public class LevelComponent extends JComponent {
 							collisionObjects.add(strawberry);
 						}
 						break;
+					case ('C'):
+						BigChest bc = new BigChest(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						collisionObjects.add(bc);
+						otherObject.add(bc);
 					case ('m'):
 						if (secondChar == '2')
 							madelineTotalDashes = 2;
@@ -593,6 +602,11 @@ public class LevelComponent extends JComponent {
 
 	}
 	
+	public void setCloudsPink()
+	{
+		main.setCloudsPink();
+	}
+	
 	public void finalScore()
 	{
 		fst = new FinalScoreText(timeDiff, strawberryCount, deathCount, isIncomplete);
@@ -601,5 +615,17 @@ public class LevelComponent extends JComponent {
 	public void setMadelineCanDash(boolean option)
 	{
 		m.setCanDash(option);
+	}
+	
+	public void setBackgroundColor(Color c)
+	{
+		main.setBackgroundColor(c);
+	}
+	
+	public void spawnNewGem(int x, int y)
+	{
+		Gem gem = new Gem(x, y, m);
+		collisionObjects.add(gem);
+		otherObject.add(gem);
 	}
 }
