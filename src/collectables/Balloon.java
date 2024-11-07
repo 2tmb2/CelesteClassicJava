@@ -1,16 +1,12 @@
 package collectables;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 import mainApp.Madeline;

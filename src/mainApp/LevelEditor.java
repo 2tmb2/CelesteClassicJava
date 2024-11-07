@@ -16,17 +16,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class LevelEditor extends JComponent {
 	
-	private BufferedImage map;
+	private static final long serialVersionUID = 1L;
 	private BufferedImage scaledMap;
 	private BufferedImage confirm;
 	private BufferedImage blank;
@@ -50,8 +48,6 @@ public class LevelEditor extends JComponent {
 	private static final int COLLIDER_THICKNESS = 4;
 	private static final BasicStroke RECT_STROKE = new BasicStroke(COLLIDER_THICKNESS);
 	
-	private MainApp mainApp;
-	
 	private boolean drawDialog = false;
 	
 	private int gridX = 0;
@@ -68,7 +64,6 @@ public class LevelEditor extends JComponent {
 	private ColoredRectangle tempRect;
 	private ArrayList<ColoredRectangle> colliders = new ArrayList<ColoredRectangle>(); //Collision Layer
 	
-	private Graphics2D g2;
 	private Point[][] environmentLayer = new Point[16][16]; //Background Layer
 	private Point[][] backgroundLayer = new Point[16][16]; //Foreground Layer
 	private Point[][] layer3 = new Point[16][16]; //Detail Layer
@@ -79,7 +74,6 @@ public class LevelEditor extends JComponent {
 	private Boolean[] renderLayers = new Boolean[] {true,true,true,true,true,false};
 	public LevelEditor(MainApp mainApp) {
 		try {
-			map = ImageIO.read(new File("src/Sprites/atlas.png"));
 			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 			confirm = ImageIO.read(new File("src/Sprites/confirm.png"));
 			blank = ImageIO.read(new File("src/Sprites/blank.png"));
@@ -90,13 +84,11 @@ public class LevelEditor extends JComponent {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.mainApp = mainApp;
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		this.g2 = g2;
 		g2.setColor(Color.white);
 		g2.fillRect(GAME_WIDTH, 0, 850, GAME_WIDTH);
 		g.drawImage(scaledMap,GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
@@ -406,28 +398,5 @@ public class LevelEditor extends JComponent {
 	
 	public void clearPrint() {
 		drawDialog = false;
-	}
-	
-	
-	// WIP, covering objects that shouldn't be placed in the selected layer
-	private void coverPosition(Graphics2D g2, int x, int y, int numberOfRows, int numberOfColumns)
-	{
-//		coverPosition(g2, 3, 0, 5, 1);
-//		coverPosition(g2, 9, 0, 2, 1);
-//		coverPosition(g2, 13, 0, 3, 1);
-//		coverPosition(g2, 0, 1, 1, 1);
-//		coverPosition(g2, 3, 1, 1, 1);
-//		coverPosition(g2, 0, 2, 11, 7);
-//		coverPosition(g2, 2, 9, 14, 1);
-//		coverPosition(g2, 0, 10, 16, 1);
-//		coverPosition(g2, 0, 8, 16, 1);
-//		coverPosition(g2, 0, 4, 16, 5);
-//		coverPosition(g2, 2, 0, 1, 1);
-//		coverPosition(g2, 13, 1, 3, 3);
-//		coverPosition(g2, 12, 2, 1, 2);
-//		coverPosition(g2, 8, 1, 2, 1);
-		g2 = (Graphics2D)g2.create();
-		g2.setColor(Color.WHITE);
-		g2.fillRect(x*SPRITE_WIDTH + (128*MainApp.PIXEL_DIM), y*SPRITE_WIDTH, SPRITE_WIDTH*numberOfRows, SPRITE_WIDTH*numberOfColumns);
 	}
 }

@@ -9,7 +9,8 @@ import javax.swing.JComponent;
 import mainApp.MainApp;
 
 public class ErrorDisplay extends JComponent {
-	
+
+	private static final long serialVersionUID = 1L;
 	private String displayMessage;
 	
 	public ErrorDisplay(String message)

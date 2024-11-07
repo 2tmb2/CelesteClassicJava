@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class ColoredRectangle extends Rectangle {
+
+	private static final long serialVersionUID = 1L;
 	private static final Color BLUE_COLOR = new Color(63, 73, 204);
 	private static final Color GREEN_COLOR = new Color(14,209, 69);
 	private Color color;
@@ -32,7 +34,9 @@ public class ColoredRectangle extends Rectangle {
 	{
 		if (color.equals(GREEN_COLOR))
 			return "";
-		else
+		else if (color.equals(BLUE_COLOR))
 			return "I";
+		else
+			return "";
 	}
 }

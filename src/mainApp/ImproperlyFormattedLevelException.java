@@ -1,7 +1,8 @@
 package mainApp;
 
-public class ImproperlyFormattedLevelException extends Exception{
+public class ImproperlyFormattedLevelException extends Exception {
 	
+	private static final long serialVersionUID = 1L;
 	private String message;
 	
 	public ImproperlyFormattedLevelException(String errorMessage) {

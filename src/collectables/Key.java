@@ -1,6 +1,5 @@
 package collectables;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,7 +12,7 @@ import mainApp.Madeline;
 import mainApp.MainApp;
 
 public class Key extends CollisionObject {
-	private static final Color BRIGHT_YELLOW = new Color(255, 236, 39);
+	
 	private Chest chest;
 	private Madeline m;
 	private boolean keyHasBeenCollected;

@@ -11,8 +11,6 @@ public class LeftSpike extends Spike {
 	private static final Color SPIKE_WHITE = new Color(255, 241, 232);
 	private static final Color SPIKE_GREY = new Color(194, 195, 199);
 	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
-	
-	private static final int MADELINE_COLLISION_WIDTH = 30;
 
 	public LeftSpike(int x, int y, int height, Madeline m) {
 		super(x, y + 1, 3*MainApp.PIXEL_DIM, height, m);

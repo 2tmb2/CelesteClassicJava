@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import mainApp.Madeline;
-import mainApp.MainApp;
 
 public class Spring extends CollisionObject {
 	private static final long REACTIVATION_FRAME = 12;

@@ -59,8 +59,6 @@ public class MainApp implements KeyListener {
 	private boolean canSwitchEditor;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
-
-	private boolean canLoadCustomLevel;
 	
 	private long startTime;
 	private long endTime;

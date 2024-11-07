@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
 import mainApp.Madeline;
-import mainApp.MainApp;
 
 public class BigChest extends CollisionObject {
 
