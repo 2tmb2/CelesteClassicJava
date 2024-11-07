@@ -311,23 +311,25 @@ public class LevelEditor extends JComponent {
 	public void doPrint() {
 		
 		data = new HashMap<List<Integer>, String>();
-		data.put(Arrays.asList(2,1), "pp");
-		data.put(Arrays.asList(1,1), "^1");
-		data.put(Arrays.asList(6,1), "rr");
-		data.put(Arrays.asList(7,1), "dd");
-		data.put(Arrays.asList(11,1), "v1");
-		data.put(Arrays.asList(11,2), ">1");
-		data.put(Arrays.asList(11,3), "<1");
-		data.put(Arrays.asList(10,1), "ss");
-		data.put(Arrays.asList(8,0), "kk");
-		data.put(Arrays.asList(4,1), "cc");
-		data.put(Arrays.asList(1,0), "m1");
-		data.put(Arrays.asList(0,4), "bb");
-		data.put(Arrays.asList(12,1), "ww");
-		data.put(Arrays.asList(5,1), "dp");
-		data.put(Arrays.asList(1,9), "m2");
+		data.put(Arrays.asList(2, 1), "pp");
+		data.put(Arrays.asList(1, 1), "^1");
+		data.put(Arrays.asList(6, 1), "rr");
+		data.put(Arrays.asList(7, 1), "dd");
+		data.put(Arrays.asList(11, 1), "v1");
+		data.put(Arrays.asList(11, 2), ">1");
+		data.put(Arrays.asList(11, 3), "<1");
+		data.put(Arrays.asList(10, 1), "ss");
+		data.put(Arrays.asList(8, 0), "kk");
+		data.put(Arrays.asList(4, 1), "cc");
+		data.put(Arrays.asList(1, 0), "m1");
+		data.put(Arrays.asList(0, 4), "bb");
+		data.put(Arrays.asList(12, 1), "ww");
+		data.put(Arrays.asList(5, 1), "dp");
+		data.put(Arrays.asList(1, 9), "m2");
 		data.put(Arrays.asList(11, 0), "lr");
-		data.put(Arrays.asList(12,0), "ll");
+		data.put(Arrays.asList(12, 0), "ll");
+		data.put(Arrays.asList(6, 6), "nn");
+		data.put(Arrays.asList(0, 6), "CC");
 		String levelDataString = "";
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
