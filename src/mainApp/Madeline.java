@@ -799,7 +799,7 @@ public class Madeline {
 	 * resets the level upon death
 	 */
 	public void death() {
-		//if (!isCollidingFloor && !isCollidingWall && !isCollidingCeiling) return;
+		if (!isFullySpawned) return;
 		lvl.resetLevel();
 	}
 
