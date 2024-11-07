@@ -19,12 +19,17 @@ public class CollisionObject {
 
 	/**
 	 * Creates an invisible collision object
-	 * @param x representing the x value of the top left corner of the object
-	 * @param y representing the y value of the top left corner of the object
-	 * @param width representing the width of the object
-	 * @param height representing the height of the object
-	 * @param canSlide true if Madeline should be able to slide on the object, otherwise false
-	 * @param canWallJump true if Madeline should be able to wall jump on the object, otherwise false
+	 * 
+	 * @param x           representing the x value of the top left corner of the
+	 *                    object
+	 * @param y           representing the y value of the top left corner of the
+	 *                    object
+	 * @param width       representing the width of the object
+	 * @param height      representing the height of the object
+	 * @param canSlide    true if Madeline should be able to slide on the object,
+	 *                    otherwise false
+	 * @param canWallJump true if Madeline should be able to wall jump on the
+	 *                    object, otherwise false
 	 */
 	public CollisionObject(int x, int y, int width, int height, boolean canSlide, boolean canWallJump) {
 		this.x = x;
@@ -35,7 +40,8 @@ public class CollisionObject {
 		this.canWallJump = canWallJump;
 	}
 
-	public void drawOn(Graphics2D g2) {}
+	public void drawOn(Graphics2D g2) {
+	}
 
 	/**
 	 * Checks if the character located at the given x and y values would be within
@@ -49,7 +55,7 @@ public class CollisionObject {
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (madelineX + MADELINE_WIDTH - 5 > x && madelineX + 5 < x + width) {
 			if (madelineY + MADELINE_HEIGHT > y) {
-				if (madelineY + MADELINE_HEIGHT <=  y + height) {
+				if (madelineY + MADELINE_HEIGHT <= y + height) {
 					return true;
 				}
 			}
@@ -140,6 +146,7 @@ public class CollisionObject {
 	public void setX(int x) {
 		this.x = x;
 	}
+
 	public void setHeight(int y) {
 		this.height = y;
 	}
@@ -152,18 +159,17 @@ public class CollisionObject {
 		return MADELINE_HEIGHT;
 	}
 
-	public boolean getCanSlide()
-	{
+	public boolean getCanSlide() {
 		return canSlide;
 	}
-	
-	public boolean getCanWallJump()
-	{
+
+	public boolean getCanWallJump() {
 		return canWallJump;
 	}
-	
-	public void stopAllTimers() {}
-	
+
+	public void stopAllTimers() {
+	}
+
 	/**
 	 * Returns a String representing the CollisionObject in the following format:
 	 * Class, x y width height

@@ -14,6 +14,12 @@ public class WingedStrawberry extends Strawberry {
 	private boolean isFlyingAway;
 	private double flyAwayAmount;
 
+	/**
+	 * Creates a winged strawberry that flies away when Madeline dashes
+	 * @param x the center x location of the strawberry spawn
+	 * @param y the center y location of the strawberry spawn
+	 * @param m the current Madeline object that will interact with the WingedStrawberry
+	 */
 	public WingedStrawberry(int x, int y, Madeline m) {
 		super(x, y, m);
 		drawFrame = 1;
@@ -21,6 +27,9 @@ public class WingedStrawberry extends Strawberry {
 		flyAwayAmount = 0;
 	}
 
+	/**
+	 * Draws a WingedStrawberry onto g2 based on it's current animation frame
+	 */
 	@Override
 	public void drawOn(Graphics2D g2) {
 		this.g2 = (Graphics2D) g2.create();
@@ -121,6 +130,9 @@ public class WingedStrawberry extends Strawberry {
 		g2.fillRect(18 + 24, -6, 6, 6);
 	}
 
+	/**
+	 * Updates the flying animation of the WingedStrawberry
+	 */
 	@Override
 	public void updateAnimation() {
 		super.updateAnimation();
@@ -138,6 +150,9 @@ public class WingedStrawberry extends Strawberry {
 		}
 	}
 
+	/**
+	 * Makes the strawberry fly away
+	 */
 	public void flyAway() {
 		isFlyingAway = true;
 	}

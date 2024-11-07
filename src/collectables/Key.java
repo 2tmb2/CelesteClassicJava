@@ -27,6 +27,13 @@ public class Key extends CollisionObject {
 	private int drawX;
 	private BufferedImage scaledMap;
 	
+	/**
+	 * Creates a key object which, when collected, opens the associated chest
+	 * @param x representing the x location of the key
+	 * @param y representing the y location of the key
+	 * @param chest representing the associated Chest object
+	 * @param m representing the current Madeline object
+	 */
 	public Key(int x, int y, Chest chest, Madeline m) {
 		super(x, y, MainApp.PIXEL_DIM*5, MainApp.PIXEL_DIM*8, false, false);
 		this.chest = chest;
@@ -41,6 +48,9 @@ public class Key extends CollisionObject {
 		}
 	}
 	
+	/**
+	 * Draws the Key onto g2 from it's sprite based on it's current animation frame
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
@@ -68,6 +78,9 @@ public class Key extends CollisionObject {
 		}
 	}
 	
+	/**
+	 * Checks for collision between Madeline and the side of the key
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -78,6 +91,10 @@ public class Key extends CollisionObject {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks for collision between Madeline and the top of the key
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
@@ -89,6 +106,9 @@ public class Key extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Checks for collision between Madeline and the bottom of the key
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{
