@@ -59,7 +59,7 @@ public class CloudPlatform extends CollisionObject {
 			translatedPosition = GAME_WIDTH + getWidth();
 		}
 		super.setX(translatedPosition);
-		g2.drawImage(scaledMap, getX(), getY(), getX() + 2*SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (CLOUD_LOCATION_X - GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - GAME_WIDTH)) + 2*SPRITE_WIDTH, CLOUD_LOCATION_Y + SPRITE_HEIGHT, null);
+		g2.drawImage(scaledMap, Madeline.roundPos(getX()), getY(), Madeline.roundPos(getX() + 2*SPRITE_WIDTH), getY() + SPRITE_HEIGHT, (CLOUD_LOCATION_X - GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - GAME_WIDTH)) + 2*SPRITE_WIDTH, CLOUD_LOCATION_Y + SPRITE_HEIGHT, null);
 	}
 	
 	@Override
