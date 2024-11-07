@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
 public class BigChest extends CollisionObject {
@@ -98,6 +99,7 @@ public class BigChest extends CollisionObject {
 	 */
 	private void openBigChest() {
 		m.openBigChest(getX() + 24, getY() - 72);
+		AudioPlayer.playFile("bigchest");
 		spriteHeight = 48;
 		chestLocationY = 48 * 7;
 		drawY = getY() + 48;

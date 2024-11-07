@@ -127,6 +127,10 @@ public class LevelComponent extends JComponent {
 		{
 			chest.drawOn(g2);
 		}
+		if (fst != null)
+		{
+			fst.drawOn(g2);
+		}
 		if (displayMadeline)
 		{
 			m.drawOn(g2);
@@ -142,10 +146,6 @@ public class LevelComponent extends JComponent {
 		if (ldt != null)
 		{
 			ldt.drawOn(g2);
-		}
-		if (fst != null)
-		{
-			fst.drawOn(g2);
 		}
 	}
 
@@ -458,7 +458,7 @@ public class LevelComponent extends JComponent {
 							{
 								chest = new Chest();
 							}
-							chest.setX(j*MainApp.PIXEL_DIM*8);
+							chest.setX(j*MainApp.PIXEL_DIM*8 - 24);
 							chest.setY(i*MainApp.PIXEL_DIM*8);
 						}
 						break;

@@ -71,24 +71,6 @@ public class MainApp implements KeyListener {
 	private long endTime;
 	
 	public MainApp() {
-		// creates and loops the audio track "beyondtheheart.wav"
-		try {
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/beyondtheheart.wav"));
-	        Clip clip;
-			clip = AudioSystem.getClip();
-			clip.open(inputStream);
-	        clip.loop(Clip.LOOP_CONTINUOUSLY);
-	        Thread.sleep(10000);
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
 		// sets default values
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
@@ -157,6 +139,8 @@ public class MainApp implements KeyListener {
 			}
 		});
 		t.start();
+
+		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY);
 	}
 	
 	/**
@@ -249,6 +233,7 @@ public class MainApp implements KeyListener {
 			frame.add(lvl);
 		}
 		frame.setVisible(true);
+		
 		lvl.setDisplayMadeline(false);
 		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
 		lvl.resetMadelineVelocity();

@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import mainApp.AudioPlayer;
+
 public class DissappearingBlock extends CollisionObject{
 
 	private static final Color BLOCK_BROWN = new Color(171, 82, 54);
@@ -175,6 +177,7 @@ public class DissappearingBlock extends CollisionObject{
 	{
 		animationFrame = 0;
 		isDissappearing = true;
+		AudioPlayer.playFile("dissappearingblock");
 		Timer t = new Timer(500, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)

@@ -3,6 +3,7 @@ package collectables;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
 public class WingedStrawberry extends Strawberry {
@@ -153,7 +154,12 @@ public class WingedStrawberry extends Strawberry {
 	/**
 	 * Makes the strawberry fly away
 	 */
+	@Override
 	public void flyAway() {
-		isFlyingAway = true;
+		if (getY() >= -48 && isFlyingAway == false)
+		{
+			AudioPlayer.playFile("strawberry_flyaway");
+			isFlyingAway = true;
+		}
 	}
 }

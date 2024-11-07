@@ -369,12 +369,21 @@ public class Madeline {
 			jumpPressed = true;
 			isCoyote = false;
 			coyoteTimer -= COYOTE_FRAMES;
+			AudioPlayer.playFile("jump");
 		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && canWallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			frameAtWallJump = lifetime;
 			xVel = -facingRight * WALL_JUMP_X_VEL;
 			yVel = WALL_JUMP_Y_VEL;
+			if (facingRight > 0)
+			{
+				AudioPlayer.playFile("jump_wall_right");
+			}
+			else
+			{
+				AudioPlayer.playFile("jump_wall_left");
+			}
 		}
 	}
 
@@ -449,6 +458,7 @@ public class Madeline {
 				noGrav = true;
 			}
 			isDashingDiagonally = isDashingHorizontally && isDashingVertically;
+			AudioPlayer.playFile("dash");
 			return true;
 		}
 		return false;
@@ -615,8 +625,7 @@ public class Madeline {
 		if (facingRight < 0) {
 			// create an AffineTransform to mirror Madeline's model when she is facing left
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			// moves the transform left by 48 pixels to adjust for the difference in x/y
-			// location
+			// moves the transform left by 48 pixels to adjust for the difference in x/y location
 			tx.translate(-8*MainApp.PIXEL_DIM, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
@@ -801,10 +810,12 @@ public class Madeline {
 	public void death() {
 		if (!isFullySpawned) return;
 		lvl.resetLevel();
+		AudioPlayer.playFile("death");
 	}
 
 	public void collectStrawberry() {
 		if (breakState) return;
+		AudioPlayer.playFile("strawberrycollect");
 		resetDashes();
 		lvl.collectStrawberry();
 	}
@@ -814,6 +825,7 @@ public class Madeline {
 	}
 
 	public void springBounce() {
+		AudioPlayer.playFile("spring");
 		if (bounceHigh) {
 			yVel = BOUNCE_VEL;
 		} else {

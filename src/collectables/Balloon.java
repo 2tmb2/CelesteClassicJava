@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -56,7 +57,11 @@ public class Balloon extends CollisionObject {
 	public void drawOn(Graphics2D g2)
 	{
 		lifetime++;
-		if (lifetime > timeAtCollect + RESPAWN_FRAMES) isCollected = false;
+		if (lifetime > timeAtCollect + RESPAWN_FRAMES && isCollected == true)
+		{
+			isCollected = false;
+			AudioPlayer.playFile("balloonreturn");
+		}
 		if (lifetime % ANIMATION_DELTA == 0) {
 			currentFrame++;
 			currentFrame = currentFrame % 3;
@@ -132,6 +137,7 @@ public class Balloon extends CollisionObject {
 	{
 		if (m.getCurrentDashNum() != m.getTotalDashNum())
 		{
+			AudioPlayer.playFile("ballooncollect");
 			m.resetDashes();
 			isCollected = true;
 			timeAtCollect = lifetime;

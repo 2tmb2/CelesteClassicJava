@@ -1,5 +1,6 @@
 package collisionObjects;
 
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
 /**

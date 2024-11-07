@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -73,6 +74,7 @@ public class Chest {
 	 */
 	public void collect(Madeline m)
 	{
+		AudioPlayer.playFile("key");
 		shouldDraw = false;
 		m.openChest(x + 8*MainApp.PIXEL_DIM / 2, y + 7*MainApp.PIXEL_DIM / 2);
 	}

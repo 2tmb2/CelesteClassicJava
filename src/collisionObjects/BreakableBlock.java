@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
 /**
@@ -65,6 +66,8 @@ public class BreakableBlock extends CollisionObject {
 	 */
 	public void breakBlock() {
 		exists = false;
+		m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
+		AudioPlayer.playFile("breakableblock");
 	}
 
 	/**
@@ -83,7 +86,6 @@ public class BreakableBlock extends CollisionObject {
 			if (super.isCollidingWall(madelineX, madelineY, facing)) {
 				if (m.getIsDashing()) {
 					breakBlock();
-					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
 				}
 				return true;
 			}
@@ -105,7 +107,6 @@ public class BreakableBlock extends CollisionObject {
 			{
 				if (m.getIsDashing()) {
 					breakBlock();
-					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
 				}
 				return true;
 			}
@@ -127,7 +128,6 @@ public class BreakableBlock extends CollisionObject {
 			{
 				if (m.getIsDashing()) {
 					breakBlock();
-					m.breakBlock(getX() + getWidth() / 2, getY() + getHeight() / 2);
 					return false;
 				}
 				return true;
