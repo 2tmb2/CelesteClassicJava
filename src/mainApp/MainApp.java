@@ -12,11 +12,18 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Timer;
 
 import TextElements.ErrorDisplay;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 
 /**
@@ -64,6 +71,24 @@ public class MainApp implements KeyListener {
 	private long endTime;
 	
 	public MainApp() {
+		// creates and loops the audio track "beyondtheheart.wav"
+		try {
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/beyondtheheart.wav"));
+	        Clip clip;
+			clip = AudioSystem.getClip();
+			clip.open(inputStream);
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	        Thread.sleep(10000);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		// sets default values
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
