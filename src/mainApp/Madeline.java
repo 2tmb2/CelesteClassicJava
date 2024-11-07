@@ -901,4 +901,14 @@ public class Madeline {
 		stopTimer.setRepeats(false);
 		stopTimer.start();
 	}
+	
+	public int getCurrentDashNum()
+	{
+		return numOfDashesRemaining;
+	}
+	
+	public int getTotalDashNum()
+	{
+		return numOfDashesTotal;
+	}
 }

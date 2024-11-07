@@ -119,9 +119,12 @@ public class Balloon extends CollisionObject {
 	
 	private void collected()
 	{
-		m.resetDashes();
-		isCollected = true;
-		timeAtCollect = lifetime;
+		if (m.getCurrentDashNum() != m.getTotalDashNum())
+		{
+			m.resetDashes();
+			isCollected = true;
+			timeAtCollect = lifetime;
+		}
 	}
 	
 }
