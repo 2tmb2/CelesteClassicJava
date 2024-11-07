@@ -18,6 +18,7 @@ public class Madeline {
 	private double xVel;
 	private double yVel;
 	private double yVelMax;
+	private int cloudVel;
 	private int numOfDashesTotal;
 	private int numOfDashesRemaining;
 	private int facingRight;
@@ -470,6 +471,14 @@ public class Madeline {
 					return true;
 				}
 			}
+			if (cloudVel != 0) {
+				if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, -facingRight)) {
+					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) 
+						xPos = collisionObjects.get(i).getX() - WIDTH + 6;
+					else if (Math.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
+						xPos = collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() - 6;
+				}
+			}
 		}
 		return false;
 	}
@@ -548,6 +557,7 @@ public class Madeline {
 				return true;
 			}
 		}
+		cloudVel = 0;
 		return false;
 	}
 
@@ -851,6 +861,7 @@ public class Madeline {
 	public void moveWithCloud(int x)
 	{
 		this.xPos += x;
+		cloudVel = x;
 	}
 	public Color getHairColor()
 	{
