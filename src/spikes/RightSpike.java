@@ -13,13 +13,13 @@ public class RightSpike extends Spike {
 	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
 
 	public RightSpike(int x, int y, int height, Madeline m) {
-		super(x, y, 3*MainApp.PIXEL_DIM, height, m);
+		super(x - 2*MainApp.PIXEL_DIM, y, 3*MainApp.PIXEL_DIM, height, m);
 	}
 
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX() - MainApp.PIXEL_DIM, getY() + MainApp.PIXEL_DIM);
+		g2.translate(getX() + MainApp.PIXEL_DIM, getY() + MainApp.PIXEL_DIM);
 		for (int i = 0; i < getHeight() / (4*MainApp.PIXEL_DIM); i++) {
 			g2.setColor(SPIKE_GREY);
 			g2.fillRect(MainApp.PIXEL_DIM, 0, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);

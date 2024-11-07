@@ -13,13 +13,13 @@ public class LeftSpike extends Spike {
 	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
 
 	public LeftSpike(int x, int y, int height, Madeline m) {
-		super(x, y + 1, 3*MainApp.PIXEL_DIM, height, m);
+		super(x + 2*MainApp.PIXEL_DIM, y + 1, 3*MainApp.PIXEL_DIM, height, m);
 	}
 
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
-		g2.translate(getX() - 3*MainApp.PIXEL_DIM, getY() - 1 + MainApp.PIXEL_DIM);
+		g2.translate(getX() - 5*MainApp.PIXEL_DIM, getY() - 1 + MainApp.PIXEL_DIM);
 		for (int i = 0; i < getHeight() / (4*MainApp.PIXEL_DIM); i++) {
 			g2.setColor(SPIKE_GREY);
 			g2.fillRect(3*MainApp.PIXEL_DIM, 0, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
@@ -38,20 +38,20 @@ public class LeftSpike extends Spike {
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (getMadeline().getXVelocity() < 0) return false;
 		// gives a grace period at the top of the spike
-		return super.isCollidingFloor(madelineX, madelineY - 2*MainApp.PIXEL_DIM);
+		return super.isCollidingFloor(madelineX - MainApp.PIXEL_DIM, madelineY - 2*MainApp.PIXEL_DIM);
 	}
 
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (getMadeline().getXVelocity() < 0) return false;
 		// gives a grace period at the bottom of the spike
-		return super.isCollidingCeiling(madelineX, madelineY + 2*MainApp.PIXEL_DIM);
+		return super.isCollidingCeiling(madelineX - MainApp.PIXEL_DIM, madelineY + 2*MainApp.PIXEL_DIM);
 	}
 	
 	/*@Override
 	public boolean isCollidingWall(int madelinX, int madelineY, int facing) {
 		if (getMadeline().getXVelocity() < 0) return false;
-		return super.isCollidingWall(madelineY, madelineY, facing);
+		return super.isCollidingWall(madelineY - MainApp.PIXEL_DIM, madelineY, facing);
 	}*/
 
 }
