@@ -70,7 +70,7 @@ public class MainApp implements KeyListener {
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitchEditor = true;
-		currentLevel = 22;
+		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
-import collisionObjects.Spring;
 
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
@@ -57,6 +56,7 @@ public class Madeline {
 	private int frameAtBreak;
 	private int dashFrameTimer = 0;
 	private int coyoteTimer = 0;
+	private int timerI = 0;
 	
 	private int lifetime = 0;
 
@@ -868,8 +868,6 @@ public class Madeline {
 	{
 		lvl.finalScore();
 	}
-	
-	private int timerI = 0;
 	
 	public void openBigChest(int x, int y)
 	{
