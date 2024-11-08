@@ -51,6 +51,7 @@ public class Madeline {
 	private boolean isFullySpawned = false;
 	private boolean canRechargeDash = true;
 	private boolean canMove = true;
+	private boolean dying = false;
 	
 	private int frameAtDash;
 	private int frameAtWallJump;
@@ -363,7 +364,7 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned && canMove) || (isCoyote && isFullySpawned && canMove)) {
+		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned && canMove) || (isCoyote && isFullySpawned && canMove && !jumpPressed)) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
@@ -808,9 +809,10 @@ public class Madeline {
 	 * resets the level upon death
 	 */
 	public void death() {
-		if (!isFullySpawned) return;
-		lvl.resetLevel();
+		if (!isFullySpawned || dying) return;
+		dying = true;
 		AudioPlayer.playFile("death");
+		lvl.resetLevel();
 	}
 
 	public void collectStrawberry() {
