@@ -60,7 +60,7 @@ public class MainApp implements KeyListener {
 	private boolean byFrame = false;
 	private boolean muted = false;
 	
-	private long startTime;
+	private long startTime = System.currentTimeMillis();
 	private long endTime;
 	
 	public MainApp() {
