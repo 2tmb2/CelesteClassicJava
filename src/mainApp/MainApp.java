@@ -12,18 +12,12 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.Timer;
 
 import TextElements.ErrorDisplay;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 
 /**
@@ -38,9 +32,9 @@ public class MainApp implements KeyListener {
 	
 	//The holiest magic number
 	public static final int PIXEL_DIM = 6;
-	
 	public static final int BETWEEN_FRAMES = 22;
 	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
+	
 	private static final Color BACKGROUND_PINK = new Color(126, 37, 83);
 	private static final Color BACKGROUND_BLACK = new Color(0, 0, 0);
 	private static final Color BLUE_CLOUDS = new Color(29, 43, 83);
@@ -60,27 +54,25 @@ public class MainApp implements KeyListener {
 	private boolean canMoveLevels;
 	private ArrayList<Cloud> clouds;
 
-	public static long time = System.currentTimeMillis();
-
 	private boolean inEditor;
-	private boolean canSwitchEditor;
+	private boolean canSwitch;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
+	private boolean muted = false;
 	
-	private long startTime;
+	private long startTime = System.currentTimeMillis();
 	private long endTime;
 	
 	public MainApp() {
 		// sets default values
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
-		canSwitchEditor = true;
+		canSwitch = true;
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
 		strawberryCount = 0;
-		startTime = System.currentTimeMillis();
 		endTime = 0;
 		frame = new JFrame();
 		// adds this to the frame in order to listen for keyboard input
@@ -140,7 +132,7 @@ public class MainApp implements KeyListener {
 		});
 		t.start();
 
-		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY);
+		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY, -30.0f);
 	}
 	
 	/**
@@ -172,7 +164,7 @@ public class MainApp implements KeyListener {
     		canMoveLevels = true;
     	}
     	if (e.getKeyCode() == 76) {
-    		canSwitchEditor = true;
+    		canSwitch = true;
     	}
     	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
     	{
@@ -185,7 +177,7 @@ public class MainApp implements KeyListener {
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 		}
-		checkToggleEditor();
+		checkToggles();
 		checkMoveLevels();
 		updateMadelinePosition();
 		updateMadelineVelocity();
@@ -400,20 +392,26 @@ public class MainApp implements KeyListener {
 	}
     
     
-    private void checkToggleEditor() {
-    	if (canSwitchEditor) {
+    private void checkToggles() {
+    	if (canSwitch) {
     		// 76 is l
 	    	if (pressedKeys.contains(76)) {
 	    		inEditor = !inEditor;
 	    		if (!inEditor) {
-		    		canSwitchEditor = false;
+		    		canSwitch = false;
 		    		frame.setVisible(true);
 		    		editor.setVisible(false);
 		    	} else {
-		    		canSwitchEditor = false;
+		    		canSwitch = false;
 		    		frame.setVisible(false);
 		    		editor.setVisible(true);
 		    	}
+	    	}
+	    	//77 is m
+	    	if (pressedKeys.contains(77)) {
+	    		muted = !muted;
+	    		muteMusic();
+	    		canSwitch = false;
 	    	}
     	}
     	
@@ -433,6 +431,13 @@ public class MainApp implements KeyListener {
     	frame.setVisible(true);
     }
     
+    /**
+     * Muted audio once for testing
+     */
+    public void muteMusic() {
+    	AudioPlayer.setMute(muted);
+    }
+
 	/**
 	 * ensures: runs the application
 	 * 
