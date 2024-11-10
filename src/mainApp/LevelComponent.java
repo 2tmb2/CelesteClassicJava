@@ -507,8 +507,9 @@ public class LevelComponent extends JComponent {
 					// Creates offscreen objects
 					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on left side
 					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on right
-																							// side
-					collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
+					
+					if (levelNum != 31)
+						collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
 					collisionObjects.add(new UpSpike(-8*MainApp.PIXEL_DIM, 17 * 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, m)); // Death zone on bottom side
 					m.setCanCollide(true);
 				}

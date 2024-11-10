@@ -132,7 +132,7 @@ public class MainApp implements KeyListener {
 		});
 		t.start();
 
-		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY, -30.0f);
+		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY, -20.0f);
 	}
 	
 	/**

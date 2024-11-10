@@ -12,8 +12,8 @@ public class CollisionObject {
 	private int y;
 	private int width;
 	private int height;
-	private static final int MADELINE_WIDTH = 36;
-	private static final int MADELINE_HEIGHT = 24;
+	public static final int MADELINE_WIDTH = 36;
+	public static final int MADELINE_HEIGHT = 24;
 	private boolean canSlide;
 	private boolean canWallJump;
 
@@ -149,14 +149,6 @@ public class CollisionObject {
 
 	public void setHeight(int y) {
 		this.height = y;
-	}
-
-	public int getMadelineWidth() {
-		return MADELINE_WIDTH;
-	}
-
-	public int getMadelineHeight() {
-		return MADELINE_HEIGHT;
 	}
 
 	public boolean getCanSlide() {

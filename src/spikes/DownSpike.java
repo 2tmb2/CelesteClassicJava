@@ -39,7 +39,7 @@ public class DownSpike extends Spike {
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
 		// ensures that madeline is below the top of the object and above the bottom of
 		// the object
-		if (madelineY + getMadelineHeight() > getY() + 10 && madelineY < getY() + getHeight() - 10) {
+		if (madelineY + Spike.MADELINE_HEIGHT > getY() + 10 && madelineY < getY() + getHeight() - 10) {
 			// if madeline is facing left and moving to the right
 			if (facing < 0 && madelineX > getX() + getWidth() / 2) {
 				if (madelineX - (getX() + getWidth()) <= 0)
@@ -47,7 +47,7 @@ public class DownSpike extends Spike {
 			}
 			// if madeline is facing right and moving to the right
 			else if (facing > 0 && madelineX > getX() + getWidth() / 2) {
-				if (madelineX + getMadelineWidth() - (getX() + getWidth()) <= 0)
+				if (madelineX + Spike.MADELINE_WIDTH - (getX() + getWidth()) <= 0)
 					return true;
 			}
 			// if madeline is facing left and moving to the left
@@ -56,8 +56,8 @@ public class DownSpike extends Spike {
 					return true;
 			}
 			// if madeline is facing right and moving to the left
-			else if (facing > 0 && madelineX + getMadelineWidth() < getX() + getWidth() / 2) {
-				if (madelineX + getMadelineWidth() - getX() >= 0)
+			else if (facing > 0 && madelineX + Spike.MADELINE_WIDTH < getX() + getWidth() / 2) {
+				if (madelineX + Spike.MADELINE_WIDTH - getX() >= 0)
 					return true;
 			}
 		}
