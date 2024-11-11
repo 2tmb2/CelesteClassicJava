@@ -1,4 +1,4 @@
-package mainApp;
+package TextElements;
 
 import java.awt.Point;
 

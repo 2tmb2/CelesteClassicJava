@@ -12,12 +12,19 @@ public class GraveText extends CollisionObject {
 	private boolean displayText = false;
 	private int timestamp;
 	
-	
+	/**
+	 * creates a GraveText object
+	 * @param x the top left x coordinate of the grave
+	 * @param y the top left y coordinate of the grave
+	 */
 	public GraveText(int x, int y)
 	{
 		super(x, y, 96, 96, false, false);
 	}
 	
+	/**
+	 * Determines whether Madeline is colliding with any part of the grave
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -43,6 +50,9 @@ public class GraveText extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Draws the grave text onto g2
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{

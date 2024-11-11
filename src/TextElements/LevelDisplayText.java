@@ -12,6 +12,12 @@ public class LevelDisplayText {
 	private String seconds;
 	private String minutes;
 	private String hours;
+	
+	/**
+	 * Creates a level display text object to display the level name and strawberry number
+	 * @param text
+	 * @param startTime
+	 */
 	public LevelDisplayText(String text, long startTime)
 	{
 		this.text = text;

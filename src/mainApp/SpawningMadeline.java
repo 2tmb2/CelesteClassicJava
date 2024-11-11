@@ -17,6 +17,12 @@ public class SpawningMadeline {
 	private static final Color LEG_COLOR = new Color(255, 241, 232);
 	private static final Color FACE_COLOR = new Color(255, 204, 170);
 	
+	/**
+	 * Creates an object that looks like Madeline but without collision for the purpose of spawning her into the level
+	 * @param x her starting x position
+	 * @param maxHeight the maximum height she should move to
+	 * @param hairColor the hair color she should have
+	 */
 	public SpawningMadeline(int x, int maxHeight, Color hairColor)
 	{
 		y = 768;
@@ -26,6 +32,9 @@ public class SpawningMadeline {
 		movingUp = true;
 	}
 	
+	/**
+	 * Draws the faux madeline onto g2
+	 */
 	public void drawOn(Graphics2D g2) {
 		
 		g2 = (Graphics2D) g2.create();
@@ -66,6 +75,10 @@ public class SpawningMadeline {
 		g2.fillRect(3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 		g2.fillRect(6*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
 	}
+	
+	/**
+	 * @return true if the SpawningMadeline is moving up
+	 */
 	public boolean getMovingUp()
 	{
 		return movingUp;

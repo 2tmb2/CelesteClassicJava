@@ -14,6 +14,15 @@ public class RotatableSpike extends CollisionObject {
 
 	private Madeline m;
 	
+	/**
+	 * Creates a rotatable spike
+	 * @param x the top left x location of the spike
+	 * @param y the top left y location of the spike
+	 * @param width the width of the spike's collision box
+	 * @param height the height of the spike's collision box
+	 * @param rotation Character representing the rotation. 'u' = up, 'd' = down, 'l' = left, 'r' = right
+	 * @param m the current Madeline that the spikes will interact with
+	 */
 	public RotatableSpike(int x, int y, int width, int height, char rotation, Madeline m)
 	{
 		super(x, y, width, height, false, false);
@@ -42,6 +51,9 @@ public class RotatableSpike extends CollisionObject {
 		}
 	}
 	
+	/**
+	 * Draws the spike onto g2 with the correct rotation
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
@@ -71,6 +83,7 @@ public class RotatableSpike extends CollisionObject {
 			g2.rotate(Math.PI);
 		}
 
+		// draws both halves of the spike. Since they are identical, it repeats twice.
 		for (int i = 0; i < 2; i++)
 		{
 			g2.setColor(SPIKE_GREY);
@@ -87,7 +100,9 @@ public class RotatableSpike extends CollisionObject {
 		}
 	}
 	
-	
+	/**
+	 * Checks if Madeline is colliding with the top of the spike. If she is, it kills her.
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
@@ -99,6 +114,9 @@ public class RotatableSpike extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the side of the spike. If she is, it kills her.
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -110,6 +128,9 @@ public class RotatableSpike extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the bottom of the spike. If she is, it kills her.
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{

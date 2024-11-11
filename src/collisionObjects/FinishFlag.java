@@ -10,12 +10,18 @@ public class FinishFlag extends CollisionObject {
 	
 	private Madeline m;
 	private int flagLocationX;
-	private static final int FLAG_LOCATION_X_FRAME_1 = 6*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
-	private static final int FLAG_LOCATION_X_FRAME_2 = 7*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
-	private static final int FLAG_LOCATION_X_FRAME_3 = 8*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_1 = 6*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_2 = 7*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_3 = 8*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
 	private static final int FLAG_LOCATION_Y = 7*8*MainApp.PIXEL_DIM;
 	private int animationFrame;
 	
+	/**
+	 * Creates a FinishFlag object, which when collided with displays the player's statistics
+	 * @param x representing the top left x coordinate
+	 * @param y representing the top left y coordinate
+	 * @param m representing the current Madeline object
+	 */
 	public FinishFlag(int x, int y, Madeline m)
 	{
 		super(x, y, 48, 48, false, false);
@@ -23,6 +29,9 @@ public class FinishFlag extends CollisionObject {
 		animationFrame = 0;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the side of the FinishFlag
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -33,18 +42,28 @@ public class FinishFlag extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the top of the FinishFlag
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the bottom of the FinishFlag
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{
 		return false;
 	}
 	
+	/**
+	 * Draws the FinishFlag in it's current animation frame onto g2
+	 * @param g2 the Graphics2D object to draw onto
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{

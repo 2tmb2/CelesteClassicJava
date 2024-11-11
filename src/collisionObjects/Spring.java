@@ -15,6 +15,12 @@ public class Spring extends CollisionObject {
 	private int drawFrame;
 	private int currentFrame;
 
+	/**
+	 * Creates a Spring object
+	 * @param x the top left x coordinate of the spring
+	 * @param y the top left y coordinate of the spring
+	 * @param m the Madeline to interact with the spring
+	 */
 	public Spring(int x, int y, Madeline m) {
 		super(x + 6, y + 18, 36, 30, false, false);
 		this.m = m;
@@ -22,6 +28,9 @@ public class Spring extends CollisionObject {
 		drawFrame = 1;
 	}
 
+	/**
+	 * Draws the spring onto g2
+	 */
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
@@ -40,6 +49,9 @@ public class Spring extends CollisionObject {
 
 	}
 
+	/**
+	 * Draws frame 1 (fully extended) of the Spring's animation
+	 */
 	private void frame1(Graphics2D g2) {
 		g2.setColor(SPRING_DARK_YELLOW);
 		g2.fillRect(0, 0, 6, 6);
@@ -57,6 +69,9 @@ public class Spring extends CollisionObject {
 		g2.fillRect(12, 24, 12, 6);
 	}
 
+	/**
+	 * Draws frame 2 (fully retracted) of the Spring's animation
+	 */
 	private void frame2(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.setColor(SPRING_DARK_YELLOW);
@@ -67,6 +82,10 @@ public class Spring extends CollisionObject {
 		g2.fillRect(6, 0, 24, 6);
 	}
 
+	/**
+	 * Check if Madeline is colliding with a wall
+	 * @return true if Madeline is colliding with the spring, otherwise false
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
 		if (super.isCollidingWall(madelineX, madelineY, facing)) {
@@ -75,6 +94,10 @@ public class Spring extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Check if Madeline is colliding with a ceiling
+	 * @return true if Madeline is colliding with the spring, otherwise false
+	 */
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (super.isCollidingCeiling(madelineX, madelineY)) {
 			bounce();
@@ -82,6 +105,10 @@ public class Spring extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Check if Madeline is colliding with a floor
+	 * @return true if Madeline is colliding with the spring, otherwise false
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (super.isCollidingFloor(madelineX, madelineY)) {
@@ -90,6 +117,9 @@ public class Spring extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Makes Madeline bounce off the spring
+	 */
 	private void bounce() {
 		if (currentFrame < REACTIVATION_FRAME) return;
 		m.springBounce();
@@ -98,6 +128,5 @@ public class Spring extends CollisionObject {
 		if (getY() == originalY) {
 			super.setY(getY() + 24);
 		}
-		//restoreTimer.start();
 	}
 }

@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import TextElements.FinalScoreText;
@@ -52,6 +48,8 @@ public class LevelComponent extends JComponent {
 	private int strawberryCount;
 	private int deathCount;
 	private boolean isIncomplete;
+	private String filePath;
+	private String levelName;
 	
 	/**
 	 * Creates a LevelComponent Object
@@ -76,6 +74,7 @@ public class LevelComponent extends JComponent {
 		this.strawberryCount = strawberryCount;
 		this.deathCount = deathCount;
 		this.isIncomplete = isIncomplete;
+		filePath = null;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		layer = new Point[16][16];
@@ -90,6 +89,8 @@ public class LevelComponent extends JComponent {
 		this.main = main;
 		this.timeDiff = timeDiff;
 		this.deathCount = deathCount;
+		this.filePath = filePath;
+		this.levelName = levelName;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		layer = new Point[16][16];
@@ -431,37 +432,37 @@ public class LevelComponent extends JComponent {
 					case ('['):
 						break;
 					case ('>'):
-						RotatableSpike r = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'r', m);
+						RotatableSpike r = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'r', m);
 						otherObject.add(r);
 						collisionObjects.add(r);
 						break;
 					case ('<'):
-						RotatableSpike l = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'l', m);
+						RotatableSpike l = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'l', m);
 						collisionObjects.add(l);
 						otherObject.add(l);
 						break;
 					case ('^'):
-						RotatableSpike u = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'u', m);
+						RotatableSpike u = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'u', m);
 						collisionObjects.add(u);
 						otherObject.add(u);
 						break;
 					case ('v'):
-						RotatableSpike d = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'd', m);
+						RotatableSpike d = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'd', m);
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
 					case ('f'):
-						FinishFlag f = new FinishFlag(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						FinishFlag f = new FinishFlag(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(f);
 						otherObject.add(f);
 						break;
 					case ('p'):
-						Spring s = new Spring(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, m);
+						Spring s = new Spring(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(s);
 						otherObject.add(s);
 						break;
 					case ('n'):
-						Gem gem = new Gem(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						Gem gem = new Gem(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(gem);
 						otherObject.add(gem);
 						break;
@@ -469,11 +470,11 @@ public class LevelComponent extends JComponent {
 						CloudPlatform c;
 						if (secondChar == 'l')
 						{
-							c = new CloudPlatform(j*8*MainApp.PIXEL_DIM, i*8*MainApp.PIXEL_DIM, m, -1);
+							c = new CloudPlatform(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m, -1);
 						}
 						else
 						{
-							c = new CloudPlatform(j*8*MainApp.PIXEL_DIM, i*8*MainApp.PIXEL_DIM, m, 1);
+							c = new CloudPlatform(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m, 1);
 						}
 						collisionObjects.add(c);
 						otherObject.add(c);
@@ -481,24 +482,24 @@ public class LevelComponent extends JComponent {
 					case ('d'):
 						if (secondChar != 'd')
 						{
-							DissappearingSpring dSpring = new DissappearingSpring(j*8*MainApp.PIXEL_DIM,i*8*MainApp.PIXEL_DIM, m);
+							DissappearingSpring dSpring = new DissappearingSpring(j*Constants.SPRITE_WIDTH,i*Constants.SPRITE_WIDTH, m);
 							collisionObjects.add(dSpring);
 							otherObject.add(dSpring);
 						}
 						else
 						{
-							DissappearingBlock dBlock = new DissappearingBlock(j*8*MainApp.PIXEL_DIM,i*8*MainApp.PIXEL_DIM);
+							DissappearingBlock dBlock = new DissappearingBlock(j*Constants.SPRITE_WIDTH,i*Constants.SPRITE_WIDTH);
 							collisionObjects.add(dBlock);
 							otherObject.add(dBlock);
 						}
 						break;
 					case ('r'):
-						Balloon bal = new Balloon(j*MainApp.PIXEL_DIM*8,i * MainApp.PIXEL_DIM * 8, m);
+						Balloon bal = new Balloon(j*Constants.SPRITE_WIDTH,i * Constants.SPRITE_WIDTH, m);
 						otherObject.add(bal);
 						collisionObjects.add(bal);
 						break;
 					case ('g'):
-						GraveText g = new GraveText(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8);
+						GraveText g = new GraveText(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH);
 						collisionObjects.add(g);
 						gt = g;
 						break;
@@ -508,7 +509,7 @@ public class LevelComponent extends JComponent {
 							{
 								chest = new Chest();
 							}
-							Key k = new Key(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, chest, m);
+							Key k = new Key(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, chest, m);
 							collisionObjects.add(k);
 							otherObject.add(k);
 						}
@@ -519,30 +520,30 @@ public class LevelComponent extends JComponent {
 							{
 								chest = new Chest();
 							}
-							chest.setX(j*MainApp.PIXEL_DIM*8 - 24);
-							chest.setY(i*MainApp.PIXEL_DIM*8);
+							chest.setX(j*Constants.SPRITE_WIDTH - 24);
+							chest.setY(i*Constants.SPRITE_WIDTH);
 						}
 						break;
 					case ('b'):
 						if (!strawberryAlreadyCollected) {
-							bb = new BreakableBlock(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, 2 * 8*MainApp.PIXEL_DIM, 2 * 8*MainApp.PIXEL_DIM, m);
+							bb = new BreakableBlock(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, 2 * Constants.SPRITE_WIDTH, 2 * Constants.SPRITE_WIDTH, m);
 							collisionObjects.add(bb);
 						}
 						break;
 					case ('s'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new Strawberry(j * MainApp.PIXEL_DIM * 8 + 4*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 + 3*MainApp.PIXEL_DIM, m);
+							strawberry = new Strawberry(j * Constants.SPRITE_WIDTH + 4*MainApp.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('w'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new WingedStrawberry(j * MainApp.PIXEL_DIM * 8 + 4*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 + 3*MainApp.PIXEL_DIM, m);
+							strawberry = new WingedStrawberry(j * Constants.SPRITE_WIDTH + 4*MainApp.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*MainApp.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('C'):
-						BigChest bc = new BigChest(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, m);
+						BigChest bc = new BigChest(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(bc);
 						otherObject.add(bc);
 					case ('m'):
@@ -550,31 +551,31 @@ public class LevelComponent extends JComponent {
 							madelineTotalDashes = 2;
 						else
 							madelineTotalDashes = 1;
-						madX = j * MainApp.PIXEL_DIM * 8;
-						madY = i * MainApp.PIXEL_DIM * 8;
+						madX = j * Constants.SPRITE_WIDTH;
+						madY = i * Constants.SPRITE_WIDTH;
 						break;
 					case ('I'):
-						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (secondChar - '0') * 8*MainApp.PIXEL_DIM,
-								(objectsData[j].charAt(2) - '0') * 8*MainApp.PIXEL_DIM, false, true));
+						collisionObjects.add(new CollisionObject(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, (secondChar - '0') * Constants.SPRITE_WIDTH,
+								(objectsData[j].charAt(2) - '0') * Constants.SPRITE_WIDTH, false, true));
 						break;
 					default:
 						if (firstChar - '0' < 0 || firstChar - '0' > 10) {
 							throw new ImproperlyFormattedLevelException(
 									"Character " + firstChar + " was not recognized in level creation");
 						}
-						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (firstChar - '0') * 8*MainApp.PIXEL_DIM,
-								(secondChar - '0') * 8*MainApp.PIXEL_DIM, true, true));
+						collisionObjects.add(new CollisionObject(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, (firstChar - '0') * Constants.SPRITE_WIDTH,
+								(secondChar - '0') * Constants.SPRITE_WIDTH, true, true));
 					}
 					// Creates offscreen walls
-					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on left side
-					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on right
+					collisionObjects.add(new CollisionObject(-Constants.SPRITE_WIDTH, -Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, 20 * Constants.SPRITE_WIDTH, false, false)); // Invisible wall on left side
+					collisionObjects.add(new CollisionObject(16 * Constants.SPRITE_WIDTH, -Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, 20 * Constants.SPRITE_WIDTH, false, false)); // Invisible wall on right
 					
 					// creates the level finish zone to advance levels
 					if (levelNum != 31 && canMoveToNextLevel)
-						collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
+						collisionObjects.add(new LevelFinishZone(-Constants.SPRITE_WIDTH, -Constants.SPRITE_WIDTH - MainApp.PIXEL_DIM, 20 * Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, m)); // Finish zone on top side
 					
 					// creates the death zone at the bottom of the world
-					collisionObjects.add(new RotatableSpike(MainApp.PIXEL_DIM*-8, 17*MainApp.PIXEL_DIM*8, 20*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*8, 'u', m));
+					collisionObjects.add(new RotatableSpike(-1*Constants.SPRITE_WIDTH, 17*Constants.SPRITE_WIDTH, 20*Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, 'u', m));
 					m.setCanCollide(true);
 				}
 			}
@@ -721,4 +722,5 @@ public class LevelComponent extends JComponent {
 		collisionObjects.add(gem);
 		otherObject.add(gem);
 	}
+	
 }

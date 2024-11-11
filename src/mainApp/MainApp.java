@@ -66,6 +66,7 @@ public class MainApp implements KeyListener {
 	private boolean canMoveLevels;
 	private boolean gameStarted;
 	private boolean errorIsDisplayed;
+	private boolean isCustomLevel;
 	private ArrayList<Cloud> clouds;
 
 	private boolean inEditor;
@@ -73,6 +74,9 @@ public class MainApp implements KeyListener {
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
 	private boolean muted = false;
+	
+	private String filePath;
+	private String fileName;
 	
 	private long startTime = System.currentTimeMillis();
 	private long endTime;
@@ -192,6 +196,7 @@ public class MainApp implements KeyListener {
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_L)
 			{
+				updateTimer.start();
 				inEditor = !inEditor;
 	    		if (!inEditor) {
 		    		canSwitch = false;
@@ -238,13 +243,20 @@ public class MainApp implements KeyListener {
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 		}
-		checkToggles();
-		checkMoveLevels();
-		updateMadelinePosition();
-		updateMadelineVelocity();
-		lvl.updateAnimations();
-		frame.repaint();
-		editor.repaint();
+		if (!errorIsDisplayed && !inEditor && gameStarted)
+		{
+			checkToggles();
+			checkMoveLevels();
+			updateMadelinePosition();
+			updateMadelineVelocity();
+			lvl.updateAnimations();
+			frame.repaint();
+			editor.repaint();
+		}
+		else if (inEditor)
+		{
+			editor.repaint();
+		}
 	}
 	
 	public Set<Integer> getKeys() {
@@ -255,8 +267,9 @@ public class MainApp implements KeyListener {
     
     private void mainGame() {
     	frame.remove(menu);
+    	isCustomLevel = false;
     	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
-		levelRefresh();	
+		mainGameLevelRefresh();	
 		updateTimer.start();
 		
     }
@@ -265,13 +278,15 @@ public class MainApp implements KeyListener {
     	final JFileChooser fc = new JFileChooser();
     	fc.showOpenDialog(null);
     	frame.requestFocus();
-    	if (fc.getSelectedFile() != null && fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().length() - 3).equals("txt"))
+    	filePath = fc.getSelectedFile().getPath();
+    	fileName = fc.getSelectedFile().getName();
+    	if (fc.getSelectedFile() != null && fileName.substring(fileName.length() - 3).equals("txt"))
     	{
     		frame.remove(menu);
     		gameStarted = true;
-    		System.out.println(fc.getSelectedFile().getPath());
-    		lvl = new LevelComponent(this, fc.getSelectedFile().getPath(), fc.getSelectedFile().getName(), clouds, endTime - startTime, strawberryCount);
-    		levelRefresh();
+    		lvl = new LevelComponent(this, filePath, fileName, clouds, endTime - startTime, strawberryCount);
+    		isCustomLevel = true;
+    		customLevelRefresh();
     		updateTimer.start();
     	}
     	else if (fc.getSelectedFile() == null)
@@ -284,11 +299,33 @@ public class MainApp implements KeyListener {
     	}
     }
     
+    private void customLevelRefresh() {
+    	lvl.stopAllTimers();			
+		frame.remove(lvl);
+    	lvl = new LevelComponent(this, filePath, fileName, clouds, endTime - startTime, strawberryCount);
+    	if (err == null)
+		{
+			frame.add(lvl);
+		}
+		frame.setVisible(true);
+		
+		lvl.setDisplayMadeline(false);
+		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
+		lvl.resetMadelineVelocity();
+		if (currentLevel >= 23)
+		{
+			frame.getContentPane().setBackground(BACKGROUND_PINK);
+		}
+		else
+		{
+			frame.getContentPane().setBackground(BACKGROUND_BLACK);
+		}
+    }
     
 	/**
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
-	private void levelRefresh() {
+	private void mainGameLevelRefresh() {
 		if (currentLevel >= 23)
 		{
 			for (Cloud c : clouds)
@@ -304,10 +341,6 @@ public class MainApp implements KeyListener {
 			}
 		}
 		lvl.stopAllTimers();
-		// ensures that a button held before the user can move still fires once they are
-		// able to move
-		//pressedKeys = new HashSet<>();
-
 		// resets the level to currentLevel
 			
 		frame.remove(lvl);
@@ -338,7 +371,14 @@ public class MainApp implements KeyListener {
 	 */
 	public void resetLevel() {
 		deathCount++;
-		levelRefresh();
+		if (isCustomLevel)
+		{
+			customLevelRefresh();
+		}
+		else
+		{
+			mainGameLevelRefresh();
+		}
 	}
 
 	/**
@@ -353,7 +393,7 @@ public class MainApp implements KeyListener {
 		{
 			endTime = System.currentTimeMillis();
 		}
-		levelRefresh();
+		mainGameLevelRefresh();
 	}
 
 	/**
@@ -364,7 +404,7 @@ public class MainApp implements KeyListener {
 		if (currentLevel > 1) {
 			currentLevel--;
 		}
-		levelRefresh();
+		mainGameLevelRefresh();
 	}
     
     /**
@@ -385,7 +425,7 @@ public class MainApp implements KeyListener {
     	errorIsDisplayed = true;
     	gameStarted = false;
     	frame.getContentPane().removeAll();
-    	err = new ErrorDisplay(error + "&&press esc to reset");
+    	err = new ErrorDisplay(error + " &&press esc to reset");
     	frame.add(err);
     	frame.setVisible(true);
     	frame.repaint();

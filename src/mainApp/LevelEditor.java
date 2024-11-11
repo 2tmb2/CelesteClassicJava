@@ -21,6 +21,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
+import TextElements.FontLocs;
+
 
 public class LevelEditor extends JComponent {
 	

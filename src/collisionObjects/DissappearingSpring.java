@@ -25,7 +25,12 @@ public class DissappearingSpring extends CollisionObject {
 	private static final Color BLOCK_YELLOW = new Color(255, 163, 0);
 	private static final Color BLOCK_DARK_BLUE = new Color(29, 43, 83);
 	
-	
+	/**
+	 * Creates a Dissappearing Spring object. A dissappearing spring is a spring ontop of a dissappearing block.
+	 * @param x representing the top left x coordinate of the spring
+	 * @param y representing the top left y coordinate of the spring
+	 * @param m representing the Madeline object to interact with
+	 */
 	public DissappearingSpring(int x, int y, Madeline m)
 	{
 		super(x,y,48,96, true, true);
@@ -42,6 +47,9 @@ public class DissappearingSpring extends CollisionObject {
 		restoreTimer.setRepeats(false);
 	}
 	
+	/**
+	 * Draws the DissappearingSpring onto g2 based on it's current animation frame
+	 */
 	@Override
 	public void drawOn(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
@@ -74,8 +82,11 @@ public class DissappearingSpring extends CollisionObject {
 				drawDissappearingFrame2(g2);
 			}
 		}
-
 	}
+	
+	/**
+	 * Draws a full dissappearing block
+	 */
 	private void drawFullBlock(Graphics2D g2)
 	{
 		g2.setColor(BLOCK_YELLOW);
@@ -91,6 +102,9 @@ public class DissappearingSpring extends CollisionObject {
 		g2.fillRect(42,42,6,6);
 	}
 	
+	/**
+	 * Draws frame 1 of the dissappearing block's dissappearance
+	 */
 	private void drawDissappearingFrame1(Graphics2D g2)
 	{
 		
@@ -123,6 +137,9 @@ public class DissappearingSpring extends CollisionObject {
 		g2.fillRect(30,18,6,6);
 	}
 	
+	/**
+	 * Draws frame 2 of the Dissappearing Block's dissappearing animation
+	 */
 	private void drawDissappearingFrame2(Graphics2D g2)
 	{
 		g2.setColor(BLOCK_DARK_BLUE);
@@ -161,6 +178,9 @@ public class DissappearingSpring extends CollisionObject {
 		
 	}
 
+	/**
+	 * Draws frame 1 of the spring's animation
+	 */
 	private void frame1(Graphics2D g2) {
 		g2.setColor(SPRING_DARK_YELLOW);
 		g2.fillRect(0, 0, 6, 6);
@@ -178,6 +198,9 @@ public class DissappearingSpring extends CollisionObject {
 		g2.fillRect(12, 24, 12, 6);
 	}
 
+	/**
+	 * Draws frame 2 of the spring's animation
+	 */
 	private void frame2(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.translate(0,24);
@@ -190,6 +213,9 @@ public class DissappearingSpring extends CollisionObject {
 	}
 	
 
+	/**
+	 * Checks if Madeline is colliding with the side of the dissappearingspring
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
 		if (super.isCollidingWall(madelineX, madelineY, facing) && isVisible) {
@@ -207,6 +233,10 @@ public class DissappearingSpring extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Checks if Madeline is colliding with the bottom of the dissappearing spring
+	 */
+	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (super.isCollidingCeiling(madelineX, madelineY) && isVisible) {
 			if (!isDissappearing)
@@ -223,6 +253,9 @@ public class DissappearingSpring extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Checks if Madeline is colliding with the top of the dissappearing spring
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (super.isCollidingFloor(madelineX, madelineY) && isVisible) {
@@ -239,13 +272,19 @@ public class DissappearingSpring extends CollisionObject {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Causes Madeline to bounce
+	 */
 	private void bounce() {
 		m.springBounce();
 		springDrawFrame = 2;
 		restoreTimer.start();
 	}
 	
+	/**
+	 * Causes the dissappearing block to dissappear
+	 */
 	private void dissappear()
 	{
 		animationFrame = 0;
