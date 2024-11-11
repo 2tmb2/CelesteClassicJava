@@ -51,29 +51,29 @@ public class SpawningMadeline {
 		
 		// drawing hair
 		g2.setColor(hairColor);
-		g2.fillRect(MainApp.PIXEL_DIM, 0, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// drawing face
 		g2.setColor(FACE_COLOR);
-		g2.fillRect(3*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
 
 		// drawing torso
 		g2.setColor(TORSO_COLOR);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// drawing legs
 		g2.setColor(LEG_COLOR);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(5*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// drawing eyes
 		g2.setColor(EYE_COLOR);
-		g2.fillRect(3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(6*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**

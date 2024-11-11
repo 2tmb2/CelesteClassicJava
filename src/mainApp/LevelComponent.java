@@ -427,22 +427,22 @@ public class LevelComponent extends JComponent {
 					case ('['):
 						break;
 					case ('>'):
-						RotatableSpike r = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'r', m);
+						RotatableSpike r = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*2, Constants.PIXEL_DIM*6, 'r', m);
 						otherObject.add(r);
 						collisionObjects.add(r);
 						break;
 					case ('<'):
-						RotatableSpike l = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'l', m);
+						RotatableSpike l = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*2, Constants.PIXEL_DIM*6, 'l', m);
 						collisionObjects.add(l);
 						otherObject.add(l);
 						break;
 					case ('^'):
-						RotatableSpike u = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'u', m);
+						RotatableSpike u = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*6, Constants.PIXEL_DIM*2, 'u', m);
 						collisionObjects.add(u);
 						otherObject.add(u);
 						break;
 					case ('v'):
-						RotatableSpike d = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'd', m);
+						RotatableSpike d = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*6, Constants.PIXEL_DIM*2, 'd', m);
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
@@ -527,13 +527,13 @@ public class LevelComponent extends JComponent {
 						break;
 					case ('s'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new Strawberry(j * Constants.SPRITE_WIDTH + 4*MainApp.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*MainApp.PIXEL_DIM, m);
+							strawberry = new Strawberry(j * Constants.SPRITE_WIDTH + 4*Constants.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*Constants.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('w'):
 						if (!strawberryAlreadyCollected) {
-							strawberry = new WingedStrawberry(j * Constants.SPRITE_WIDTH + 4*MainApp.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*MainApp.PIXEL_DIM, m);
+							strawberry = new WingedStrawberry(j * Constants.SPRITE_WIDTH + 4*Constants.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*Constants.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
@@ -567,7 +567,7 @@ public class LevelComponent extends JComponent {
 					
 					// creates the level finish zone to advance levels
 					if (levelNum != 31 && canMoveToNextLevel)
-						collisionObjects.add(new LevelFinishZone(-Constants.SPRITE_WIDTH, -Constants.SPRITE_WIDTH - MainApp.PIXEL_DIM, 20 * Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, m)); // Finish zone on top side
+						collisionObjects.add(new LevelFinishZone(-Constants.SPRITE_WIDTH, -Constants.SPRITE_WIDTH - Constants.PIXEL_DIM, 20 * Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, m)); // Finish zone on top side
 					
 					// creates the death zone at the bottom of the world
 					collisionObjects.add(new RotatableSpike(-1*Constants.SPRITE_WIDTH, 17*Constants.SPRITE_WIDTH, 20*Constants.SPRITE_WIDTH, Constants.SPRITE_WIDTH, 'u', m));

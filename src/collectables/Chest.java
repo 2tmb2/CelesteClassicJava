@@ -62,6 +62,6 @@ public class Chest {
 	{
 		AudioPlayer.playFile("key");
 		shouldDraw = false;
-		m.openChest(x + 8*MainApp.PIXEL_DIM / 2, y + 7*MainApp.PIXEL_DIM / 2);
+		m.openChest(x + 8*Constants.PIXEL_DIM / 2, y + 7*Constants.PIXEL_DIM / 2);
 	}
 }

@@ -24,7 +24,7 @@ public class CloudPlatform extends CollisionObject {
 	 */
 	public CloudPlatform(int x, int y, Madeline m, int travelingDirection)
 	{
-		super(x, y, 96, 4*MainApp.PIXEL_DIM, false, false);
+		super(x, y, 96, 4*Constants.PIXEL_DIM, false, false);
 		translatedPosition = x;
 		this.travelingDirection = travelingDirection;
 		this.m = m;
@@ -37,9 +37,9 @@ public class CloudPlatform extends CollisionObject {
 	public void drawOn(Graphics2D g2)
 	{
 		g2 = (Graphics2D)g2.create();
-		translatedPosition += travelingDirection*MainApp.PIXEL_DIM/3;
+		translatedPosition += travelingDirection*Constants.PIXEL_DIM/3;
 		if (isColliding)
-			m.moveWithCloud(travelingDirection*MainApp.PIXEL_DIM/3);
+			m.moveWithCloud(travelingDirection*Constants.PIXEL_DIM/3);
 		if (translatedPosition >= Constants.GAME_WIDTH && travelingDirection == 1)
 		{
 			translatedPosition = -getWidth();

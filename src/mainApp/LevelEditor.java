@@ -34,9 +34,9 @@ public class LevelEditor extends JComponent {
 	private BufferedImage grid;
 	private BufferedImage font;
 	
-	private static final int ATLAS_WIDTH = 128 * MainApp.PIXEL_DIM;
-	private static final int ATLAS_HEIGHT = 88 * MainApp.PIXEL_DIM;
-	private static final int OPTIONS_Y = 16 * MainApp.PIXEL_DIM;
+	private static final int ATLAS_WIDTH = 128 * Constants.PIXEL_DIM;
+	private static final int ATLAS_HEIGHT = 88 * Constants.PIXEL_DIM;
+	private static final int OPTIONS_Y = 16 * Constants.PIXEL_DIM;
 	private static final int GAME_HEIGHT = Constants.GAME_WIDTH;
 	private static final int FONT_WIDTH = 3;
 	private static final int FONT_HEIGHT = 5;
@@ -183,8 +183,8 @@ public class LevelEditor extends JComponent {
 		Point fPoint;
 		for (int i = 0; i < text.length(); i++) {
 			fPoint = FontLocs.getLoc(text.charAt(i));
-			g.drawImage(font, (int)location.getX(), (int)location.getY(), (int)location.getX() + (FONT_WIDTH * MainApp.PIXEL_DIM), (int)location.getY() + (FONT_HEIGHT * MainApp.PIXEL_DIM), (int)fPoint.getX(), (int)fPoint.getY(), (int)fPoint.getX() + FONT_WIDTH, (int)fPoint.getY() + FONT_HEIGHT, null);
-			location.setLocation(location.getX() + (4 * MainApp.PIXEL_DIM), location.getY());
+			g.drawImage(font, (int)location.getX(), (int)location.getY(), (int)location.getX() + (FONT_WIDTH * Constants.PIXEL_DIM), (int)location.getY() + (FONT_HEIGHT * Constants.PIXEL_DIM), (int)fPoint.getX(), (int)fPoint.getY(), (int)fPoint.getX() + FONT_WIDTH, (int)fPoint.getY() + FONT_HEIGHT, null);
+			location.setLocation(location.getX() + (4 * Constants.PIXEL_DIM), location.getY());
 		}
 	}
 	
@@ -332,7 +332,7 @@ public class LevelEditor extends JComponent {
 			for (int j = 0; j < 16; j++) {
 				if (objectLayer[j][i] != null)
 				{
-					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(128*MainApp.PIXEL_DIM))/Constants.SPRITE_WIDTH, (int)objectLayer[j][i].getY()/Constants.SPRITE_WIDTH);
+					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(128*Constants.PIXEL_DIM))/Constants.SPRITE_WIDTH, (int)objectLayer[j][i].getY()/Constants.SPRITE_WIDTH);
 					if (data.get(point) != null)
 					{
 						levelDataString += data.get(point);

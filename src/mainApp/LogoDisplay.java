@@ -12,8 +12,8 @@ import TextElements.BlockyText;
 public class LogoDisplay {
 
 	private static final int GAME_HEIGHT = Constants.GAME_WIDTH;
-	private static final int SPRITE_LOCATION_X = Constants.GAME_WIDTH + 9*8*MainApp.PIXEL_DIM;
-	private static final int SPRITE_LOCATION_Y = 4*8*MainApp.PIXEL_DIM;
+	private static final int SPRITE_LOCATION_X = Constants.GAME_WIDTH + 9*8*Constants.PIXEL_DIM;
+	private static final int SPRITE_LOCATION_Y = 4*8*Constants.PIXEL_DIM;
 	private static final int XPOS = (Constants.GAME_WIDTH)/2 - (Constants.SPRITE_WIDTH*7)/2;
 	private static final int YPOS = GAME_HEIGHT/2 - (int)((Constants.SPRITE_HEIGHT*4) * 1);
 	

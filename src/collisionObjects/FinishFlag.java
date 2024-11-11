@@ -13,7 +13,7 @@ public class FinishFlag extends CollisionObject {
 	private static final int FLAG_LOCATION_X_FRAME_1 = 6*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
 	private static final int FLAG_LOCATION_X_FRAME_2 = 7*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
 	private static final int FLAG_LOCATION_X_FRAME_3 = 8*Constants.SPRITE_WIDTH + Constants.GAME_WIDTH;
-	private static final int FLAG_LOCATION_Y = 7*8*MainApp.PIXEL_DIM;
+	private static final int FLAG_LOCATION_Y = 7*8*Constants.PIXEL_DIM;
 	private int animationFrame;
 	
 	/**

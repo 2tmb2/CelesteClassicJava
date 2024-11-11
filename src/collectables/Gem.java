@@ -22,7 +22,7 @@ public class Gem extends CollisionObject {
 	 */
 	public Gem(int x, int y, Madeline m)
 	{
-		super(x,y,8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, false, false);
+		super(x,y,8*Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM, false, false);
 		hasBeenCollected = false;
 		this.m = m;
 	}

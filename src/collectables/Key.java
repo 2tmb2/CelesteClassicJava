@@ -27,7 +27,7 @@ public class Key extends CollisionObject {
 	 * @param m representing the current Madeline object
 	 */
 	public Key(int x, int y, Chest chest, Madeline m) {
-		super(x, y, MainApp.PIXEL_DIM*5, MainApp.PIXEL_DIM*8, false, false);
+		super(x, y, Constants.PIXEL_DIM*5, Constants.PIXEL_DIM*8, false, false);
 		this.chest = chest;
 		this.m = m;
 		keyHasBeenCollected = false;

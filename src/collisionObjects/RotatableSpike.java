@@ -2,6 +2,8 @@ package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -30,24 +32,21 @@ public class RotatableSpike extends CollisionObject {
 		this.rotation = rotation;
 		if (rotation == 'l')
 		{
-			setX(getX() + 6*MainApp.PIXEL_DIM);
-			setY(getY() + MainApp.PIXEL_DIM);
-			
+			setX(getX() + 6*Constants.PIXEL_DIM);
+			setY(getY() + Constants.PIXEL_DIM);
 		}
 		else if (rotation == 'r')
 		{
-			setY(getY() + MainApp.PIXEL_DIM);
-			
+			setY(getY() + Constants.PIXEL_DIM);
 		}
 		else if (rotation == 'u')
 		{
-			setY(getY() + 6*MainApp.PIXEL_DIM);
-			setX(getX() + MainApp.PIXEL_DIM);
+			setY(getY() + 6*Constants.PIXEL_DIM);
+			setX(getX() + Constants.PIXEL_DIM);
 		}
 		else if (rotation == 'd')
 		{
-			setX(getX() + MainApp.PIXEL_DIM);
-			
+			setX(getX() + Constants.PIXEL_DIM);
 		}
 	}
 	
@@ -62,24 +61,24 @@ public class RotatableSpike extends CollisionObject {
 		
 		if (rotation == 'l')
 		{
-			g2.translate(-4*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM);
+			g2.translate(-4*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
 			g2.rotate(-Math.PI/2);
 			
 		}
 		else if (rotation == 'r')
 		{
-			g2.translate(6*MainApp.PIXEL_DIM, 0);
+			g2.translate(6*Constants.PIXEL_DIM, 0);
 			g2.rotate(Math.PI/2);
 			
 		}
 		else if (rotation == 'u')
 		{
-			g2.translate(0, -4*MainApp.PIXEL_DIM);
+			g2.translate(0, -4*Constants.PIXEL_DIM);
 			
 		}
 		else if (rotation == 'd')
 		{
-			g2.translate(6*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM);
+			g2.translate(6*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
 			g2.rotate(Math.PI);
 		}
 
@@ -87,16 +86,16 @@ public class RotatableSpike extends CollisionObject {
 		for (int i = 0; i < 2; i++)
 		{
 			g2.setColor(SPIKE_GREY);
-			g2.fillRect(0, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
+			g2.fillRect(0, 3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
 
 			g2.setColor(SPIKE_WHITE);
-			g2.fillRect(MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM);
-			g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+			g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM);
+			g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 			g2.setColor(SPIKE_BROWN);
-			g2.fillRect(-MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM);
+			g2.fillRect(-Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
 
-			g2.translate(4*MainApp.PIXEL_DIM, 0);
+			g2.translate(4*Constants.PIXEL_DIM, 0);
 		}
 	}
 	

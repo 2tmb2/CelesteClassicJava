@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import collisionObjects.CollisionObject;
+import mainApp.Constants;
 import mainApp.MainApp;
 
 public class GraveText extends CollisionObject {
@@ -62,7 +63,7 @@ public class GraveText extends CollisionObject {
 			g2 = (Graphics2D)g2.create();
 
 			g2.setColor(new Color(255, 241, 232));
-			g2.translate(36, 12*MainApp.PIXEL_DIM*8);
+			g2.translate(36, 12*Constants.PIXEL_DIM*8);
 			g2.fillRect(48,0, 768-(96*2), 96+(48/2));
 			g2.setColor(Color.BLACK);
 			g2.translate(48+48/2, 12);

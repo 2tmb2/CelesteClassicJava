@@ -3,6 +3,7 @@ package TextElements;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import mainApp.Constants;
 import mainApp.MainApp;
 
 public class FinalScoreText {
@@ -51,19 +52,19 @@ public class FinalScoreText {
 		g2 = (Graphics2D)g2.create();
 		
 		g2.setColor(Color.BLACK);
-		g2.translate(4*8*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, 8*8*MainApp.PIXEL_DIM, 4*8*MainApp.PIXEL_DIM);
+		g2.translate(4*8*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, 8*8*Constants.PIXEL_DIM, 4*8*Constants.PIXEL_DIM);
 		if (isIncomplete)
 		{
 			// tells the user that they didn't fully complete the game
-			g2.translate(1.5*8*MainApp.PIXEL_DIM, 1.75*8*MainApp.PIXEL_DIM);
+			g2.translate(1.5*8*Constants.PIXEL_DIM, 1.75*8*Constants.PIXEL_DIM);
 			g2.setColor(Color.WHITE);
 			BlockyText.drawText(g2,  "INCOMPLETE");
 		}
 		else
 		{
 			// displays the user's actual statistics
-			g2.translate(3.4*8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM);
+			g2.translate(3.4*8*Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM);
 			
 			// draws the strawberry icon
 			g2.setColor(STRAWBERRY_RED);
@@ -102,11 +103,11 @@ public class FinalScoreText {
 			
 			// draws the strawberry counter text
 			g2.setColor(Color.WHITE);
-			g2.translate(6*MainApp.PIXEL_DIM, -6);
+			g2.translate(6*Constants.PIXEL_DIM, -6);
 			BlockyText.drawText(g2, "x" + strawberryTotal);
 			
 			// draws the time text
-			g2.translate(-9*MainApp.PIXEL_DIM + -8*MainApp.PIXEL_DIM, 48);
+			g2.translate(-9*Constants.PIXEL_DIM + -8*Constants.PIXEL_DIM, 48);
 			BlockyText.drawText(g2, hours + ":" + minutes + ":" + seconds);
 			
 			// draws the death count text

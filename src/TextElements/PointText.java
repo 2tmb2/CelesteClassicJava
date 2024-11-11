@@ -3,6 +3,7 @@ package TextElements;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import mainApp.Constants;
 import mainApp.MainApp;
 
 /**
@@ -38,7 +39,7 @@ public class PointText {
 		// creates a copy of the Graphics2D object so that translations don't affect
 		// future drawings
 		g2 = (Graphics2D) g2.create();
-		g2.translate(x - 6*MainApp.PIXEL_DIM, y - translateBy - 20);
+		g2.translate(x - 6*Constants.PIXEL_DIM, y - translateBy - 20);
 		g2.setColor(currentColor);
 
 		BlockyText.drawText(g2, "1000");

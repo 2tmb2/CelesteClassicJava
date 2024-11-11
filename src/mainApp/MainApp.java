@@ -34,10 +34,6 @@ import javax.swing.JFrame;
  *         Restrictions: None
  */
 public class MainApp implements KeyListener {
-	
-	//The holiest magic number
-	public static final int PIXEL_DIM = 6;
-	
 	// scaled map must be public because it is the image used by every other class's drawing methods.
 	// This avoids reading the same file in over and over again.
 	public static BufferedImage SCALED_MAP;
@@ -219,19 +215,19 @@ public class MainApp implements KeyListener {
     public synchronized void keyReleased(KeyEvent e) {
 		if (gameStarted == true)
 		{
-			if (e.getKeyCode() == 74 || e.getKeyCode() == 67)
+			if (e.getKeyCode() == KeyEvent.VK_J || e.getKeyCode() == KeyEvent.VK_C)
 	    	{
 	    		lvl.setMadelineJumpPressed(false);
 	    	}
-	    	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
+	    	if (e.getKeyCode() == KeyEvent.VK_O || e.getKeyCode() == KeyEvent.VK_P)
 	    	{
 	    		startTime = 0;
 	    		canMoveLevels = true;
 	    	}
-	    	if (e.getKeyCode() == 76) {
+	    	if (e.getKeyCode() == KeyEvent.VK_L) {
 	    		canSwitch = true;
 	    	}
-	    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
+	    	if (e.getKeyCode() == KeyEvent.VK_K || e.getKeyCode() == KeyEvent.VK_X)
 	    	{
 	    		lvl.setMadelineCanDash(true);
 	    	}
@@ -310,16 +306,8 @@ public class MainApp implements KeyListener {
 		frame.setVisible(true);
 		
 		lvl.setDisplayMadeline(false);
-		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
+		lvl.addLevelDisplay(fileName, startTime);
 		lvl.resetMadelineVelocity();
-		if (currentLevel >= 23)
-		{
-			frame.getContentPane().setBackground(BACKGROUND_PINK);
-		}
-		else
-		{
-			frame.getContentPane().setBackground(BACKGROUND_BLACK);
-		}
     }
     
 	/**
@@ -443,14 +431,12 @@ public class MainApp implements KeyListener {
     
     private void updateMadelineVelocity() {
     	Boolean hasMoved = false;
-    	// 68 is d, 39 is right arrow
-    	if (pressedKeys.contains(68) || pressedKeys.contains(39))
+    	if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT))
 		{
 			lvl.moveMadelineRight();
 			hasMoved = true;
 		}
-		// 65 is s, 37 is left arrow
-		if (pressedKeys.contains(65) || pressedKeys.contains(37)) {
+		if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
 			lvl.moveMadelineLeft();
 			hasMoved = true;
 		}
@@ -458,8 +444,7 @@ public class MainApp implements KeyListener {
     }
 
 	private void checkJump() {
-		// 74 is j, 67 is c
-		if (pressedKeys.contains(74) || pressedKeys.contains(67)) {
+		if (pressedKeys.contains(KeyEvent.VK_J) || pressedKeys.contains(KeyEvent.VK_C)) {
 			lvl.madelineJump();
 		}
 	}
@@ -470,23 +455,22 @@ public class MainApp implements KeyListener {
 	 */
 	private void checkDash() {
 		lvl.checkIfDashing();
-		// 75 is k, 88 is x
-		if (pressedKeys.contains(75) || pressedKeys.contains(88)) {
-			if ((pressedKeys.contains(87) && pressedKeys.contains(68))
-					|| (pressedKeys.contains(38) && pressedKeys.contains(39))) {
+		if (pressedKeys.contains(KeyEvent.VK_K) || pressedKeys.contains(KeyEvent.VK_X)) {
+			if ((pressedKeys.contains(KeyEvent.VK_W) && pressedKeys.contains(KeyEvent.VK_D))
+					|| (pressedKeys.contains(KeyEvent.VK_UP) && pressedKeys.contains(KeyEvent.VK_RIGHT))) {
 				lvl.dash("upright");
-			} else if ((pressedKeys.contains(87) && pressedKeys.contains(65))
-					|| (pressedKeys.contains(38) && pressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_W) && pressedKeys.contains(KeyEvent.VK_A))
+					|| (pressedKeys.contains(KeyEvent.VK_UP) && pressedKeys.contains(KeyEvent.VK_LEFT))) {
 				lvl.dash("upleft");
-			} else if ((pressedKeys.contains(68) && pressedKeys.contains(83))
-					|| (pressedKeys.contains(40) && pressedKeys.contains(39))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_D) && pressedKeys.contains(KeyEvent.VK_S))
+					|| (pressedKeys.contains(KeyEvent.VK_DOWN) && pressedKeys.contains(KeyEvent.VK_RIGHT))) {
 				lvl.dash("downright");
-			} else if ((pressedKeys.contains(65) && pressedKeys.contains(83))
-					|| (pressedKeys.contains(40) && pressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_A) && pressedKeys.contains(KeyEvent.VK_S))
+					|| (pressedKeys.contains(KeyEvent.VK_DOWN) && pressedKeys.contains(KeyEvent.VK_LEFT))) {
 				lvl.dash("downleft");
-			} else if (pressedKeys.contains(83) || pressedKeys.contains(40)) {
+			} else if (pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) {
 				lvl.dash("down");
-			} else if (pressedKeys.contains(87) || pressedKeys.contains(38)) {
+			} else if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
 				lvl.dash("up");
 			} else {
 				lvl.dash("");
@@ -500,11 +484,7 @@ public class MainApp implements KeyListener {
 	 */
 	private void checkMoveLevels() {
 		if (canMoveLevels) {
-			// pressedKeys is checked instead of pressedKeys to allow the user to
-			// switch to alternate levels without waiting for the spawn timer
-			
-			// 80 is p
-			if (pressedKeys.contains(80)) {
+			if (pressedKeys.contains(KeyEvent.VK_P)) {
 				if (err != null)
 				{
 					frame.remove(err);
@@ -513,8 +493,7 @@ public class MainApp implements KeyListener {
 				nextLevel();
 				canMoveLevels = false;	
 			}
-			// 79 is o
-			else if (pressedKeys.contains(79)) {
+			else if (pressedKeys.contains(KeyEvent.VK_O)) {
 				if (err != null)
 				{
 					frame.remove(err);
@@ -556,7 +535,7 @@ public class MainApp implements KeyListener {
      * Muted audio once for testing
      */
     public void muteMusic() {
-    	AudioPlayer.setMute(muted);
+    	AudioPlayer.setMute(!muted);
     }
 
 	/**
