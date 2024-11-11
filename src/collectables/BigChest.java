@@ -1,22 +1,15 @@
 package collectables;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import collisionObjects.CollisionObject;
 import mainApp.AudioPlayer;
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
 public class BigChest extends CollisionObject {
 
 	private boolean isOpen;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 96;
 	private int spriteHeight;
 	private static final int CHEST_LOCATION_X = 768;
 	private int chestLocationY;
@@ -33,7 +26,7 @@ public class BigChest extends CollisionObject {
 	public BigChest(int x, int y, Madeline m) {
 		super(x, y, 96, 96, false, false);
 		this.m = m;
-		spriteHeight = SPRITE_WIDTH;
+		spriteHeight = Constants.SPRITE_WIDTH*2;
 		chestLocationY = 48 * 6;
 		drawY = y;
 		isOpen = false;
@@ -46,9 +39,9 @@ public class BigChest extends CollisionObject {
 		g2 = (Graphics2D) g2.create();
 
 		if (true) {
-			g2.drawImage(MainApp.SCALED_MAP, getX(), drawY, getX() + SPRITE_WIDTH, drawY + spriteHeight,
-					(CHEST_LOCATION_X - GAME_WIDTH), chestLocationY + 1,
-					((CHEST_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, chestLocationY + spriteHeight, null);
+			g2.drawImage(MainApp.SCALED_MAP, getX(), drawY, getX() + Constants.SPRITE_WIDTH*2, drawY + spriteHeight,
+					(CHEST_LOCATION_X - Constants.GAME_WIDTH), chestLocationY + 1,
+					((CHEST_LOCATION_X - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH*2, chestLocationY + spriteHeight, null);
 		}
 	}
 

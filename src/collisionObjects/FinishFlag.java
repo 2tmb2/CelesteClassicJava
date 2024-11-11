@@ -1,25 +1,18 @@
 package collisionObjects;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
 public class FinishFlag extends CollisionObject {	
 	
 	private Madeline m;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private int flagLocationX;
-	private static final int FLAG_LOCATION_X_FRAME_1 = 6*8*MainApp.PIXEL_DIM + GAME_WIDTH;
-	private static final int FLAG_LOCATION_X_FRAME_2 = 7*8*MainApp.PIXEL_DIM + GAME_WIDTH;
-	private static final int FLAG_LOCATION_X_FRAME_3 = 8*8*MainApp.PIXEL_DIM + GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_1 = 6*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_2 = 7*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
+	private static final int FLAG_LOCATION_X_FRAME_3 = 8*8*MainApp.PIXEL_DIM + Constants.GAME_WIDTH;
 	private static final int FLAG_LOCATION_Y = 7*8*MainApp.PIXEL_DIM;
 	private int animationFrame;
 	
@@ -74,6 +67,6 @@ public class FinishFlag extends CollisionObject {
 			flagLocationX = FLAG_LOCATION_X_FRAME_1;
 		}
 		g2 = (Graphics2D)g2.create();
-		g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (flagLocationX - GAME_WIDTH), FLAG_LOCATION_Y + 1, ((flagLocationX - GAME_WIDTH)) + SPRITE_WIDTH, FLAG_LOCATION_Y + SPRITE_HEIGHT, null);
+		g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + Constants.SPRITE_WIDTH, getY() + Constants.SPRITE_HEIGHT, (flagLocationX - Constants.GAME_WIDTH), FLAG_LOCATION_Y + 1, ((flagLocationX - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, FLAG_LOCATION_Y + Constants.SPRITE_HEIGHT, null);
 	}
 }

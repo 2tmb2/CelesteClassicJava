@@ -1,13 +1,9 @@
 package collectables;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -15,9 +11,6 @@ public class Gem extends CollisionObject {
 	
 	private Madeline m;
 	private boolean hasBeenCollected;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final int GEM_LOCATION_X = 1056;
 	private static final int GEM_LOCATION_Y = 288;
 	
@@ -43,7 +36,7 @@ public class Gem extends CollisionObject {
 		if (!hasBeenCollected)
 		{
 			g2 = (Graphics2D)g2.create();
-			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (GEM_LOCATION_X - GAME_WIDTH), GEM_LOCATION_Y + 1, ((GEM_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, GEM_LOCATION_Y + SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + Constants.SPRITE_WIDTH, getY() + Constants.SPRITE_HEIGHT, (GEM_LOCATION_X - Constants.GAME_WIDTH), GEM_LOCATION_Y + 1, ((GEM_LOCATION_X - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, GEM_LOCATION_Y + Constants.SPRITE_HEIGHT, null);
 		}
 	}
 	

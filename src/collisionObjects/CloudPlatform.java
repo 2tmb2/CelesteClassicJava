@@ -1,12 +1,8 @@
 package collisionObjects;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -16,9 +12,6 @@ public class CloudPlatform extends CollisionObject {
 	private int travelingDirection;
 	private boolean isColliding;
 	private Madeline m;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final int CLOUD_LOCATION_X = 1296;
 	private static final int CLOUD_LOCATION_Y = 0;
 	
@@ -44,16 +37,16 @@ public class CloudPlatform extends CollisionObject {
 		translatedPosition += travelingDirection*MainApp.PIXEL_DIM/3;
 		if (isColliding)
 			m.moveWithCloud(travelingDirection*MainApp.PIXEL_DIM/3);
-		if (translatedPosition >= GAME_WIDTH && travelingDirection == 1)
+		if (translatedPosition >= Constants.GAME_WIDTH && travelingDirection == 1)
 		{
 			translatedPosition = -getWidth();
 		}
 		else if (translatedPosition + getWidth() <= 0)
 		{
-			translatedPosition = GAME_WIDTH + getWidth();
+			translatedPosition = Constants.GAME_WIDTH + getWidth();
 		}
 		super.setX(translatedPosition);
-		g2.drawImage(MainApp.SCALED_MAP, Madeline.roundPos(getX()), getY(), Madeline.roundPos(getX() + 2*SPRITE_WIDTH), getY() + SPRITE_HEIGHT, (CLOUD_LOCATION_X - GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - GAME_WIDTH)) + 2*SPRITE_WIDTH, CLOUD_LOCATION_Y + SPRITE_HEIGHT, null);
+		g2.drawImage(MainApp.SCALED_MAP, Madeline.roundPos(getX()), getY(), Madeline.roundPos(getX() + 2*Constants.SPRITE_WIDTH), getY() + Constants.SPRITE_HEIGHT, (CLOUD_LOCATION_X - Constants.GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - Constants.GAME_WIDTH)) + 2*Constants.SPRITE_WIDTH, CLOUD_LOCATION_Y + Constants.SPRITE_HEIGHT, null);
 	}
 	
 	@Override

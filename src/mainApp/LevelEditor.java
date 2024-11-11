@@ -35,10 +35,7 @@ public class LevelEditor extends JComponent {
 	private static final int ATLAS_WIDTH = 128 * MainApp.PIXEL_DIM;
 	private static final int ATLAS_HEIGHT = 88 * MainApp.PIXEL_DIM;
 	private static final int OPTIONS_Y = 16 * MainApp.PIXEL_DIM;
-	private static final int GAME_WIDTH = 768;
-	private static final int GAME_HEIGHT = GAME_WIDTH;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
+	private static final int GAME_HEIGHT = Constants.GAME_WIDTH;
 	private static final int FONT_WIDTH = 3;
 	private static final int FONT_HEIGHT = 5;
 	
@@ -51,10 +48,10 @@ public class LevelEditor extends JComponent {
 	
 	private int gridX = 0;
 	private int gridY = 0;
-	private int selectedX = GAME_WIDTH;
+	private int selectedX = Constants.GAME_WIDTH;
 	private int selectedY = 0;
-	private int layerX = GAME_WIDTH;
-	private int newLayer = GAME_WIDTH;
+	private int layerX = Constants.GAME_WIDTH;
+	private int newLayer = Constants.GAME_WIDTH;
 	private int selectedLayer = 0;
 	private int newSelectedLayer = 0;
 	
@@ -88,11 +85,11 @@ public class LevelEditor extends JComponent {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.white);
-		g2.fillRect(GAME_WIDTH, 0, 850, GAME_WIDTH);
-		g.drawImage(MainApp.SCALED_MAP,GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
+		g2.fillRect(Constants.GAME_WIDTH, 0, 850, Constants.GAME_WIDTH);
+		g.drawImage(MainApp.SCALED_MAP,Constants.GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
 		g2.setColor(Color.black);
-		g2.drawRect(selectedX, selectedY, SPRITE_WIDTH, SPRITE_HEIGHT);
-		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * 6), SPRITE_WIDTH, 1 * 6);
+		g2.drawRect(selectedX, selectedY, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT);
+		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * 6), Constants.SPRITE_WIDTH, 1 * 6);
 		
 		if (drawDialog) {
 			drawText(g2, new Point(768, 650), "ESC TO CANCEL");
@@ -102,16 +99,16 @@ public class LevelEditor extends JComponent {
 			g2.fillRect(780, 650, 500, 200);
 		}
 		if (selectedLayer == 7 || selectedLayer == 9) {
-			g.drawImage(confirm, GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6, SPRITE_HEIGHT, null);
+			g.drawImage(confirm, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6, Constants.SPRITE_HEIGHT, null);
 		} else {
-			g.drawImage(blank, GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6, SPRITE_HEIGHT, null);
+			g.drawImage(blank, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6, Constants.SPRITE_HEIGHT, null);
 		}
 		g2.setColor(Color.red);
 		for (int i = 1; i <= renderLayers.length; i++) {
 			if (!renderLayers[i - 1]) {
-				g.drawImage(ex, GAME_WIDTH + (i * SPRITE_WIDTH), ATLAS_HEIGHT + 6, SPRITE_WIDTH, SPRITE_HEIGHT,null);
+				g.drawImage(ex, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH), ATLAS_HEIGHT + 6, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT,null);
 			} else {
-				g.drawImage(checkmark, GAME_WIDTH + (i * SPRITE_WIDTH), ATLAS_HEIGHT + 6, SPRITE_WIDTH, SPRITE_HEIGHT,null);
+				g.drawImage(checkmark, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH), ATLAS_HEIGHT + 6, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT,null);
 			}
 		}
 		
@@ -134,7 +131,7 @@ public class LevelEditor extends JComponent {
 			drawLayer(g2, objectLayer);
 		}
 		if (renderLayers[5]) {
-			g.drawImage(grid, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
+			g.drawImage(grid, 0, 0, Constants.GAME_WIDTH, GAME_HEIGHT, null);
 		}
 		
 	}
@@ -144,7 +141,7 @@ public class LevelEditor extends JComponent {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
 				//For some reason there is a vertical offset of 1 when drawing the sprites, so the source y1 is increased by 1
-				g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+				g.drawImage(MainApp.SCALED_MAP, i * Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT, i * Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT + Constants.SPRITE_HEIGHT, ((int)layer[i][j].getX() - Constants.GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, ((int)layer[i][j].getY()) + Constants.SPRITE_HEIGHT, null);
 			}
 		}
 	}
@@ -158,7 +155,7 @@ public class LevelEditor extends JComponent {
 	public ColoredRectangle getColliderAtPoint(int x, int y)
 	{
 		for (ColoredRectangle r : colliders) {
-			if ((r.getX())/SPRITE_WIDTH == x && (r.getY()/SPRITE_WIDTH) == y)
+			if ((r.getX())/Constants.SPRITE_WIDTH == x && (r.getY()/Constants.SPRITE_WIDTH) == y)
 			{
 				return r;
 			}
@@ -192,19 +189,19 @@ public class LevelEditor extends JComponent {
 	public void doMouseClick(int x, int y) {
 		x -= 8;
 		y -= 30;
-		if (x > GAME_WIDTH && x < GAME_WIDTH + ATLAS_WIDTH) {
-			gridX = x - (x % SPRITE_WIDTH);
-			gridY = y - (y % SPRITE_HEIGHT);
+		if (x > Constants.GAME_WIDTH && x < Constants.GAME_WIDTH + ATLAS_WIDTH) {
+			gridX = x - (x % Constants.SPRITE_WIDTH);
+			gridY = y - (y % Constants.SPRITE_HEIGHT);
 			if (y < ATLAS_HEIGHT) {
 				selectedX = gridX;
 				selectedY = gridY;
 			} else if (y > ATLAS_HEIGHT + (OPTIONS_Y / 2) && y < ATLAS_HEIGHT + OPTIONS_Y) {
 				newLayer = gridX;
-				newSelectedLayer = ((newLayer - GAME_WIDTH) / SPRITE_WIDTH);
+				newSelectedLayer = ((newLayer - Constants.GAME_WIDTH) / Constants.SPRITE_WIDTH);
 				if (selectedLayer == 7 || selectedLayer == 9) {
 					if (newSelectedLayer == selectedLayer) {
 						newSelectedLayer = 0;
-						newLayer = GAME_WIDTH;
+						newLayer = Constants.GAME_WIDTH;
 					}
 					if (selectedLayer == 7) {
 						doPrint();
@@ -216,7 +213,7 @@ public class LevelEditor extends JComponent {
 				selectedLayer = newSelectedLayer;
 				
 			} else if (y > ATLAS_HEIGHT && y < ATLAS_HEIGHT + (OPTIONS_Y / 2)) {
-				int index = ((gridX - GAME_WIDTH) / SPRITE_WIDTH) - 1;
+				int index = ((gridX - Constants.GAME_WIDTH) / Constants.SPRITE_WIDTH) - 1;
 				if (index == -1) {
 					Boolean switchToF = true;
 					for (int i = 0; i < renderLayers.length; i++) {
@@ -238,17 +235,17 @@ public class LevelEditor extends JComponent {
 			}
 			
 		}
-		else if (x <= GAME_WIDTH && selectedLayer != 4) {
+		else if (x <= Constants.GAME_WIDTH && selectedLayer != 4) {
 			if (selectedLayer == 1) {
-				environmentLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				environmentLayer[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 2) {
-				backgroundLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				backgroundLayer[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 3) {
-				layer3[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				layer3[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			} else if (selectedLayer == 5) {
-				objectLayer[x / SPRITE_WIDTH][y / SPRITE_WIDTH] = new Point(selectedX, selectedY);
+				objectLayer[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			}
-		} else if (x <= GAME_WIDTH && selectedLayer == 4) {
+		} else if (x <= Constants.GAME_WIDTH && selectedLayer == 4) {
 			Color rectColor;
 			if (selectedX == 1488 && selectedY == 432)
 			{
@@ -256,7 +253,7 @@ public class LevelEditor extends JComponent {
 			}
 			else
 				rectColor = GREEN_COLOR;
-			topLeft = new Point(x - (x % SPRITE_WIDTH), y - (y % SPRITE_HEIGHT));
+			topLeft = new Point(x - (x % Constants.SPRITE_WIDTH), y - (y % Constants.SPRITE_HEIGHT));
 			botRight = new Point();
 			tempRect = new ColoredRectangle(topLeft, new Dimension((int)(botRight.getX() - topLeft.getX()),(int)(botRight.getX() - topLeft.getX())), rectColor);
 		}
@@ -278,8 +275,8 @@ public class LevelEditor extends JComponent {
 		int botRightX;
 		int botRightY;
 		if (topLeft != null) {
-			botRightX = x + (SPRITE_WIDTH - (x % SPRITE_WIDTH));
-			botRightY = y + (SPRITE_HEIGHT - (y % SPRITE_HEIGHT));
+			botRightX = x + (Constants.SPRITE_WIDTH - (x % Constants.SPRITE_WIDTH));
+			botRightY = y + (Constants.SPRITE_HEIGHT - (y % Constants.SPRITE_HEIGHT));
 			botRight.setLocation(botRightX, botRightY);
 			if (tempRect != null) {
 				tempRect.setSize((int)(botRight.getX() - topLeft.getX()),(int)(botRight.getY() - topLeft.getY()));
@@ -333,7 +330,7 @@ public class LevelEditor extends JComponent {
 			for (int j = 0; j < 16; j++) {
 				if (objectLayer[j][i] != null)
 				{
-					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(128*MainApp.PIXEL_DIM))/SPRITE_WIDTH, (int)objectLayer[j][i].getY()/SPRITE_WIDTH);
+					List<Integer> point = Arrays.asList((int)(objectLayer[j][i].getX()-(128*MainApp.PIXEL_DIM))/Constants.SPRITE_WIDTH, (int)objectLayer[j][i].getY()/Constants.SPRITE_WIDTH);
 					if (data.get(point) != null)
 					{
 						levelDataString += data.get(point);
