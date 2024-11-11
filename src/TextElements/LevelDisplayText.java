@@ -39,7 +39,6 @@ public class LevelDisplayText {
 			BlockyText.drawText(g2Copy, hours + ":" + minutes + ":" + seconds);
 		else
 			BlockyText.drawText(g2Copy,  "??:??:??");
-		// ADD TIMER TEXT
 		
 		g2.translate((128*MainApp.PIXEL_DIM)/2-(30*MainApp.PIXEL_DIM), (128*MainApp.PIXEL_DIM)/2 - 10*MainApp.PIXEL_DIM);
 		g2.setColor(Color.BLACK);

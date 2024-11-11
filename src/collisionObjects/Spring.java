@@ -2,8 +2,6 @@ package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
 public class Spring extends CollisionObject {

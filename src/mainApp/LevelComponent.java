@@ -20,10 +20,6 @@ import TextElements.LevelDisplayText;
 import TextElements.PointText;
 import collectables.*;
 import collisionObjects.*;
-import spikes.DownSpike;
-import spikes.LeftSpike;
-import spikes.RightSpike;
-import spikes.UpSpike;
 
 /**
  * Class: LevelComponent
@@ -70,6 +66,11 @@ public class LevelComponent extends JComponent {
 	 * @param strawberryAlreadyCollected is a boolean value. It is true if the
 	 *                                   strawberry in the level has already been
 	 *                                   collected and false otherwise.
+	 * @param clouds 					 an arraylist of clouds representing the backgorund clouds to draw for the level
+	 * @param timeDiff 					 a Long representing the amount of time that has passed since the game was started and the current level was created
+	 * @param strawberryCount			 an integer representing the number of strawberries that have been collected
+	 * @param deathCount				 an integer representing the number of times the player has died
+	 * @param isIncomplete				 a boolean that is true if any levels have been skipped and false otherwise
 	 */
 	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds, Long timeDiff, int strawberryCount, int deathCount, boolean isIncomplete) {
 		this.levelNum = levelNum;
@@ -94,8 +95,20 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
-	 * Draws Madeline, the PointText (if it exists), and every CollisionObject onto
-	 * g
+	 * Draws objects onto g in the following order:
+	 * Clouds
+	 * Background objects
+	 * CollisionObjects
+	 * Foreground objects
+	 * points text for strawberrys (if it exists)
+	 * spawning madeline (if it exists)
+	 * the level's strawberry (if it exists)
+	 * the level's chest (if it exists)
+	 * the game's final score text (if it exists)
+	 * madeline (if she should be displayed)
+	 * the breakable block (if it exists)
+	 * the grave text (if it exists)
+	 * the level display text (if it exists)
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
@@ -104,7 +117,7 @@ public class LevelComponent extends JComponent {
 			c.drawOn(g2);
 		}
 		drawBackgroundLayer(g2, layer);
-		for (CollisionObject c : otherObject) {
+		for (CollisionObject c : collisionObjects) {
 			c.drawOn(g2);
 		}
 		drawForegroundLayer(g2, layer);
@@ -150,7 +163,7 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
-	 * Resets the 
+	 * Resets the level
 	 */
 	public void resetLevel() {
 		main.resetLevel();
@@ -185,6 +198,11 @@ public class LevelComponent extends JComponent {
 		m.decreaseX();
 	}
 
+	/**
+	 * Adds a display to the level to show the level name/number
+	 * @param text
+	 * @param startTime
+	 */
 	public void addLevelDisplay(String text, long startTime)
 	{
 		if (levelNum == 12)
@@ -194,20 +212,31 @@ public class LevelComponent extends JComponent {
 		ldt = new LevelDisplayText(text, startTime);
 	}
 	
+	/**
+	 * Removes the level number display
+	 */
 	public void removeLevelDisplay()
 	{
 		ldt = null;
 	}
 	
+	/**
+	 * Resets Madeline's velocity to 0
+	 */
 	public void resetMadelineVelocity()
 	{
 		m.resetVelocity();
 	}
 	
+	/**
+	 * Makes madeline either displayed or not displayed
+	 * @param b true if madeline should be displayed, otherwise false
+	 */
 	public void setDisplayMadeline(boolean b)
 	{
 		this.displayMadeline = b;
 	}
+	
 	/**
 	 * Updates Madeline's position based on her current velocity
 	 * 
@@ -311,28 +340,33 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
-	 * Head method for loading a level from a file. creates a new empty Madeline for
-	 * the next level (to pass to objects in the level). Sets proper dashNum based
-	 * on level number Sets position of Madeline based on level data and gives her
-	 * the processed list of collision objects
-	 * 
-	 * @param levelNum the String representing the integer level number
+	 * Creates a level based on a full filename. To be used when reading in user-created levels.
+	 * @param fileName representing the file name without the .txt extension.
 	 */
 	public void levelFromText(String fileName) {
 		m = new Madeline(this);
 		levelData = getLevelData(fileName);
-		createLevel();
-		m.setTotalDashes(1);
-		m.resetDashes();
+		createLevel(false);
+		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
-		m.setYPos(madY - 48);
+		m.setYPos(madY-36);
+		m.resetDashes();
+		spawnMaddy = new SpawningMadeline(madX, madY - 36, m.getHairColor());
 	}
 	
+	/**
+	 * Head method for loading a level from a file. creates a new empty Madeline for
+	 * the next level (to pass to objects in the level). Sets proper dashNum based
+	 * on level number. Sets position of Madeline based on level data and gives her
+	 * the processed list of collision objects.
+	 * 
+	 * @param levelNum the String representing the integer level number
+	 */
 	public void levelFromText(int levelNum) {
 		m = new Madeline(this);
 		levelData = getLevelData("level" + levelNum);
-		createLevel();
+		createLevel(true);
 		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
 		m.setXPos(madX);
@@ -345,14 +379,38 @@ public class LevelComponent extends JComponent {
 	
 	/**
 	 * Parses the String array of level data for the information of obstacles and
-	 * objects at each point '-' and '[' are characters representing empty data.
-	 * There are two symbols for human readability '>', '<', '<^', and 'v' are all
-	 * spikes with corresponding direction 'p' is spring 'd' is disappearing block
-	 * 'r' is balloon 'k' is key 'c' is chest 'b' is breakable block (always 2x2)
-	 * 's' is strawberry 'w' is winged strawberry 'm' is madeline's starting
-	 * position
+	 * objects at each point. There are certain text elements that signify different objects.
+	 * -- is an empty filler character
+	 * [] is an empty filler character
+	 * >1 represents a spike facing right
+	 * <1 represents a spike facing left
+	 * ^1 represents a spike facing up
+	 * v1 represents a spike facing down
+	 * ff represents the finish flag (shows player their death count/time/strawberries)
+	 * pp represents a spring object
+	 * dd represents a dissappearing block
+	 * dp represents a dissappearing spring
+	 * nn represents a gem
+	 * ll represents a cloud moving left
+	 * lr represents a cloud moving right
+	 * rr represents a balloon
+	 * gg represents grave text
+	 * kk represents a key
+	 * cc represents a chest
+	 * bb represents a breakable block
+	 * ss represents a strawberry
+	 * ww represents a winged strawberry
+	 * CC represents a big chest
+	 * m1 represents a madeline with 1 dash
+	 * m2 represents a madeline with 2 dashes
+	 * I followed by two numbers creates ice collision with width and height based on those two numbers
+	 * two numbers alone creates a regular collision object with width and height based on those two numbers
+	 * 
+	 * @param canMoveToNextLevel true if the level finish zone should be spawned, otherwise false.
+	 * The level finish zone should not be spawned if reading in a user-created level.
+	 * 
 	 */
-	public void createLevel() {
+	public void createLevel(boolean canMoveToNextLevel) {
 		try {
 			collisionObjects = new ArrayList<CollisionObject>();
 			m.setCollisionObjects(collisionObjects);
@@ -370,22 +428,22 @@ public class LevelComponent extends JComponent {
 					case ('['):
 						break;
 					case ('>'):
-						RightSpike r = new RightSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
+						RotatableSpike r = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'r', m);
 						otherObject.add(r);
 						collisionObjects.add(r);
 						break;
 					case ('<'):
-						LeftSpike l = new LeftSpike(j * MainApp.PIXEL_DIM * 8 + 5*MainApp.PIXEL_DIM, i * MainApp.PIXEL_DIM * 8 - 6, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
+						RotatableSpike l = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*2, MainApp.PIXEL_DIM*6, 'l', m);
 						collisionObjects.add(l);
 						otherObject.add(l);
 						break;
 					case ('^'):
-						UpSpike u = new UpSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8 + 5*MainApp.PIXEL_DIM, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
+						RotatableSpike u = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'u', m);
 						collisionObjects.add(u);
 						otherObject.add(u);
 						break;
 					case ('v'):
-						DownSpike d = new DownSpike(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8 + 0, (secondChar - '0') * 8*MainApp.PIXEL_DIM, m);
+						RotatableSpike d = new RotatableSpike(j*MainApp.PIXEL_DIM*8, i*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*6, MainApp.PIXEL_DIM*2, 'd', m);
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
@@ -504,13 +562,16 @@ public class LevelComponent extends JComponent {
 						collisionObjects.add(new CollisionObject(j * MainApp.PIXEL_DIM * 8, i * MainApp.PIXEL_DIM * 8, (firstChar - '0') * 8*MainApp.PIXEL_DIM,
 								(secondChar - '0') * 8*MainApp.PIXEL_DIM, true, true));
 					}
-					// Creates offscreen objects
+					// Creates offscreen walls
 					collisionObjects.add(new CollisionObject(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on left side
 					collisionObjects.add(new CollisionObject(16 * 8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, false, false)); // Invisible wall on right
 					
-					if (levelNum != 31)
+					// creates the level finish zone to advance levels
+					if (levelNum != 31 && canMoveToNextLevel)
 						collisionObjects.add(new LevelFinishZone(-8*MainApp.PIXEL_DIM, -8*MainApp.PIXEL_DIM - MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, m)); // Finish zone on top side
-					collisionObjects.add(new UpSpike(-8*MainApp.PIXEL_DIM, 17 * 8*MainApp.PIXEL_DIM, 20 * 8*MainApp.PIXEL_DIM, m)); // Death zone on bottom side
+					
+					// creates the death zone at the bottom of the world
+					collisionObjects.add(new RotatableSpike(MainApp.PIXEL_DIM*-8, 17*MainApp.PIXEL_DIM*8, 20*MainApp.PIXEL_DIM*8, MainApp.PIXEL_DIM*8, 'u', m));
 					m.setCanCollide(true);
 				}
 			}
@@ -529,12 +590,15 @@ public class LevelComponent extends JComponent {
 		
 	}
 	
-	
+	/**
+	 * Draws the foreground objects onto g
+	 * @param layer an array of points of the textures to draw
+	 */
 	public void drawForegroundLayer(Graphics2D g, Point[][] layer) {
 		for (int i = 0; i < layer.length; i++) {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
-				//For some reason there is a vertical offset of 1 when drawing the sprites, so the source y1 is increased by 1
+				// These if statements ensure that only the foreground sprites are drawn
 				if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1))
 					if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
 						if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
@@ -552,10 +616,15 @@ public class LevelComponent extends JComponent {
 		}
 	}
 	
+	/**
+	 * Draws the background objects onto g
+	 * @param layer an array of points of the textures to draw
+	 */
 	public void drawBackgroundLayer(Graphics2D g, Point[][] layer) {
 		for (int i = 0; i < layer.length; i++) {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
+				// these if statements ensure that only the background (the grey objects) are drawn 
 				if (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1)
 				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
 				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
@@ -603,26 +672,46 @@ public class LevelComponent extends JComponent {
 
 	}
 	
+	/**
+	 * Sets the color of the clouds to pink
+	 */
 	public void setCloudsPink()
 	{
 		main.setCloudsPink();
 	}
 	
+	/**
+	 * Creates the final score text object
+	 * Allows the player to see their time, strawberry #, death #
+	 */
 	public void finalScore()
 	{
 		fst = new FinalScoreText(timeDiff, strawberryCount, deathCount, isIncomplete);
 	}
 	
+	/**
+	 * Sets Madeline's ability to dash
+	 * @param option true if she can dash, false otherwise
+	 */
 	public void setMadelineCanDash(boolean option)
 	{
 		m.setCanDash(option);
 	}
 	
+	/**
+	 * Sets the background color
+	 * @param c representing the color to set the background to
+	 */
 	public void setBackgroundColor(Color c)
 	{
 		main.setBackgroundColor(c);
 	}
 	
+	/**
+	 * Spawns a new Gem
+	 * @param x the top left x value of where to spawn the gem
+	 * @param y the top left y value of where to spawn the gem
+	 */
 	public void spawnNewGem(int x, int y)
 	{
 		Gem gem = new Gem(x, y, m);

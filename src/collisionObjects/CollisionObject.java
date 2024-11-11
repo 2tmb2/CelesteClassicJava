@@ -150,6 +150,10 @@ public class CollisionObject {
 	public void setHeight(int y) {
 		this.height = y;
 	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
 	public boolean getCanSlide() {
 		return canSlide;

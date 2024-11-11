@@ -68,7 +68,7 @@ public class MainApp implements KeyListener {
 		cloudColor = BLUE_CLOUDS;
 		canMoveLevels = true;
 		canSwitch = true;
-		currentLevel = 1;
+		currentLevel = 29;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
@@ -90,7 +90,7 @@ public class MainApp implements KeyListener {
 		clouds = new ArrayList<Cloud>();
         for (int i = 0; i <= 16; i++)
         {
-        	clouds.add(new Cloud(0, Madeline.roundPos((int)(Math.random()*128*MainApp.PIXEL_DIM)), MainApp.PIXEL_DIM + (int)(Math.random() * 4), 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM), cloudColor));
+        	clouds.add(new Cloud(cloudColor));
         }
         
 		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));

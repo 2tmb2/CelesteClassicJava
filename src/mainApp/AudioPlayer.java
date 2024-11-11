@@ -59,6 +59,10 @@ public class AudioPlayer {
 		}
 	}
 
+	/**
+	 * Mutes or unmutes the music
+	 * @param mute true if the music should be muted, false if it should be unmuted
+	 */
 	public static void setMute(boolean mute) {
 		Mixer.Info[] infos = AudioSystem.getMixerInfo();
 		for (Mixer.Info info: infos) {

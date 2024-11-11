@@ -9,14 +9,23 @@ public class Cloud {
 	private int speed;
 	private int width;
 	private Color cloudColor;
-	public Cloud(int x, int y, int speed, int width, Color c)
+	
+	/**
+	 * Creates a Cloud, which is one element of the background group of clouds, with a randomized y position, speed, and width
+	 * @param c represents the color to make the clouds
+	 */
+	public Cloud(Color c)
 	{
-		this.x = x;
-		this.y = y;
-		this.speed = speed;
-		this.width = width;
+		this.x = 0;
+		this.y = Madeline.roundPos((int)(Math.random() * 120*MainApp.PIXEL_DIM) + 4*MainApp.PIXEL_DIM);
+		this.speed = MainApp.PIXEL_DIM + (int)(Math.random() * 4);
+		this.width = 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM);
 		cloudColor = c;
 	}
+	
+	/**
+	 * Draws the cloud onto g2
+	 */
 	public void drawOn(Graphics2D g2)
 	{
 		x += speed;
@@ -29,6 +38,11 @@ public class Cloud {
 		}
 		
 	}
+	
+	/**
+	 * Sets the color of the cloud
+	 * @param c representing the color to make the cloud
+	 */
 	public void setColor(Color c)
 	{
 		cloudColor = c;

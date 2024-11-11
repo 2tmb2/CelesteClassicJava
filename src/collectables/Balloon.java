@@ -33,7 +33,6 @@ public class Balloon extends CollisionObject {
 	
 	private BufferedImage spriteMap;
 	private int timeAtCollect = 0;
-	private int originalY = 0;
 	private int lifetime = 0;
 	private int currentFrame;
 	private int verticalDelta = 0;
@@ -42,7 +41,6 @@ public class Balloon extends CollisionObject {
 	public Balloon(int x, int y, Madeline m)
 	{
 		super(x,y,42,48, false, false);
-		originalY = y;
 		try {
 			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 		} catch (IOException e) {
