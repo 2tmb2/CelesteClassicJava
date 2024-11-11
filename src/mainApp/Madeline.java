@@ -115,7 +115,7 @@ public class Madeline {
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double WALL_JUMP_X_VEL = 1.2 * (double)MainApp.PIXEL_DIM;
-	private static final double WALL_JUMP_Y_VEL = -1.75 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_Y_VEL = -1.90 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
@@ -375,7 +375,11 @@ public class Madeline {
 			jumpPressed = true;
 			wallJump = true;
 			frameAtWallJump = lifetime;
-			xVel = -facingRight * WALL_JUMP_X_VEL;
+			if (isTouchingWallRight) {
+				xVel = -WALL_JUMP_X_VEL;
+			} else {
+				xVel = WALL_JUMP_X_VEL;
+			}
 			yVel = WALL_JUMP_Y_VEL;
 			if (facingRight > 0)
 			{
