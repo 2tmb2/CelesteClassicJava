@@ -48,8 +48,6 @@ public class LevelComponent extends JComponent {
 	private int strawberryCount;
 	private int deathCount;
 	private boolean isIncomplete;
-	private String filePath;
-	private String levelName;
 	
 	/**
 	 * Creates a LevelComponent Object
@@ -74,7 +72,6 @@ public class LevelComponent extends JComponent {
 		this.strawberryCount = strawberryCount;
 		this.deathCount = deathCount;
 		this.isIncomplete = isIncomplete;
-		filePath = null;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		layer = new Point[16][16];
@@ -89,8 +86,6 @@ public class LevelComponent extends JComponent {
 		this.main = main;
 		this.timeDiff = timeDiff;
 		this.deathCount = deathCount;
-		this.filePath = filePath;
-		this.levelName = levelName;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		layer = new Point[16][16];
