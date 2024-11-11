@@ -1,13 +1,9 @@
 package collectables;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -16,9 +12,6 @@ public class Key extends CollisionObject {
 	private Chest chest;
 	private Madeline m;
 	private boolean keyHasBeenCollected;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final int KEY_FRAME_1_X = 1152;
 	private static final int KEY_LOCATION_Y = 0;
 	private static final int KEY_FRAME_2_X = 1200;
@@ -68,7 +61,7 @@ public class Key extends CollisionObject {
 					break;
 			}
 			g2 = (Graphics2D)g2.create();
-			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (drawX - GAME_WIDTH), KEY_LOCATION_Y + 1, ((drawX - GAME_WIDTH)) + SPRITE_WIDTH, KEY_LOCATION_Y + SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + Constants.SPRITE_WIDTH, getY() + Constants.SPRITE_HEIGHT, (drawX - Constants.GAME_WIDTH), KEY_LOCATION_Y + 1, ((drawX - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, KEY_LOCATION_Y + Constants.SPRITE_HEIGHT, null);
 		}
 	}
 	

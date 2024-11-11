@@ -46,9 +46,6 @@ public class LevelComponent extends JComponent {
 	private int madY;
 	private int levelNum;
 	private ArrayList<CollisionObject> otherObject;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private int madelineTotalDashes;
 	private ArrayList<Cloud> clouds;
 	private Long timeDiff;
@@ -605,18 +602,18 @@ public class LevelComponent extends JComponent {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
 				// These if statements ensure that only the foreground sprites are drawn
-				if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1))
-					if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-						if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-							if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-								if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-									if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-										if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-											if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
-												if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
-													if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5))
+				if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*1))
+					if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+						if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+							if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+								if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+									if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+										if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+											if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*6))
+												if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*6))
+													if (!((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*5))
 													{
-														g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+														g.drawImage(MainApp.SCALED_MAP, i * Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT, i * Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT + Constants.SPRITE_HEIGHT, ((int)layer[i][j].getX() - Constants.GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, ((int)layer[i][j].getY()) + Constants.SPRITE_HEIGHT, null);
 													}
 			}			
 		}
@@ -631,18 +628,18 @@ public class LevelComponent extends JComponent {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
 				// these if statements ensure that only the background (the grey objects) are drawn 
-				if (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == SPRITE_WIDTH*1)
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*2))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == SPRITE_WIDTH*3))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
-				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5)))
+				if (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 0  && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*1)
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*2))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 9 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 10 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*3))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 7 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*6))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*6))
+				|| (((int)layer[i][j].getX() == Constants.GAME_WIDTH + Constants.SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == Constants.SPRITE_WIDTH*5)))
 				{
-					g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+					g.drawImage(MainApp.SCALED_MAP, i * Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT, i * Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT + Constants.SPRITE_HEIGHT, ((int)layer[i][j].getX() - Constants.GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH, ((int)layer[i][j].getY()) + Constants.SPRITE_HEIGHT, null);
 				}
 			}
 		}

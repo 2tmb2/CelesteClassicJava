@@ -2,14 +2,9 @@ package collisionObjects;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import mainApp.AudioPlayer;
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 /**
  * Class: BreakableBlock <br>
@@ -21,7 +16,6 @@ public class BreakableBlock extends CollisionObject {
 	private boolean exists;
 	private Madeline m;
 	
-	private BufferedImage spriteMap;
 
 	/**
 	 * Creates a Breakable Block object. A breakable block is a block that, upon
@@ -36,11 +30,6 @@ public class BreakableBlock extends CollisionObject {
 	 */
 	public BreakableBlock(int x, int y, int width, int height, Madeline m) {
 		super(x, y, width, height, true, true);
-		try {
-			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		exists = true;
 		this.m = m;
 	}
@@ -56,7 +45,7 @@ public class BreakableBlock extends CollisionObject {
 
 			g2 = (Graphics2D) g2.create();
 			g2.translate(getX(), getY());
-			g2.drawImage(spriteMap, 0, 0, getWidth(), getHeight(), (int)BREAKABLE_BLOCK_SPRITE.getX(), (int)BREAKABLE_BLOCK_SPRITE.getY() + 1, (int)BREAKABLE_BLOCK_SPRITE.getX() + getWidth(), (int)BREAKABLE_BLOCK_SPRITE.getY() + getHeight(), null);
+			g2.drawImage(MainApp.SCALED_MAP, 0, 0, getWidth(), getHeight(), (int)BREAKABLE_BLOCK_SPRITE.getX(), (int)BREAKABLE_BLOCK_SPRITE.getY() + 1, (int)BREAKABLE_BLOCK_SPRITE.getX() + getWidth(), (int)BREAKABLE_BLOCK_SPRITE.getY() + getHeight(), null);
 		}
 	}
 

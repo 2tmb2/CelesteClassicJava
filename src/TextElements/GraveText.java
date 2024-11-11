@@ -56,11 +56,11 @@ public class GraveText extends CollisionObject {
 			g2.fillRect(48,0, 768-(96*2), 96+(48/2));
 			g2.setColor(Color.BLACK);
 			g2.translate(48+48/2, 12);
-			if (timestamp >= 3*message.length())
+			if (timestamp >= 5*message.length())
 			{
-				timestamp = 3*message.length();
+				timestamp = 5*message.length();
 			}
-			BlockyText.drawText(g2, message.substring(0, timestamp / 3));
+			BlockyText.drawText(g2, message.substring(0, timestamp / 5));
 			
 		}
 	}
