@@ -15,8 +15,7 @@ public class LevelDisplayText {
 	
 	/**
 	 * Creates a level display text object to display the level name and strawberry number
-	 * @param text
-	 * @param startTime
+	 * @param startTime when the game was started
 	 */
 	public LevelDisplayText(String text, long startTime)
 	{
@@ -33,6 +32,10 @@ public class LevelDisplayText {
 		if (hours.length() == 1)
 			hours = "0" + hours;
 	}
+	
+	/**
+	 * Draws the level display text onto g2
+	 */
 	public void drawOn(Graphics2D g2)
 	{
 		Graphics2D g2Copy = (Graphics2D)g2.create();

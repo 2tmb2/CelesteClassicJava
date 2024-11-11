@@ -17,6 +17,9 @@ public class LogoDisplay {
 	private static final int XPOS = (Constants.GAME_WIDTH)/2 - (Constants.SPRITE_WIDTH*7)/2;
 	private static final int YPOS = GAME_HEIGHT/2 - (int)((Constants.SPRITE_HEIGHT*4) * 1);
 	
+	/**
+	 * Creates a logo display object
+	 */
 	public LogoDisplay()
 	{
 		try {
@@ -26,6 +29,9 @@ public class LogoDisplay {
 		}
 	}
 	
+	/**
+	 * Draws the logo onto g2
+	 */
 	public void drawOn(Graphics2D g2)
 	{
 		g2 = (Graphics2D)g2.create();
