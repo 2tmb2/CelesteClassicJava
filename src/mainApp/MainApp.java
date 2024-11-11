@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +20,9 @@ import javax.swing.Timer;
 
 import TextElements.ErrorDisplay;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 /**
@@ -32,6 +37,12 @@ public class MainApp implements KeyListener {
 	
 	//The holiest magic number
 	public static final int PIXEL_DIM = 6;
+	
+	// scaled map must be public because it is the image used by every other class's drawing methods.
+	// This avoids reading the same file in over and over again.
+	public static BufferedImage SCALED_MAP;
+	
+	
 	public static final int BETWEEN_FRAMES = 22;
 	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
 	
@@ -46,12 +57,15 @@ public class MainApp implements KeyListener {
 	private JFrame frame;
 	private JFrame editor;
 	private LevelEditor levelEditor;
+	private MenuComponent menu;
 	private int frameSize = 768;
 	private int strawberryCount;
 	private int deathCount;
 	private int currentLevel;
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
+	private boolean gameStarted;
+	private boolean errorIsDisplayed;
 	private ArrayList<Cloud> clouds;
 
 	private boolean inEditor;
@@ -63,12 +77,22 @@ public class MainApp implements KeyListener {
 	private long startTime = System.currentTimeMillis();
 	private long endTime;
 	
+	private Timer updateTimer;
+	
 	public MainApp() {
 		// sets default values
 		cloudColor = BLUE_CLOUDS;
+		try {
+			SCALED_MAP = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		menu = new MenuComponent();
+		gameStarted = false;
 		canMoveLevels = true;
 		canSwitch = true;
-		currentLevel = 29;
+		errorIsDisplayed = false;
+		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
 		deathCount = 0;
@@ -86,15 +110,14 @@ public class MainApp implements KeyListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
-		
+		frame.getContentPane().add(menu);
+		frame.setVisible(true);
 		clouds = new ArrayList<Cloud>();
         for (int i = 0; i <= 16; i++)
         {
         	clouds.add(new Cloud(cloudColor));
         }
         
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
-		levelRefresh();
 		
 		editor = new JFrame();
 		editor.addKeyListener(this);
@@ -121,8 +144,7 @@ public class MainApp implements KeyListener {
 				levelEditor.doMouseRelease(e.getX(), e.getY());
 			}
 		});
-		// creates a timer that fires every 33 milliseconds. This acts as our main game loop.
-		Timer t = new Timer(11, new ActionListener() {
+		updateTimer = new Timer(11, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!byFrame) {
@@ -130,8 +152,7 @@ public class MainApp implements KeyListener {
 				}
 			}
 		});
-		t.start();
-
+		
 		AudioPlayer.playFile("beyondtheheart", Clip.LOOP_CONTINUOUSLY, -20.0f);
 	}
 	
@@ -140,37 +161,77 @@ public class MainApp implements KeyListener {
 	 */
 	@Override
 	public synchronized void keyPressed(KeyEvent e) {
-		pressedKeys.add(e.getKeyCode());
-		if (e.getKeyCode() == 70) { //70 is f
-			byFrame = !byFrame;
+		if (errorIsDisplayed && e.getKeyCode() == KeyEvent.VK_ESCAPE)
+		{
+			frame.getContentPane().removeAll();
+			frame.add(menu);
+			frame.setVisible(true);
+			frame.repaint();
+			errorIsDisplayed = false;
 		}
-		if (byFrame) {
-			if (e.getKeyCode() == 71) { //71 is g
-				update();
-				update();
+		else if (gameStarted == true)
+		{
+			pressedKeys.add(e.getKeyCode());
+			if (e.getKeyCode() == KeyEvent.VK_F) {
+				byFrame = !byFrame;
+			}
+			if (byFrame) {
+				if (e.getKeyCode() == KeyEvent.VK_G) {
+					update();
+					update();
+				}
+			}
+		}
+		else if (!errorIsDisplayed && !gameStarted)
+		{
+			
+			if (e.getKeyCode() == KeyEvent.VK_S)
+			{
+				gameStarted = true;
+				mainGame();
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_L)
+			{
+				inEditor = !inEditor;
+	    		if (!inEditor) {
+		    		canSwitch = false;
+		    		frame.setVisible(true);
+		    		editor.setVisible(false);
+		    	} else {
+		    		canSwitch = false;
+		    		frame.setVisible(false);
+		    		editor.setVisible(true);
+		    	}
+			}
+			else if (e.getKeyCode() == KeyEvent.VK_T)
+			{
+				loadCustomLevel();
 			}
 		}
 	}
 
 	@Override
     public synchronized void keyReleased(KeyEvent e) {
-    	if (e.getKeyCode() == 74 || e.getKeyCode() == 67)
-    	{
-    		lvl.setMadelineJumpPressed(false);
-    	}
-    	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
-    	{
-    		startTime = 0;
-    		canMoveLevels = true;
-    	}
-    	if (e.getKeyCode() == 76) {
-    		canSwitch = true;
-    	}
-    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
-    	{
-    		lvl.setMadelineCanDash(true);
-    	}
-        pressedKeys.remove(e.getKeyCode());
+		if (gameStarted == true)
+		{
+			if (e.getKeyCode() == 74 || e.getKeyCode() == 67)
+	    	{
+	    		lvl.setMadelineJumpPressed(false);
+	    	}
+	    	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
+	    	{
+	    		startTime = 0;
+	    		canMoveLevels = true;
+	    	}
+	    	if (e.getKeyCode() == 76) {
+	    		canSwitch = true;
+	    	}
+	    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
+	    	{
+	    		lvl.setMadelineCanDash(true);
+	    	}
+	        pressedKeys.remove(e.getKeyCode());
+		}
     }
 	
 	private void update() {
@@ -191,6 +252,38 @@ public class MainApp implements KeyListener {
 	}
     
     public void keyTyped(KeyEvent e) {}
+    
+    private void mainGame() {
+    	frame.remove(menu);
+    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
+		levelRefresh();	
+		updateTimer.start();
+		
+    }
+    
+    private void loadCustomLevel() {
+    	final JFileChooser fc = new JFileChooser();
+    	fc.showOpenDialog(null);
+    	frame.requestFocus();
+    	if (fc.getSelectedFile() != null && fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().length() - 3).equals("txt"))
+    	{
+    		frame.remove(menu);
+    		gameStarted = true;
+    		System.out.println(fc.getSelectedFile().getPath());
+    		lvl = new LevelComponent(this, fc.getSelectedFile().getPath(), fc.getSelectedFile().getName(), clouds, endTime - startTime, strawberryCount);
+    		levelRefresh();
+    		updateTimer.start();
+    	}
+    	else if (fc.getSelectedFile() == null)
+    	{
+    		frame.requestFocus();
+    	}
+    	else
+    	{
+    		this.displayError("File " + fc.getSelectedFile().getName() + " is not a .txt file");
+    	}
+    }
+    
     
 	/**
 	 * Refreshes the level to whatever currentLevel indicates
@@ -289,8 +382,10 @@ public class MainApp implements KeyListener {
      */
     public void displayError(String error)
     {
+    	errorIsDisplayed = true;
+    	gameStarted = false;
     	frame.getContentPane().removeAll();
-    	err = new ErrorDisplay(error);
+    	err = new ErrorDisplay(error + "&&press esc to reset");
     	frame.add(err);
     	frame.setVisible(true);
     	frame.repaint();
@@ -394,21 +489,7 @@ public class MainApp implements KeyListener {
     
     private void checkToggles() {
     	if (canSwitch) {
-    		// 76 is l
-	    	if (pressedKeys.contains(76)) {
-	    		inEditor = !inEditor;
-	    		if (!inEditor) {
-		    		canSwitch = false;
-		    		frame.setVisible(true);
-		    		editor.setVisible(false);
-		    	} else {
-		    		canSwitch = false;
-		    		frame.setVisible(false);
-		    		editor.setVisible(true);
-		    	}
-	    	}
-	    	//77 is m
-	    	if (pressedKeys.contains(77)) {
+	    	if (pressedKeys.contains(KeyEvent.VK_M)) {
 	    		muted = !muted;
 	    		muteMusic();
 	    		canSwitch = false;

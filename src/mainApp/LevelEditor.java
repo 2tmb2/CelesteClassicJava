@@ -25,7 +25,6 @@ import javax.swing.JFileChooser;
 public class LevelEditor extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
-	private BufferedImage scaledMap;
 	private BufferedImage confirm;
 	private BufferedImage blank;
 	private BufferedImage checkmark;
@@ -74,7 +73,6 @@ public class LevelEditor extends JComponent {
 	private Boolean[] renderLayers = new Boolean[] {true,true,true,true,true,false};
 	public LevelEditor(MainApp mainApp) {
 		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 			confirm = ImageIO.read(new File("src/Sprites/confirm.png"));
 			blank = ImageIO.read(new File("src/Sprites/blank.png"));
 			checkmark = ImageIO.read(new File("src/Sprites/checkmark.png"));
@@ -91,7 +89,7 @@ public class LevelEditor extends JComponent {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.white);
 		g2.fillRect(GAME_WIDTH, 0, 850, GAME_WIDTH);
-		g.drawImage(scaledMap,GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
+		g.drawImage(MainApp.SCALED_MAP,GAME_WIDTH,0,ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y,null);
 		g2.setColor(Color.black);
 		g2.drawRect(selectedX, selectedY, SPRITE_WIDTH, SPRITE_HEIGHT);
 		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * 6), SPRITE_WIDTH, 1 * 6);
@@ -146,7 +144,7 @@ public class LevelEditor extends JComponent {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null) continue;
 				//For some reason there is a vertical offset of 1 when drawing the sprites, so the source y1 is increased by 1
-				g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+				g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
 			}
 		}
 	}

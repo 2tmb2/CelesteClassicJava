@@ -49,7 +49,6 @@ public class LevelComponent extends JComponent {
 	private static final int GAME_WIDTH = 768;
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
-	private BufferedImage scaledMap;
 	private int madelineTotalDashes;
 	private ArrayList<Cloud> clouds;
 	private Long timeDiff;
@@ -82,16 +81,23 @@ public class LevelComponent extends JComponent {
 		this.isIncomplete = isIncomplete;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		layer = new Point[16][16];
 		this.strawberryAlreadyCollected = strawberryAlreadyCollected;
 		collisionObjects = new ArrayList<CollisionObject>();
 		levelFromText(levelNum);
+	}
+	
+	
+	public LevelComponent(MainApp main, String filePath, String levelName, ArrayList<Cloud> clouds, Long timeDiff, int deathCount) {
+		this.clouds = clouds;
+		this.main = main;
+		this.timeDiff = timeDiff;
+		this.deathCount = deathCount;
+		displayMadeline = false;
+		otherObject = new ArrayList<CollisionObject>();
+		layer = new Point[16][16];
+		collisionObjects = new ArrayList<CollisionObject>();
+		levelFromText(filePath, levelName);
 	}
 
 	/**
@@ -343,9 +349,9 @@ public class LevelComponent extends JComponent {
 	 * Creates a level based on a full filename. To be used when reading in user-created levels.
 	 * @param fileName representing the file name without the .txt extension.
 	 */
-	public void levelFromText(String fileName) {
+	public void levelFromText(String filePath, String fileName) {
 		m = new Madeline(this);
-		levelData = getLevelData(fileName);
+		levelData = getLevelData(filePath, fileName);
 		createLevel(false);
 		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
@@ -365,7 +371,7 @@ public class LevelComponent extends JComponent {
 	 */
 	public void levelFromText(int levelNum) {
 		m = new Madeline(this);
-		levelData = getLevelData("level" + levelNum);
+		levelData = getLevelData("src/LevelData/" + "level" + levelNum + ".txt", levelNum + ".txt");
 		createLevel(true);
 		m.setTotalDashes(madelineTotalDashes);
 		m.setCollisionObjects(collisionObjects);
@@ -610,7 +616,7 @@ public class LevelComponent extends JComponent {
 												if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
 													if (!((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5))
 													{
-														g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+														g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
 													}
 			}			
 		}
@@ -636,7 +642,7 @@ public class LevelComponent extends JComponent {
 				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*6))
 				|| (((int)layer[i][j].getX() == GAME_WIDTH + SPRITE_WIDTH * 8 && (int)layer[i][j].getY() == SPRITE_WIDTH*5)))
 				{
-					g.drawImage(scaledMap, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
+					g.drawImage(MainApp.SCALED_MAP, i * SPRITE_WIDTH, j * SPRITE_HEIGHT, i * SPRITE_WIDTH + SPRITE_WIDTH, j * SPRITE_HEIGHT + SPRITE_HEIGHT, ((int)layer[i][j].getX() - GAME_WIDTH), (int)layer[i][j].getY() + 1, (((int)layer[i][j].getX() - GAME_WIDTH)) + SPRITE_WIDTH, ((int)layer[i][j].getY()) + SPRITE_HEIGHT, null);
 				}
 			}
 		}
@@ -648,9 +654,9 @@ public class LevelComponent extends JComponent {
 	 * @param levelNum the String representing the integer level number
 	 * @return the String array (always length 33) representing the level
 	 */
-	public String[] getLevelData(String fileName) {
+	private String[] getLevelData(String filePath, String fileName) {
 		String[] output = new String[33];
-		try (Scanner s1 = new Scanner(new File("src/LevelData/" + fileName + ".txt"))) {
+		try (Scanner s1 = new Scanner(new File(filePath))) {
 			int index = 0;
 			while (s1.hasNext()) {
 				String line = s1.nextLine();

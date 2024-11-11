@@ -13,15 +13,7 @@ import mainApp.MainApp;
 
 public class RotatableSpike extends CollisionObject {
 
-	private int spriteLocationX;
-	private int spriteLocationY;
-	private int collisionModifierX;
-	private int collisionModifierY;
 	private char rotation;
-	private BufferedImage scaledMap;
-	private static final int GAME_WIDTH = 768;
-	private static final int SPRITE_WIDTH = 48;
-	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final Color SPIKE_WHITE = new Color(255, 241, 232);
 	private static final Color SPIKE_GREY = new Color(194, 195, 199);
 	private static final Color SPIKE_BROWN = new Color(95, 87, 79);
@@ -35,38 +27,25 @@ public class RotatableSpike extends CollisionObject {
 		this.rotation = rotation;
 		if (rotation == 'l')
 		{
-			spriteLocationX = GAME_WIDTH + (MainApp.PIXEL_DIM*8*11);
-			spriteLocationY = 8*MainApp.PIXEL_DIM*3;
 			setX(getX() + 6*MainApp.PIXEL_DIM);
 			setY(getY() + MainApp.PIXEL_DIM);
 			
 		}
 		else if (rotation == 'r')
 		{
-			spriteLocationX = GAME_WIDTH + (MainApp.PIXEL_DIM*8*11);
-			spriteLocationY = 8*MainApp.PIXEL_DIM*2;
 			setY(getY() + MainApp.PIXEL_DIM);
 			
 		}
 		else if (rotation == 'u')
 		{
-			spriteLocationX = GAME_WIDTH + (MainApp.PIXEL_DIM*8);
-			spriteLocationY = MainApp.PIXEL_DIM*8;
 			setY(getY() + 6*MainApp.PIXEL_DIM);
 			setX(getX() + MainApp.PIXEL_DIM);
 		}
 		else if (rotation == 'd')
 		{
-			spriteLocationX = GAME_WIDTH + (MainApp.PIXEL_DIM*8*11);
-			spriteLocationY = 8*MainApp.PIXEL_DIM;
 			setX(getX() + MainApp.PIXEL_DIM);
 			
 		}
-//		try {
-//			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	@Override
@@ -112,7 +91,6 @@ public class RotatableSpike extends CollisionObject {
 
 			g2.translate(4*MainApp.PIXEL_DIM, 0);
 		}
-		//g2.drawImage(scaledMap, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (spriteLocationX - GAME_WIDTH), spriteLocationY + 1, ((spriteLocationX - GAME_WIDTH)) + SPRITE_WIDTH, spriteLocationY + SPRITE_HEIGHT, null);
 	}
 	
 	

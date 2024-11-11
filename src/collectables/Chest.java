@@ -16,7 +16,6 @@ public class Chest {
 	private int x;
 	private int y;
 	private boolean shouldDraw;
-	private BufferedImage scaledMap;
 	private static final int GAME_WIDTH = 768;
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
@@ -32,11 +31,6 @@ public class Chest {
 		x = 768/2;
 		y = 768/2;
 		shouldDraw = true;
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -64,7 +58,7 @@ public class Chest {
 		if (shouldDraw)
 		{
 			g2 = (Graphics2D)g2.create();
-			g2.drawImage(scaledMap, x, y, x + SPRITE_WIDTH, y + SPRITE_HEIGHT, (CHEST_LOCATION_X - GAME_WIDTH), CHEST_LOCATION_Y + 1, ((CHEST_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, CHEST_LOCATION_Y + SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, x, y, x + SPRITE_WIDTH, y + SPRITE_HEIGHT, (CHEST_LOCATION_X - GAME_WIDTH), CHEST_LOCATION_Y + 1, ((CHEST_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, CHEST_LOCATION_Y + SPRITE_HEIGHT, null);
 		}
 	}
 	

@@ -21,7 +21,6 @@ public class CloudPlatform extends CollisionObject {
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
 	private static final int CLOUD_LOCATION_X = 1296;
 	private static final int CLOUD_LOCATION_Y = 0;
-	private BufferedImage scaledMap;
 	
 	/**
 	 * Creates a new CloudPlatform
@@ -37,11 +36,6 @@ public class CloudPlatform extends CollisionObject {
 		this.travelingDirection = travelingDirection;
 		this.m = m;
 		isColliding = false;
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void drawOn(Graphics2D g2)
@@ -59,7 +53,7 @@ public class CloudPlatform extends CollisionObject {
 			translatedPosition = GAME_WIDTH + getWidth();
 		}
 		super.setX(translatedPosition);
-		g2.drawImage(scaledMap, Madeline.roundPos(getX()), getY(), Madeline.roundPos(getX() + 2*SPRITE_WIDTH), getY() + SPRITE_HEIGHT, (CLOUD_LOCATION_X - GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - GAME_WIDTH)) + 2*SPRITE_WIDTH, CLOUD_LOCATION_Y + SPRITE_HEIGHT, null);
+		g2.drawImage(MainApp.SCALED_MAP, Madeline.roundPos(getX()), getY(), Madeline.roundPos(getX() + 2*SPRITE_WIDTH), getY() + SPRITE_HEIGHT, (CLOUD_LOCATION_X - GAME_WIDTH), CLOUD_LOCATION_Y + 1, ((CLOUD_LOCATION_X - GAME_WIDTH)) + 2*SPRITE_WIDTH, CLOUD_LOCATION_Y + SPRITE_HEIGHT, null);
 	}
 	
 	@Override

@@ -25,7 +25,6 @@ public class Key extends CollisionObject {
 	private static final int KEY_FRAME_3_X = 1248;
 	private int lifetime;
 	private int drawX;
-	private BufferedImage scaledMap;
 	
 	/**
 	 * Creates a key object which, when collected, opens the associated chest
@@ -41,11 +40,6 @@ public class Key extends CollisionObject {
 		keyHasBeenCollected = false;
 		lifetime = 0;
 		drawX = KEY_FRAME_1_X;
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -74,7 +68,7 @@ public class Key extends CollisionObject {
 					break;
 			}
 			g2 = (Graphics2D)g2.create();
-			g2.drawImage(scaledMap, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (drawX - GAME_WIDTH), KEY_LOCATION_Y + 1, ((drawX - GAME_WIDTH)) + SPRITE_WIDTH, KEY_LOCATION_Y + SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (drawX - GAME_WIDTH), KEY_LOCATION_Y + 1, ((drawX - GAME_WIDTH)) + SPRITE_WIDTH, KEY_LOCATION_Y + SPRITE_HEIGHT, null);
 		}
 	}
 	

@@ -15,7 +15,6 @@ public class Gem extends CollisionObject {
 	
 	private Madeline m;
 	private boolean hasBeenCollected;
-	private BufferedImage scaledMap;
 	private static final int GAME_WIDTH = 768;
 	private static final int SPRITE_WIDTH = 48;
 	private static final int SPRITE_HEIGHT = SPRITE_WIDTH;
@@ -32,11 +31,6 @@ public class Gem extends CollisionObject {
 	{
 		super(x,y,8*MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, false, false);
 		hasBeenCollected = false;
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.m = m;
 	}
 	
@@ -49,7 +43,7 @@ public class Gem extends CollisionObject {
 		if (!hasBeenCollected)
 		{
 			g2 = (Graphics2D)g2.create();
-			g2.drawImage(scaledMap, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (GEM_LOCATION_X - GAME_WIDTH), GEM_LOCATION_Y + 1, ((GEM_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, GEM_LOCATION_Y + SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (GEM_LOCATION_X - GAME_WIDTH), GEM_LOCATION_Y + 1, ((GEM_LOCATION_X - GAME_WIDTH)) + SPRITE_WIDTH, GEM_LOCATION_Y + SPRITE_HEIGHT, null);
 		}
 	}
 	

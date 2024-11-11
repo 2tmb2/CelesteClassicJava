@@ -12,7 +12,6 @@ import mainApp.MainApp;
 
 public class FinishFlag extends CollisionObject {	
 	
-	private BufferedImage scaledMap;
 	private Madeline m;
 	private static final int GAME_WIDTH = 768;
 	private static final int SPRITE_WIDTH = 48;
@@ -28,11 +27,6 @@ public class FinishFlag extends CollisionObject {
 	{
 		super(x, y, 48, 48, false, false);
 		this.m = m;
-		try {
-			scaledMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		animationFrame = 0;
 	}
 	
@@ -80,6 +74,6 @@ public class FinishFlag extends CollisionObject {
 			flagLocationX = FLAG_LOCATION_X_FRAME_1;
 		}
 		g2 = (Graphics2D)g2.create();
-		g2.drawImage(scaledMap, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (flagLocationX - GAME_WIDTH), FLAG_LOCATION_Y + 1, ((flagLocationX - GAME_WIDTH)) + SPRITE_WIDTH, FLAG_LOCATION_Y + SPRITE_HEIGHT, null);
+		g2.drawImage(MainApp.SCALED_MAP, getX(), getY(), getX() + SPRITE_WIDTH, getY() + SPRITE_HEIGHT, (flagLocationX - GAME_WIDTH), FLAG_LOCATION_Y + 1, ((flagLocationX - GAME_WIDTH)) + SPRITE_WIDTH, FLAG_LOCATION_Y + SPRITE_HEIGHT, null);
 	}
 }
