@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JComponent;
+import javax.swing.Timer;
 
 import TextElements.FinalScoreText;
 import TextElements.GraveText;
@@ -48,6 +51,7 @@ public class LevelComponent extends JComponent {
 	private int strawberryCount;
 	private int deathCount;
 	private boolean isIncomplete;
+	private ArrayList<DeathParticle> deathParticles;
 	
 	/**
 	 * Creates a LevelComponent Object
@@ -72,6 +76,7 @@ public class LevelComponent extends JComponent {
 		this.strawberryCount = strawberryCount;
 		this.deathCount = deathCount;
 		this.isIncomplete = isIncomplete;
+		deathParticles = new ArrayList<DeathParticle>();
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		layer = new Point[16][16];
@@ -88,6 +93,7 @@ public class LevelComponent extends JComponent {
 		this.deathCount = deathCount;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
+		deathParticles = new ArrayList<DeathParticle>();
 		layer = new Point[16][16];
 		collisionObjects = new ArrayList<CollisionObject>();
 		levelFromText(filePath, levelName);
@@ -159,13 +165,33 @@ public class LevelComponent extends JComponent {
 		{
 			ldt.drawOn(g2);
 		}
+		if (deathParticles.size() != 0)
+		{
+			for (DeathParticle d : deathParticles)
+			{
+				d.drawOn(g2);
+			}
+		}
 	}
 
 	/**
 	 * Resets the level
 	 */
 	public void resetLevel() {
-		main.resetLevel();
+    	for (int i = 0; i < 7; i++)
+        {
+            double angle = (180/Math.PI)*(i / 8.0);
+            deathParticles.add(new DeathParticle(m.getXPos() + 4*Constants.PIXEL_DIM, m.getYPos() + 4*Constants.PIXEL_DIM, Math.cos(angle) * 3*Constants.PIXEL_DIM, Math.sin(angle) * 3*Constants.PIXEL_DIM));
+        }
+    	displayMadeline = false;
+    	Timer t = new Timer(300, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.resetLevel();
+			}
+		});
+    	t.setRepeats(false);
+    	t.start();
 	}
 
 	/**
@@ -716,6 +742,16 @@ public class LevelComponent extends JComponent {
 		Gem gem = new Gem(x, y, m);
 		collisionObjects.add(gem);
 		otherObject.add(gem);
+	}
+	
+	public int getMadelineYPos()
+	{
+		return m.getYPos();
+	}
+	
+	public int getMadelineXPos()
+	{
+		return m.getXPos();
 	}
 	
 }

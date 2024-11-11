@@ -299,17 +299,19 @@ public class MainApp implements KeyListener {
     	lvl.stopAllTimers();			
 		frame.remove(lvl);
     	lvl = new LevelComponent(this, filePath, fileName, clouds, endTime - startTime, strawberryCount);
+    	lvl.addLevelDisplay(fileName, startTime);
+    	levelRefresh();
+    }
+    
+    private void levelRefresh() {
     	if (err == null)
 		{
 			frame.add(lvl);
 		}
 		frame.setVisible(true);
-		
 		lvl.setDisplayMadeline(false);
-		lvl.addLevelDisplay(fileName, startTime);
 		lvl.resetMadelineVelocity();
     }
-    
 	/**
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
@@ -330,19 +332,11 @@ public class MainApp implements KeyListener {
 		}
 		lvl.stopAllTimers();
 		// resets the level to currentLevel
-			
 		frame.remove(lvl);
 		
 		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
-		if (err == null)
-		{
-			frame.add(lvl);
-		}
-		frame.setVisible(true);
-		
-		lvl.setDisplayMadeline(false);
+		levelRefresh();
 		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
-		lvl.resetMadelineVelocity();
 		if (currentLevel >= 23)
 		{
 			frame.getContentPane().setBackground(BACKGROUND_PINK);
