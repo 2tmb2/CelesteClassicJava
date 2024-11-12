@@ -162,7 +162,7 @@ public class Madeline {
 		canContinue = true;
 		
 		if (numOfDashesRemaining == 1) {
-			hairColor = RED_HAIR;
+			hairColor = RED_HAIR;	
 		} else if (numOfDashesRemaining == 2) {
 			hairColor = GREEN_HAIR;
 		} else {
