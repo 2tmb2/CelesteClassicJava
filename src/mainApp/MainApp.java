@@ -233,6 +233,7 @@ public class MainApp implements KeyListener {
 	    	}
 	        pressedKeys.remove(e.getKeyCode());
 		}
+		canSwitch = true;
     }
 	
 	private void update() {
