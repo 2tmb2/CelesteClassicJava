@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 
 import mainApp.Constants;
 import mainApp.Madeline;
-import mainApp.MainApp;
 
 public class RotatableSpike extends CollisionObject {
 
@@ -105,7 +104,7 @@ public class RotatableSpike extends CollisionObject {
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
-		if (super.isCollidingFloor(madelineX, madelineY) && (rotation == 'u' || rotation == 'd'))
+		if (super.isCollidingFloor(madelineX, madelineY))
 		{
 			m.death();
 			return true;
@@ -119,7 +118,7 @@ public class RotatableSpike extends CollisionObject {
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
-		if (super.isCollidingWall(madelineX, madelineY, facing) && (rotation == 'l' || rotation == 'r'))
+		if (super.isCollidingWall(madelineX, madelineY, facing))
 		{
 			m.death();
 			return true;
@@ -133,7 +132,7 @@ public class RotatableSpike extends CollisionObject {
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{
-		if (super.isCollidingCeiling(madelineX, madelineY) && (rotation == 'u' || rotation == 'd'))
+		if (super.isCollidingCeiling(madelineX, madelineY))
 		{
 			m.death();
 			return true;
