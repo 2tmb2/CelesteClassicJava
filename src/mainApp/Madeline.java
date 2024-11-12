@@ -64,7 +64,8 @@ public class Madeline {
 
 	private Color hairColor;
 	private int hairSwitchFrame;
-	private boolean canWallJump;
+	private boolean canWallJumpLeft;
+	private boolean canWallJumpRight;
 	private boolean isMoving;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
@@ -87,7 +88,7 @@ public class Madeline {
 	private static final int WALL_CANCEL_CONTROL_FRAME = 6;
 	
 	//After a wall jump ends, how many ms does the player have low gravity
-	private static final int LOW_GRAV_FRAME = 5;
+	private static final int LOW_GRAV_FRAME = 3;
 	
 	//After a dash, how many ms until springs bounce at full velocity
 	private static final int BOUNCE_RECOVERY_FRAME = 6;
@@ -115,7 +116,8 @@ public class Madeline {
 	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
 	
 	private static final double WALL_JUMP_X_VEL = 1.2 * (double)MainApp.PIXEL_DIM;
-	private static final double WALL_JUMP_Y_VEL = -1.90 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_Y_VEL = -1.84 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_ACCEL_COEFF = 0.90;
 	
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
@@ -170,9 +172,7 @@ public class Madeline {
 
 	/**
 	 * Updates Madeline's position based on her current velocity, position, and any
-	 * objects she is colliding with
-	 * 
-	 * @param hasMoved whether a key has been pressed to move Madeline
+	 * objects she is colliding with and sets her state of collision with objects
 	 */
 	public void setPosition() {
 		lifetime++;
@@ -183,22 +183,7 @@ public class Madeline {
 		isTouchingWall = isTouchingWallLeft || isTouchingWallRight;
 		isTouchingFloor = isTouchingFloor();
 		isCollidingWall = isCollidingWithWall();
-//		}
-//		else
-//		{
-//			isCollidingFloor = false;
-//			isTouchingWallLeft = false;
-//			isTouchingWallRight = false;
-//			isCollidingCeiling = false;
-//			isTouchingWall = false;
-//			isTouchingFloor = false;
-//			isCollidingWall = false;
-//		}
 		setCanSlide();
-		if (isTouchingFloor) {
-			coyoteTimer = lifetime;
-			isCoyote = true;
-		}
 		if (isCollidingWall) {
 			canJump = true;
 			lowGrav = false;
@@ -215,12 +200,15 @@ public class Madeline {
 		}
 		if (wallSlide) {
 			yVelMax = WALL_VEL;
-			//wallSlide = false;
 		} else {
 			yVelMax = TERM_VEL;
 		}
 		setHorizontalPosition();
 		setVerticalPosition();
+		if (isTouchingFloor && !jumpPressed) {
+			coyoteTimer = lifetime;
+			isCoyote = true;
+		}
 	}
 
 	/**
@@ -243,12 +231,21 @@ public class Madeline {
 		}
 	}
 	
+	/**
+	 * Updates Madeline's velocity based on current accel and deccel values and player movement data
+	 * @param hasMoved whether or not the player has pressed a button to move
+	 */
 	public void setVelocity(boolean hasMoved) {
 		this.isMoving = hasMoved;
 		setHorizontalVelocity(hasMoved);
 		setVerticalVelocity();
 	}
 	
+	/**
+	 * Updates Madeline's horizontal velocity based on current horizontal acceleration.
+	 * Also determines facing direction based on whether velocity is negative or positive
+	 * @param hasMoved whether or not the player has pressed a button to move
+	 */
 	public void setHorizontalVelocity(boolean hasMoved) {
 		if (xVel > 0) { facingRight = 1; }
 		else if (xVel < 0) { facingRight = -1; }
@@ -274,11 +271,17 @@ public class Madeline {
 		}
 	}
 	
+	/**
+	 * Sets Madeline's vertical velocity based on current state and gravity
+	 */
 	public void setVerticalVelocity() {
 		double downAcc = GRAVITY;
 		boolean noHover = false;
 		if (isCoyote) {
 			downAcc *= COYOTE_ACCEL_COEFF;
+		}
+		if (wallJump) {
+			downAcc *= WALL_JUMP_ACCEL_COEFF;
 		}
 		if (isTouchingFloor && yVel >= 0) {
 			yVel = 0;
@@ -308,7 +311,7 @@ public class Madeline {
 	}
 
 	/**
-	 * Updates Madeline's state
+	 * Updates Madeline's state based on her lifetime and set timers
 	 */
 	public void checkState() {
 		if (lifetime > frameAtDash + DASH_RECHARGE_FRAMES) {
@@ -340,7 +343,6 @@ public class Madeline {
 		}
 		if (lifetime > frameAtWallJump + WALL_JUMP_FRAME) {
 			if (wallJump) {
-				//yVel = 0;
 				lowGrav = true;
 			}
 			wallJump = false;
@@ -369,15 +371,15 @@ public class Madeline {
 			yVel = JUMP_VEL;
 			jumpPressed = true;
 			isCoyote = false;
-			coyoteTimer -= COYOTE_FRAMES;
+			coyoteTimer = lifetime - 1;
 			AudioPlayer.playFile("jump");
-		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && canWallJump) {
+		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && (canWallJumpLeft || canWallJumpRight) && !wallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			frameAtWallJump = lifetime;
-			if (isTouchingWallRight) {
+			if (isTouchingWallRight && canWallJumpRight) {
 				xVel = -WALL_JUMP_X_VEL;
-			} else {
+			} else if (isTouchingWallLeft && canWallJumpLeft) {
 				xVel = WALL_JUMP_X_VEL;
 			}
 			yVel = WALL_JUMP_Y_VEL;
@@ -498,6 +500,9 @@ public class Madeline {
 		return false;
 	}
 
+	/**
+	 * determines if the currently colliding object allows Madeline to slide
+	 */
 	public void setCanSlide() {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
@@ -513,15 +518,6 @@ public class Madeline {
 	/**
 	 * Checks if Madeline is directly adjacent to a wall (not moving into one)
 	 * 
-	 * @return true if she is colliding with a wall on either side, otherwise false
-	 */
-	public boolean isTouchingWall() {
-		return false;
-	}
-	
-	/**
-	 * Checks if Madeline is directly adjacent to a wall (not moving into one)
-	 * 
 	 * @param side The side of Madeline to check (-1 for left, 1 for right)
 	 * @return true if she is colliding with a wall on specified side, otherwise false
 	 */
@@ -529,8 +525,9 @@ public class Madeline {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
-			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, side)) {
-				canWallJump = object.getCanWallJump();
+			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET + (side * ((2 * MainApp.PIXEL_DIM) + 2)), yPos + Y_COLLISION_OFFSET, side)) {
+				if (side == -1) canWallJumpLeft = object.getCanWallJump();
+				if (side == 1) canWallJumpRight = object.getCanWallJump();
 				return true;
 			};
 		}
@@ -557,7 +554,7 @@ public class Madeline {
 
 	/**
 	 * Checks if there is a floor just below Madeline Different from Colliding
-	 * because it does not factor in Madeline's velocity This is important because
+	 * because it does not factor in Madeline's velocity. This is important because
 	 * coyote time requires setting Madeline's y velocity to 0 while touching the
 	 * floor which disables floor collision This method can be used instead when a
 	 * condition requires that Madeline is constantly touching a floor
@@ -700,6 +697,11 @@ public class Madeline {
 
 	}
 
+	/**
+	 * Rounds a position to the nearest game pixel (6 JFrame pixels)
+	 * @param toRound the position to round
+	 * @return the rounded position
+	 */
 	public static int roundPos(int toRound) {
 		if (toRound % MainApp.PIXEL_DIM <= 2) {
 			return (toRound - (toRound % MainApp.PIXEL_DIM));
@@ -727,6 +729,11 @@ public class Madeline {
 		//yPos -= 10;
 	}
 	
+	/**
+	 * Triggers when a chest is opened to instantiate a strawberry at designated position
+	 * @param x horizontal position of strawberry
+	 * @param y vertical position of strawberry
+	 */
 	public void openChest(int x, int y)
 	{
 		lvl.addNewStrawberry(x, y-30,  false);
@@ -781,6 +788,9 @@ public class Madeline {
 		lvl.setCloudsPink();
 	}
 
+	/**
+	 * Stops all timers on currently active objects. Will be deprecated 
+	 */
 	public void stopAllTimers()
 	{
 		for (CollisionObject c : collisionObjects)
@@ -792,7 +802,7 @@ public class Madeline {
 	 * Increases Madeline's X velocity
 	 */
 	public void increaseX() {
-		if (!wallJump && canControl && !isTouchingWallRight && !breakState && isFullySpawned && canMove) {
+		if (!wallJump && canControl && !breakState && isFullySpawned && canMove) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
 		//if (isTouchingWallRight) wallSlide = true;
@@ -802,11 +812,9 @@ public class Madeline {
 	 * Decreases Madeline's X velocity
 	 */
 	public void decreaseX() {
-		if (!wallJump && canControl && !isTouchingWallLeft && !breakState && isFullySpawned && canMove) {
+		if (!wallJump && canControl && !breakState && isFullySpawned && canMove) {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
-		//if (isTouchingWallLeft) wallSlide = true;
-
 	}
 	
 	/**
@@ -819,17 +827,27 @@ public class Madeline {
 		lvl.resetLevel();
 	}
 
+	/**
+	 * Collects the levels strawberry, deleting it from the level and resetting the players dashes
+	 */
 	public void collectStrawberry() {
 		if (breakState) return;
 		AudioPlayer.playFile("strawberrycollect");
 		resetDashes();
 		lvl.collectStrawberry();
 	}
-
+	
+	/**
+	 * returns true if the player is dashing either vertically or horizontally
+	 * @return
+	 */
 	public boolean getIsDashing() {
 		return isDashingVertically || isDashingHorizontally;
 	}
 
+	/**
+	 * Increases the players y velocity by factors determined by spring bounce velocity
+	 */
 	public void springBounce() {
 		AudioPlayer.playFile("spring");
 		if (bounceHigh) {
