@@ -34,10 +34,6 @@ import javax.swing.JFrame;
  *         Restrictions: None
  */
 public class MainApp implements KeyListener {
-	
-	//The holiest magic number
-	public static final int PIXEL_DIM = 6;
-	
 	// scaled map must be public because it is the image used by every other class's drawing methods.
 	// This avoids reading the same file in over and over again.
 	public static BufferedImage SCALED_MAP;
@@ -66,13 +62,18 @@ public class MainApp implements KeyListener {
 	private boolean canMoveLevels;
 	private boolean gameStarted;
 	private boolean errorIsDisplayed;
+	private boolean isCustomLevel;
 	private ArrayList<Cloud> clouds;
+	private ArrayList<SnowParticle> snow;
 
 	private boolean inEditor;
 	private boolean canSwitch;
 	private boolean mouseDown = false;
 	private boolean byFrame = false;
 	private boolean muted = false;
+	
+	private String filePath;
+	private String fileName;
 	
 	private long startTime = System.currentTimeMillis();
 	private long endTime;
@@ -113,11 +114,12 @@ public class MainApp implements KeyListener {
 		frame.getContentPane().add(menu);
 		frame.setVisible(true);
 		clouds = new ArrayList<Cloud>();
+		snow = new ArrayList<SnowParticle>();
         for (int i = 0; i <= 16; i++)
         {
         	clouds.add(new Cloud(cloudColor));
+        	snow.add(new SnowParticle());
         }
-        
 		
 		editor = new JFrame();
 		editor.addKeyListener(this);
@@ -192,6 +194,7 @@ public class MainApp implements KeyListener {
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_L)
 			{
+				updateTimer.start();
 				inEditor = !inEditor;
 	    		if (!inEditor) {
 		    		canSwitch = false;
@@ -214,37 +217,45 @@ public class MainApp implements KeyListener {
     public synchronized void keyReleased(KeyEvent e) {
 		if (gameStarted == true)
 		{
-			if (e.getKeyCode() == 74 || e.getKeyCode() == 67)
+			if (e.getKeyCode() == KeyEvent.VK_J || e.getKeyCode() == KeyEvent.VK_C)
 	    	{
 	    		lvl.setMadelineJumpPressed(false);
 	    	}
-	    	if (e.getKeyCode() == 79 || e.getKeyCode() == 80)
+	    	if (e.getKeyCode() == KeyEvent.VK_O || e.getKeyCode() == KeyEvent.VK_P)
 	    	{
 	    		startTime = 0;
 	    		canMoveLevels = true;
 	    	}
-	    	if (e.getKeyCode() == 76) {
+	    	if (e.getKeyCode() == KeyEvent.VK_L) {
 	    		canSwitch = true;
 	    	}
-	    	if (e.getKeyCode() == 75 || e.getKeyCode() == 88)
+	    	if (e.getKeyCode() == KeyEvent.VK_K || e.getKeyCode() == KeyEvent.VK_X)
 	    	{
 	    		lvl.setMadelineCanDash(true);
 	    	}
 	        pressedKeys.remove(e.getKeyCode());
 		}
+		canSwitch = true;
     }
 	
 	private void update() {
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
 		}
-		checkToggles();
-		checkMoveLevels();
-		updateMadelinePosition();
-		updateMadelineVelocity();
-		lvl.updateAnimations();
-		frame.repaint();
-		editor.repaint();
+		if (!errorIsDisplayed && !inEditor && gameStarted)
+		{
+			checkToggles();
+			checkMoveLevels();
+			updateMadelinePosition();
+			updateMadelineVelocity();
+			lvl.updateAnimations();
+			frame.repaint();
+			editor.repaint();
+		}
+		else if (inEditor)
+		{
+			editor.repaint();
+		}
 	}
 	
 	public Set<Integer> getKeys() {
@@ -255,8 +266,9 @@ public class MainApp implements KeyListener {
     
     private void mainGame() {
     	frame.remove(menu);
-    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
-		levelRefresh();	
+    	isCustomLevel = false;
+    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, snow, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
+		mainGameLevelRefresh();	
 		updateTimer.start();
 		
     }
@@ -265,13 +277,15 @@ public class MainApp implements KeyListener {
     	final JFileChooser fc = new JFileChooser();
     	fc.showOpenDialog(null);
     	frame.requestFocus();
-    	if (fc.getSelectedFile() != null && fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().length() - 3).equals("txt"))
+    	filePath = fc.getSelectedFile().getPath();
+    	fileName = fc.getSelectedFile().getName();
+    	if (fc.getSelectedFile() != null && fileName.substring(fileName.length() - 3).equals("txt"))
     	{
     		frame.remove(menu);
     		gameStarted = true;
-    		System.out.println(fc.getSelectedFile().getPath());
-    		lvl = new LevelComponent(this, fc.getSelectedFile().getPath(), fc.getSelectedFile().getName(), clouds, endTime - startTime, strawberryCount);
-    		levelRefresh();
+    		lvl = new LevelComponent(this, filePath, fileName, clouds, snow, endTime - startTime, strawberryCount);
+    		isCustomLevel = true;
+    		customLevelRefresh();
     		updateTimer.start();
     	}
     	else if (fc.getSelectedFile() == null)
@@ -284,11 +298,27 @@ public class MainApp implements KeyListener {
     	}
     }
     
+    private void customLevelRefresh() {
+    	lvl.stopAllTimers();			
+		frame.remove(lvl);
+    	lvl = new LevelComponent(this, filePath, fileName, clouds, snow, endTime - startTime, strawberryCount);
+    	lvl.addLevelDisplay(fileName, startTime);
+    	levelRefresh();
+    }
     
+    private void levelRefresh() {
+    	if (err == null)
+		{
+			frame.add(lvl);
+		}
+		frame.setVisible(true);
+		lvl.setDisplayMadeline(false);
+		lvl.resetMadelineVelocity();
+    }
 	/**
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
-	private void levelRefresh() {
+	private void mainGameLevelRefresh() {
 		if (currentLevel >= 23)
 		{
 			for (Cloud c : clouds)
@@ -304,24 +334,12 @@ public class MainApp implements KeyListener {
 			}
 		}
 		lvl.stopAllTimers();
-		// ensures that a button held before the user can move still fires once they are
-		// able to move
-		//pressedKeys = new HashSet<>();
-
 		// resets the level to currentLevel
-			
 		frame.remove(lvl);
 		
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
-		if (err == null)
-		{
-			frame.add(lvl);
-		}
-		frame.setVisible(true);
-		
-		lvl.setDisplayMadeline(false);
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, snow, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
+		levelRefresh();
 		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
-		lvl.resetMadelineVelocity();
 		if (currentLevel >= 23)
 		{
 			frame.getContentPane().setBackground(BACKGROUND_PINK);
@@ -338,7 +356,14 @@ public class MainApp implements KeyListener {
 	 */
 	public void resetLevel() {
 		deathCount++;
-		levelRefresh();
+		if (isCustomLevel)
+		{
+			customLevelRefresh();
+		}
+		else
+		{
+			mainGameLevelRefresh();
+		}
 	}
 
 	/**
@@ -353,7 +378,7 @@ public class MainApp implements KeyListener {
 		{
 			endTime = System.currentTimeMillis();
 		}
-		levelRefresh();
+		mainGameLevelRefresh();
 	}
 
 	/**
@@ -364,7 +389,7 @@ public class MainApp implements KeyListener {
 		if (currentLevel > 1) {
 			currentLevel--;
 		}
-		levelRefresh();
+		mainGameLevelRefresh();
 	}
     
     /**
@@ -385,7 +410,7 @@ public class MainApp implements KeyListener {
     	errorIsDisplayed = true;
     	gameStarted = false;
     	frame.getContentPane().removeAll();
-    	err = new ErrorDisplay(error + "&&press esc to reset");
+    	err = new ErrorDisplay(error + " &&press esc to reset");
     	frame.add(err);
     	frame.setVisible(true);
     	frame.repaint();
@@ -403,14 +428,12 @@ public class MainApp implements KeyListener {
     
     private void updateMadelineVelocity() {
     	Boolean hasMoved = false;
-    	// 68 is d, 39 is right arrow
-    	if (pressedKeys.contains(68) || pressedKeys.contains(39))
+    	if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT))
 		{
 			lvl.moveMadelineRight();
 			hasMoved = true;
 		}
-		// 65 is s, 37 is left arrow
-		if (pressedKeys.contains(65) || pressedKeys.contains(37)) {
+		if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_LEFT)) {
 			lvl.moveMadelineLeft();
 			hasMoved = true;
 		}
@@ -418,8 +441,7 @@ public class MainApp implements KeyListener {
     }
 
 	private void checkJump() {
-		// 74 is j, 67 is c
-		if (pressedKeys.contains(74) || pressedKeys.contains(67)) {
+		if (pressedKeys.contains(KeyEvent.VK_J) || pressedKeys.contains(KeyEvent.VK_C)) {
 			lvl.madelineJump();
 		}
 	}
@@ -430,23 +452,22 @@ public class MainApp implements KeyListener {
 	 */
 	private void checkDash() {
 		lvl.checkIfDashing();
-		// 75 is k, 88 is x
-		if (pressedKeys.contains(75) || pressedKeys.contains(88)) {
-			if ((pressedKeys.contains(87) && pressedKeys.contains(68))
-					|| (pressedKeys.contains(38) && pressedKeys.contains(39))) {
+		if (pressedKeys.contains(KeyEvent.VK_K) || pressedKeys.contains(KeyEvent.VK_X)) {
+			if ((pressedKeys.contains(KeyEvent.VK_W) && pressedKeys.contains(KeyEvent.VK_D))
+					|| (pressedKeys.contains(KeyEvent.VK_UP) && pressedKeys.contains(KeyEvent.VK_RIGHT))) {
 				lvl.dash("upright");
-			} else if ((pressedKeys.contains(87) && pressedKeys.contains(65))
-					|| (pressedKeys.contains(38) && pressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_W) && pressedKeys.contains(KeyEvent.VK_A))
+					|| (pressedKeys.contains(KeyEvent.VK_UP) && pressedKeys.contains(KeyEvent.VK_LEFT))) {
 				lvl.dash("upleft");
-			} else if ((pressedKeys.contains(68) && pressedKeys.contains(83))
-					|| (pressedKeys.contains(40) && pressedKeys.contains(39))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_D) && pressedKeys.contains(KeyEvent.VK_S))
+					|| (pressedKeys.contains(KeyEvent.VK_DOWN) && pressedKeys.contains(KeyEvent.VK_RIGHT))) {
 				lvl.dash("downright");
-			} else if ((pressedKeys.contains(65) && pressedKeys.contains(83))
-					|| (pressedKeys.contains(40) && pressedKeys.contains(37))) {
+			} else if ((pressedKeys.contains(KeyEvent.VK_A) && pressedKeys.contains(KeyEvent.VK_S))
+					|| (pressedKeys.contains(KeyEvent.VK_DOWN) && pressedKeys.contains(KeyEvent.VK_LEFT))) {
 				lvl.dash("downleft");
-			} else if (pressedKeys.contains(83) || pressedKeys.contains(40)) {
+			} else if (pressedKeys.contains(KeyEvent.VK_S) || pressedKeys.contains(KeyEvent.VK_DOWN)) {
 				lvl.dash("down");
-			} else if (pressedKeys.contains(87) || pressedKeys.contains(38)) {
+			} else if (pressedKeys.contains(KeyEvent.VK_W) || pressedKeys.contains(KeyEvent.VK_UP)) {
 				lvl.dash("up");
 			} else {
 				lvl.dash("");
@@ -460,11 +481,7 @@ public class MainApp implements KeyListener {
 	 */
 	private void checkMoveLevels() {
 		if (canMoveLevels) {
-			// pressedKeys is checked instead of pressedKeys to allow the user to
-			// switch to alternate levels without waiting for the spawn timer
-			
-			// 80 is p
-			if (pressedKeys.contains(80)) {
+			if (pressedKeys.contains(KeyEvent.VK_P)) {
 				if (err != null)
 				{
 					frame.remove(err);
@@ -473,8 +490,7 @@ public class MainApp implements KeyListener {
 				nextLevel();
 				canMoveLevels = false;	
 			}
-			// 79 is o
-			else if (pressedKeys.contains(79)) {
+			else if (pressedKeys.contains(KeyEvent.VK_O)) {
 				if (err != null)
 				{
 					frame.remove(err);
@@ -516,7 +532,7 @@ public class MainApp implements KeyListener {
      * Muted audio once for testing
      */
     public void muteMusic() {
-    	AudioPlayer.setMute(muted);
+    	AudioPlayer.setMute(!muted);
     }
 
 	/**

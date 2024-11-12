@@ -10,11 +10,17 @@ public class MenuComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private LogoDisplay logoDisplay;
 	
+	/**
+	 * Creates a MenuComponent JComponent
+	 */
 	public MenuComponent()
 	{
 		logoDisplay = new LogoDisplay();
 	}
 	
+	/**
+	 * Draws the MenuComponent onto graphics g
+	 */
 	@Override
 	protected void paintComponent(Graphics g)
 	{

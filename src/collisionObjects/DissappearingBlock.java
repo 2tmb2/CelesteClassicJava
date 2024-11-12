@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import mainApp.AudioPlayer;
+import mainApp.Constants;
 
 public class DissappearingBlock extends CollisionObject{
 
@@ -18,14 +19,22 @@ public class DissappearingBlock extends CollisionObject{
 	private boolean isDissappearing;
 	private int animationFrame;
 	
+	/**
+	 * Creates a dissappearing block
+	 * @param x the top left x coordinate
+	 * @param y the top left y coordinate
+	 */
 	public DissappearingBlock(int x, int y)
 	{
-		super(x,y,48,48, true, true);
+		super(x,y,Constants.SPRITE_WIDTH,Constants.SPRITE_HEIGHT, true, true);
 		isVisible = true;
 		animationFrame = 0;
 		
 	}
-	
+
+	/**
+	 * Draws the dissappearing block in it's current animation frame onto g2
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
@@ -55,6 +64,9 @@ public class DissappearingBlock extends CollisionObject{
 		}
 	}
 	
+	/**
+	 * Draws a fully intact block
+	 */
 	private void drawFullBlock(Graphics2D g2)
 	{
 		g2.setColor(BLOCK_YELLOW);
@@ -70,6 +82,9 @@ public class DissappearingBlock extends CollisionObject{
 		g2.fillRect(42,42,6,6);
 	}
 	
+	/**
+	 * Draws frame 1 of the block's dissappearance
+	 */
 	private void drawDissappearingFrame1(Graphics2D g2)
 	{
 		
@@ -102,6 +117,9 @@ public class DissappearingBlock extends CollisionObject{
 		g2.fillRect(30,18,6,6);
 	}
 	
+	/**
+	 * Draws frame 2 of the block's dissappearance
+	 */
 	private void drawDissappearingFrame2(Graphics2D g2)
 	{
 		g2.setColor(BLOCK_DARK_BLUE);
@@ -140,6 +158,9 @@ public class DissappearingBlock extends CollisionObject{
 		
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the side of the dissappearing block
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -152,6 +173,9 @@ public class DissappearingBlock extends CollisionObject{
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the top of the dissappearing block
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY)
 	{
@@ -164,6 +188,9 @@ public class DissappearingBlock extends CollisionObject{
 		return false;
 	}
 	
+	/**
+	 * Checks if Madeline is colliding with the bottom of the dissappearing block
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY)
 	{
@@ -173,6 +200,10 @@ public class DissappearingBlock extends CollisionObject{
 		}
 		return false;
 	}
+	
+	/**
+	 * Causes the dissappearing block to dissappear
+	 */
 	private void dissappear()
 	{
 		animationFrame = 0;

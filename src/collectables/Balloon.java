@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import collisionObjects.CollisionObject;
 import mainApp.AudioPlayer;
+import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
@@ -23,7 +24,7 @@ public class Balloon extends CollisionObject {
 	private static final int RESPAWN_FRAMES = 120;
 	private static final int ANIMATION_DELTA = 28;
 	private static final int PERIOD = 192; //How many frames to hover up and then back down
-	private static final double AMPLITUDE = 1.5 * (double)MainApp.PIXEL_DIM; //Amplitude of periodic motion
+	private static final double AMPLITUDE = 1.5 * (double)Constants.PIXEL_DIM; //Amplitude of periodic motion
 	
 	private static final int BALLOON_TOP_WIDTH = 48;
 	private static final int BALLOON_TOP_HEIGHT = 48;

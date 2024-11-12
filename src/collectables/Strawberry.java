@@ -28,7 +28,7 @@ public class Strawberry extends CollisionObject {
 		super(x, y, 56, 56, false, false);
 		this.m = m;
 		currentFrame = 0;
-		numOfAnimationFrames = 80;
+		numOfAnimationFrames = 180;
 	}
 
 	/**
@@ -85,25 +85,12 @@ public class Strawberry extends CollisionObject {
 	 * Updates the translated amount of the strawberry drawing
 	 */
 	public void updateTranslateBy() {
-		if (currentFrame > numOfAnimationFrames / 4
-				&& currentFrame < 3 * numOfAnimationFrames / 4) {
-			translateBy -= .5;
-		} else {
-			translateBy += .5;
-		}
-	}
-
-	/**
-	 * Updates the Strawberry's animation
-	 */
-	@Override
-	public void updateAnimation() {
-		if (currentFrame >= numOfAnimationFrames - 2) {
-			translateBy -= .5;
+		currentFrame++;
+		if (currentFrame > 360)
+		{
 			currentFrame = 0;
-		} else {
-			currentFrame += 1;
 		}
+		translateBy = Math.cos(-Math.toRadians(currentFrame * 3))*10;
 	}
 
 	/**

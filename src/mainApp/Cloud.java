@@ -17,9 +17,9 @@ public class Cloud {
 	public Cloud(Color c)
 	{
 		this.x = 0;
-		this.y = Madeline.roundPos((int)(Math.random() * 120*MainApp.PIXEL_DIM) + 4*MainApp.PIXEL_DIM);
-		this.speed = MainApp.PIXEL_DIM + (int)(Math.random() * 4);
-		this.width = 24*MainApp.PIXEL_DIM + (int)(Math.random()*32*MainApp.PIXEL_DIM);
+		this.y = Madeline.roundPos((int)(Math.random() * 120*Constants.PIXEL_DIM) + 4*Constants.PIXEL_DIM);
+		this.speed = Constants.PIXEL_DIM + (int)(Math.random() * 4);
+		this.width = 24*Constants.PIXEL_DIM + (int)(Math.random()*32*Constants.PIXEL_DIM);
 		cloudColor = c;
 	}
 	
@@ -30,11 +30,11 @@ public class Cloud {
 	{
 		x += speed;
 		g2.setColor(cloudColor);
-		g2.fillRect(x, y, width, 4*MainApp.PIXEL_DIM + (4*MainApp.PIXEL_DIM-(width/(64*MainApp.PIXEL_DIM))));
-		if (x > 128*MainApp.PIXEL_DIM)
+		g2.fillRect(x, y, width, 4*Constants.PIXEL_DIM + (4*Constants.PIXEL_DIM-(width/(64*Constants.PIXEL_DIM))));
+		if (x > 128*Constants.PIXEL_DIM)
 		{
 			x = -width;
-			y = Madeline.roundPos((int)(Math.random() * 120*MainApp.PIXEL_DIM) + 4*MainApp.PIXEL_DIM);
+			y = Madeline.roundPos((int)(Math.random() * 120*Constants.PIXEL_DIM) + 4*Constants.PIXEL_DIM);
 		}
 		
 	}

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
+import mainApp.Constants;
 import mainApp.MainApp;
 
 public class ErrorDisplay extends JComponent {
@@ -13,19 +14,24 @@ public class ErrorDisplay extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private String displayMessage;
 	
+	/**
+	 * Creates an error display JComponent
+	 * @param message the error message to display
+	 */
 	public ErrorDisplay(String message)
 	{
 		displayMessage = "";
-		if (message.length() <= 5*MainApp.PIXEL_DIM)
+		if (message.length() <= 5*Constants.PIXEL_DIM)
 		{
 			displayMessage = message;
 		}
+		// separates the message into parts if it is longer than the length of the screen
 		else
 		{
 			int linesCount = 1;
 			for (int i = 0; i < message.length(); i++)
 			{
-				if ((message + " ").indexOf(" ", i) > (5*MainApp.PIXEL_DIM-1)*linesCount)
+				if ((message + " ").indexOf(" ", i) > (5*Constants.PIXEL_DIM-1)*linesCount)
 				{
 					displayMessage += "&";
 					linesCount++;
@@ -34,6 +40,11 @@ public class ErrorDisplay extends JComponent {
 			}
 		}
 	}
+	
+	/**
+	 * Paints the error display onto g
+	 * @param g representing the Graphics object to paint onto
+	 */
 	protected void paintComponent(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D)g;

@@ -2,6 +2,7 @@ package TextElements;
 
 import java.awt.Graphics2D;
 
+import mainApp.Constants;
 import mainApp.MainApp;
 
 public class BlockyText {
@@ -13,13 +14,13 @@ public class BlockyText {
 	 */
 	public static void drawText(Graphics2D g2, String text)
 	{
-		int totalTranslatedX = 4*MainApp.PIXEL_DIM;
+		int totalTranslatedX = 4*Constants.PIXEL_DIM;
 		g2 = (Graphics2D)g2.create();
 		for (int i = 0; i < text.length(); i++)
 		{
 			switch (text.substring(i,i+1).toLowerCase()) {
 				case "&":
-					g2.translate(-totalTranslatedX, 6*MainApp.PIXEL_DIM);
+					g2.translate(-totalTranslatedX, 6*Constants.PIXEL_DIM);
 					totalTranslatedX = 0;
 					break;
 				case "0":
@@ -145,8 +146,8 @@ public class BlockyText {
 					drawEmpty(g2);
 					break;
 			}
-			totalTranslatedX += 4*MainApp.PIXEL_DIM;
-			g2.translate(4*MainApp.PIXEL_DIM, 0);
+			totalTranslatedX += 4*Constants.PIXEL_DIM;
+			g2.translate(4*Constants.PIXEL_DIM, 0);
 		}
 	}
 	
@@ -155,17 +156,17 @@ public class BlockyText {
 	 */
 	private static void drawEmpty(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
 	}
 	/**
 	 * Draws a 0 onto g2
 	 */
 	private static void draw0(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -173,9 +174,9 @@ public class BlockyText {
 	 */
 	private static void draw1(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM * 4);
-		g2.fillRect(0, 4 * MainApp.PIXEL_DIM, MainApp.PIXEL_DIM * 3, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM * 4);
+		g2.fillRect(0, 4 * Constants.PIXEL_DIM, Constants.PIXEL_DIM * 3, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -183,11 +184,11 @@ public class BlockyText {
 	 */
 	private static void draw2(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -195,10 +196,10 @@ public class BlockyText {
 	 */
 	private static void draw3(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -206,9 +207,9 @@ public class BlockyText {
 	 */
 	private static void draw4(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,3*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -216,11 +217,11 @@ public class BlockyText {
 	 */
 	private static void draw5(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -228,10 +229,10 @@ public class BlockyText {
 	 */
 	private static void draw6(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -239,8 +240,8 @@ public class BlockyText {
 	 */
 	private static void draw7(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -248,12 +249,12 @@ public class BlockyText {
 	 */
 	private static void draw8(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 		
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -261,10 +262,10 @@ public class BlockyText {
 	 */
 	private static void draw9(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
 		
 	}
 	
@@ -273,10 +274,10 @@ public class BlockyText {
 	 */
 	private static void drawA(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -284,12 +285,12 @@ public class BlockyText {
 	 */
 	private static void drawB(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, 2*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -297,9 +298,9 @@ public class BlockyText {
 	 */
 	private static void drawC(Graphics2D g2)
 	{
-		g2.fillRect(MainApp.PIXEL_DIM, 0, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,3*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -307,10 +308,10 @@ public class BlockyText {
 	 */
 	private static void drawD(Graphics2D g2)
 	{
-		g2.fillRect(0,0,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -318,10 +319,10 @@ public class BlockyText {
 	 */
 	private static void drawE(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -329,9 +330,9 @@ public class BlockyText {
 	 */
 	private static void drawF(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, 3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, 3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -339,10 +340,10 @@ public class BlockyText {
 	 */
 	private static void drawG(Graphics2D g2)
 	{
-		g2.fillRect(MainApp.PIXEL_DIM,0,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -350,9 +351,9 @@ public class BlockyText {
 	 */
 	private static void drawH(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -360,9 +361,9 @@ public class BlockyText {
 	 */
 	private static void drawI(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -370,9 +371,9 @@ public class BlockyText {
 	 */
 	private static void drawJ(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -380,10 +381,10 @@ public class BlockyText {
 	 */
 	private static void drawK(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -391,8 +392,8 @@ public class BlockyText {
 	 */
 	private static void drawL(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -400,9 +401,9 @@ public class BlockyText {
 	 */
 	private static void drawM(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -410,9 +411,9 @@ public class BlockyText {
 	 */
 	private static void drawN(Graphics2D g2)
 	{
-		g2.fillRect(0,0,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -420,10 +421,10 @@ public class BlockyText {
 	 */
 	private static void drawO(Graphics2D g2)
 	{
-		g2.fillRect(MainApp.PIXEL_DIM,0,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -431,10 +432,10 @@ public class BlockyText {
 	 */
 	private static void drawP(Graphics2D g2)
 	{
-		g2.fillRect(0, 0, MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,3*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -442,11 +443,11 @@ public class BlockyText {
 	 */
 	private static void drawQ(Graphics2D g2)
 	{
-		g2.fillRect(MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,3*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,4*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -454,11 +455,11 @@ public class BlockyText {
 	 */
 	private static void drawR(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -466,11 +467,11 @@ public class BlockyText {
 	 */
 	private static void drawS(Graphics2D g2)
 	{
-		g2.fillRect(MainApp.PIXEL_DIM,0,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -478,8 +479,8 @@ public class BlockyText {
 	 */
 	private static void drawT(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -487,9 +488,9 @@ public class BlockyText {
 	 */
 	private static void drawU(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,4*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -497,10 +498,10 @@ public class BlockyText {
 	 */
 	private static void drawV(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,4*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,4*Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,4*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -508,9 +509,9 @@ public class BlockyText {
 	 */
 	private static void drawW(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -518,11 +519,11 @@ public class BlockyText {
 	 */
 	private static void drawX(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,2*Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -530,10 +531,10 @@ public class BlockyText {
 	 */
 	private static void drawY(Graphics2D g2)
 	{
-		g2.fillRect(0,0,MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,0,MainApp.PIXEL_DIM,5*MainApp.PIXEL_DIM);
-		g2.fillRect(0,2*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,Constants.PIXEL_DIM,3*Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,0,Constants.PIXEL_DIM,5*Constants.PIXEL_DIM);
+		g2.fillRect(0,2*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -541,11 +542,11 @@ public class BlockyText {
 	 */
 	private static void drawZ(Graphics2D g2)
 	{
-		g2.fillRect(0,0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM,2*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM,2*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -553,7 +554,7 @@ public class BlockyText {
 	 */
 	private static void drawPeriod(Graphics2D g2)
 	{
-		g2.fillRect(0,4*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,4*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -561,8 +562,8 @@ public class BlockyText {
 	 */
 	private static void drawColon(Graphics2D g2)
 	{
-		g2.fillRect(0,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
-		g2.fillRect(0,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
+		g2.fillRect(0,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 	
 	/**
@@ -570,6 +571,6 @@ public class BlockyText {
 	 */
 	private static void drawDash(Graphics2D g2)
 	{
-		g2.fillRect(0,MainApp.PIXEL_DIM*2,3*MainApp.PIXEL_DIM,MainApp.PIXEL_DIM);
+		g2.fillRect(0,Constants.PIXEL_DIM*2,3*Constants.PIXEL_DIM,Constants.PIXEL_DIM);
 	}
 }

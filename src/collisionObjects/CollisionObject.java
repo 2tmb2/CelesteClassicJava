@@ -40,8 +40,7 @@ public class CollisionObject {
 		this.canWallJump = canWallJump;
 	}
 
-	public void drawOn(Graphics2D g2) {
-	}
+	public void drawOn(Graphics2D g2) {}
 
 	/**
 	 * Checks if the character located at the given x and y values would be within
@@ -120,58 +119,81 @@ public class CollisionObject {
 		return false;
 	}
 
+	/**
+	 * @return the width of the collision object
+	 */
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	 * @return the height of the collision object
+	 */
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	 * @return the x location of the collision object
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * @return the y location of the collision object
+	 */
 	public int getY() {
 		return y;
 	}
 
-	public void updateAnimation() {
-	}
+	public void updateAnimation() {}
 
+	/**
+	 * Sets the y value of the collision object
+	 * @param y the new Y position
+	 */
 	public void setY(int y) {
 		this.y = y;
 	}
 
+	/**
+	 * Sets the x value of the collision object
+	 * @param x the new X position
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 
-	public void setHeight(int y) {
-		this.height = y;
+	/**
+	 * Sets the height of the collisionobject
+	 * @param height the new height
+	 */
+	public void setHeight(int height) {
+		this.height = height;
 	}
 	
+	/**
+	 * Sets the width of the collisionobject
+	 * @param width the new width
+	 */
 	public void setWidth(int width) {
 		this.width = width;
 	}
 
+	/**
+	 * @return true if you can slide off the collision object
+	 */
 	public boolean getCanSlide() {
 		return canSlide;
 	}
 
+	/**
+	 * @return true if you can walljump off the collision object
+	 */
 	public boolean getCanWallJump() {
 		return canWallJump;
 	}
-
-	public void stopAllTimers() {
-	}
-
-	/**
-	 * Returns a String representing the CollisionObject in the following format:
-	 * Class, x y width height
-	 */
-	public String toString() {
-		return this.getClass().toString().substring(6) + ", " + this.getX() + " " + this.getY() + " " + this.getWidth()
-				+ " " + this.getHeight();
-	}
+	
+	public void stopAllTimers() {}
 }

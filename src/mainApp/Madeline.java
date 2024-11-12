@@ -109,14 +109,14 @@ public class Madeline {
 	private static final int DASH_RECHARGE_FRAMES = 5;
 	
 	private static final double MOVEMENT_COEFF = 1.5;
-	private static final double GRAVITY = 0.1 * (double)MainApp.PIXEL_DIM;
-	private static final double TERM_VEL = 0.94 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double WALL_VEL = 0.25 * (double)MainApp.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double JUMP_VEL = -1.975 * (double)MainApp.PIXEL_DIM;
-	private static final double WALK_SPEED = 1.0 * (double)MainApp.PIXEL_DIM;
+	private static final double GRAVITY = 0.1 * (double)Constants.PIXEL_DIM;
+	private static final double TERM_VEL = 0.94 * (double)Constants.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double WALL_VEL = 0.25 * (double)Constants.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double JUMP_VEL = -1.975 * (double)Constants.PIXEL_DIM;
+	private static final double WALK_SPEED = 1.0 * (double)Constants.PIXEL_DIM;
 	
-	private static final double WALL_JUMP_X_VEL = 1.2 * (double)MainApp.PIXEL_DIM;
-	private static final double WALL_JUMP_Y_VEL = -1.84 * (double)MainApp.PIXEL_DIM;
+	private static final double WALL_JUMP_X_VEL = 1.2 * (double)Constants.PIXEL_DIM;
+	private static final double WALL_JUMP_Y_VEL = -1.74 * (double)Constants.PIXEL_DIM;
 	private static final double WALL_JUMP_ACCEL_COEFF = 0.90;
 	
 	private static final double ACCEL = WALK_SPEED * 0.6;
@@ -127,10 +127,10 @@ public class Madeline {
 	private static final double BOUNCE_VEL_REDUCE = 1.0;
 	private static final double BOUNCE_DASH_COEFF = 0.3;
 	
-	private static final double BREAK_VEL_X = 1.1 * (double)MainApp.PIXEL_DIM;
-	private static final double BREAK_VEL_Y = -1.1 * (double)MainApp.PIXEL_DIM;
+	private static final double BREAK_VEL_X = 1.1 * (double)Constants.PIXEL_DIM;
+	private static final double BREAK_VEL_Y = -1.1 * (double)Constants.PIXEL_DIM;
 	
-	private static final double Y_DASH_VEL = 2.35 * (double)MainApp.PIXEL_DIM;
+	private static final double Y_DASH_VEL = 2.35 * (double)Constants.PIXEL_DIM;
 	private static final double DIAG_DASH_Y_COEFF = 1.00;
 	private static final double X_DASH_VEL = Y_DASH_VEL * .53;
 	private static final double DIAG_DASH_X_COEFF = 1.075;
@@ -433,6 +433,7 @@ public class Madeline {
 			if (dir.equals("upleft")) {
 				yVel = -Y_DASH_VEL * DIAG_DASH_Y_COEFF;
 				xVel = -X_DASH_VEL * DIAG_DASH_X_COEFF;
+				dashFrameTimer = HORZ_DASH_FRAME;
 				isDashingHorizontally = true;
 				isDashingVertically = true;
 			}
@@ -525,7 +526,7 @@ public class Madeline {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
-			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET + (side * ((2 * MainApp.PIXEL_DIM) + 2)), yPos + Y_COLLISION_OFFSET, side)) {
+			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET + (side * ((2 * Constants.PIXEL_DIM) + 2)), yPos + Y_COLLISION_OFFSET, side)) {
 				if (side == -1) canWallJumpLeft = object.getCanWallJump();
 				if (side == 1) canWallJumpRight = object.getCanWallJump();
 				return true;
@@ -628,7 +629,7 @@ public class Madeline {
 			// create an AffineTransform to mirror Madeline's model when she is facing left
 			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
 			// moves the transform left by 48 pixels to adjust for the difference in x/y location
-			tx.translate(-8*MainApp.PIXEL_DIM, 0);
+			tx.translate(-8*Constants.PIXEL_DIM, 0);
 			g2.transform(tx);
 			// translates g2 to make 0, 0 be the top right of Madeline's head
 			g2.translate(-roundPos(xPos), roundPos(yPos));
@@ -638,10 +639,10 @@ public class Madeline {
 		}
 		// drawing hair
 		g2.setColor(hairColor);
-		g2.fillRect(MainApp.PIXEL_DIM, 0, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(0, MainApp.PIXEL_DIM, 8*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM);
-		g2.fillRect(0, 4*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// ======================================
 		// WIP
@@ -678,22 +679,22 @@ public class Madeline {
 
 		// drawing face
 		g2.setColor(FACE_COLOR);
-		g2.fillRect(3*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 2*MainApp.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
 
 		// drawing torso
 		g2.setColor(TORSO_COLOR);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 5*MainApp.PIXEL_DIM, 4*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// drawing legs
 		g2.setColor(LEG_COLOR);
-		g2.fillRect(2*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(5*MainApp.PIXEL_DIM, 6*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// drawing eyes
 		g2.setColor(EYE_COLOR);
-		g2.fillRect(3*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
-		g2.fillRect(6*MainApp.PIXEL_DIM, 3*MainApp.PIXEL_DIM, MainApp.PIXEL_DIM, MainApp.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 	}
 
@@ -703,10 +704,10 @@ public class Madeline {
 	 * @return the rounded position
 	 */
 	public static int roundPos(int toRound) {
-		if (toRound % MainApp.PIXEL_DIM <= 2) {
-			return (toRound - (toRound % MainApp.PIXEL_DIM));
+		if (toRound % Constants.PIXEL_DIM <= 2) {
+			return (toRound - (toRound % Constants.PIXEL_DIM));
 		} else {
-			return (toRound + (MainApp.PIXEL_DIM - (toRound % MainApp.PIXEL_DIM)));
+			return (toRound + (Constants.PIXEL_DIM - (toRound % Constants.PIXEL_DIM)));
 		}
 	}
 
@@ -855,7 +856,7 @@ public class Madeline {
 		} else {
 			yVel = BOUNCE_VEL * BOUNCE_DASH_COEFF;
 		}
-		yPos -= 4 * MainApp.PIXEL_DIM;
+		yPos -= 4 * Constants.PIXEL_DIM;
 		xVel *= BOUNCE_VEL_REDUCE;
 		numOfDashesRemaining = numOfDashesTotal;
 		//canDash = true;

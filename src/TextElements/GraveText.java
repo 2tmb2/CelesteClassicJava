@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import collisionObjects.CollisionObject;
+import mainApp.Constants;
 import mainApp.MainApp;
 
 public class GraveText extends CollisionObject {
@@ -12,12 +13,19 @@ public class GraveText extends CollisionObject {
 	private boolean displayText = false;
 	private int timestamp;
 	
-	
+	/**
+	 * creates a GraveText object
+	 * @param x the top left x coordinate of the grave
+	 * @param y the top left y coordinate of the grave
+	 */
 	public GraveText(int x, int y)
 	{
 		super(x, y, 96, 96, false, false);
 	}
 	
+	/**
+	 * Determines whether Madeline is colliding with any part of the grave
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing)
 	{
@@ -43,6 +51,9 @@ public class GraveText extends CollisionObject {
 		return false;
 	}
 	
+	/**
+	 * Draws the grave text onto g2
+	 */
 	@Override
 	public void drawOn(Graphics2D g2)
 	{
@@ -52,7 +63,7 @@ public class GraveText extends CollisionObject {
 			g2 = (Graphics2D)g2.create();
 
 			g2.setColor(new Color(255, 241, 232));
-			g2.translate(36, 12*MainApp.PIXEL_DIM*8);
+			g2.translate(36, 12*Constants.PIXEL_DIM*8);
 			g2.fillRect(48,0, 768-(96*2), 96+(48/2));
 			g2.setColor(Color.BLACK);
 			g2.translate(48+48/2, 12);
