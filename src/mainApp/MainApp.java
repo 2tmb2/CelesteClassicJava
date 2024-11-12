@@ -64,6 +64,7 @@ public class MainApp implements KeyListener {
 	private boolean errorIsDisplayed;
 	private boolean isCustomLevel;
 	private ArrayList<Cloud> clouds;
+	private ArrayList<SnowParticle> snow;
 
 	private boolean inEditor;
 	private boolean canSwitch;
@@ -113,11 +114,12 @@ public class MainApp implements KeyListener {
 		frame.getContentPane().add(menu);
 		frame.setVisible(true);
 		clouds = new ArrayList<Cloud>();
+		snow = new ArrayList<SnowParticle>();
         for (int i = 0; i <= 16; i++)
         {
         	clouds.add(new Cloud(cloudColor));
+        	snow.add(new SnowParticle());
         }
-        
 		
 		editor = new JFrame();
 		editor.addKeyListener(this);
@@ -265,7 +267,7 @@ public class MainApp implements KeyListener {
     private void mainGame() {
     	frame.remove(menu);
     	isCustomLevel = false;
-    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
+    	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, snow, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
 		mainGameLevelRefresh();	
 		updateTimer.start();
 		
@@ -281,7 +283,7 @@ public class MainApp implements KeyListener {
     	{
     		frame.remove(menu);
     		gameStarted = true;
-    		lvl = new LevelComponent(this, filePath, fileName, clouds, endTime - startTime, strawberryCount);
+    		lvl = new LevelComponent(this, filePath, fileName, clouds, snow, endTime - startTime, strawberryCount);
     		isCustomLevel = true;
     		customLevelRefresh();
     		updateTimer.start();
@@ -299,7 +301,7 @@ public class MainApp implements KeyListener {
     private void customLevelRefresh() {
     	lvl.stopAllTimers();			
 		frame.remove(lvl);
-    	lvl = new LevelComponent(this, filePath, fileName, clouds, endTime - startTime, strawberryCount);
+    	lvl = new LevelComponent(this, filePath, fileName, clouds, snow, endTime - startTime, strawberryCount);
     	lvl.addLevelDisplay(fileName, startTime);
     	levelRefresh();
     }
@@ -335,7 +337,7 @@ public class MainApp implements KeyListener {
 		// resets the level to currentLevel
 		frame.remove(lvl);
 		
-		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
+		lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, snow, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
 		levelRefresh();
 		lvl.addLevelDisplay(currentLevel + "00 m", startTime);
 		if (currentLevel >= 23)

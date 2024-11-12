@@ -28,7 +28,7 @@ public class Strawberry extends CollisionObject {
 		super(x, y, 56, 56, false, false);
 		this.m = m;
 		currentFrame = 0;
-		numOfAnimationFrames = 80;
+		numOfAnimationFrames = 180;
 	}
 
 	/**

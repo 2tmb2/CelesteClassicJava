@@ -44,14 +44,15 @@ public class LevelComponent extends JComponent {
 	private int madX;
 	private int madY;
 	private int levelNum;
-	private ArrayList<CollisionObject> otherObject;
 	private int madelineTotalDashes;
-	private ArrayList<Cloud> clouds;
 	private Long timeDiff;
 	private int strawberryCount;
 	private int deathCount;
 	private boolean isIncomplete;
 	private ArrayList<DeathParticle> deathParticles;
+	private ArrayList<SnowParticle> snow;
+	private ArrayList<Cloud> clouds;
+	private ArrayList<CollisionObject> otherObject;
 	
 	/**
 	 * Creates a LevelComponent Object
@@ -63,12 +64,13 @@ public class LevelComponent extends JComponent {
 	 *                                   strawberry in the level has already been
 	 *                                   collected and false otherwise.
 	 * @param clouds 					 an arraylist of clouds representing the backgorund clouds to draw for the level
+	 * @param snow						 an arraylist of snowparticles representing the foreground snow to draw
 	 * @param timeDiff 					 a Long representing the amount of time that has passed since the game was started and the current level was created
 	 * @param strawberryCount			 an integer representing the number of strawberries that have been collected
 	 * @param deathCount				 an integer representing the number of times the player has died
 	 * @param isIncomplete				 a boolean that is true if any levels have been skipped and false otherwise
 	 */
-	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds, Long timeDiff, int strawberryCount, int deathCount, boolean isIncomplete) {
+	public LevelComponent(MainApp main, int levelNum, boolean strawberryAlreadyCollected, ArrayList<Cloud> clouds, ArrayList<SnowParticle> snow, Long timeDiff, int strawberryCount, int deathCount, boolean isIncomplete) {
 		this.levelNum = levelNum;
 		this.clouds = clouds;
 		this.main = main;
@@ -76,6 +78,7 @@ public class LevelComponent extends JComponent {
 		this.strawberryCount = strawberryCount;
 		this.deathCount = deathCount;
 		this.isIncomplete = isIncomplete;
+		this.snow = snow;
 		deathParticles = new ArrayList<DeathParticle>();
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
@@ -86,11 +89,12 @@ public class LevelComponent extends JComponent {
 	}
 	
 	
-	public LevelComponent(MainApp main, String filePath, String levelName, ArrayList<Cloud> clouds, Long timeDiff, int deathCount) {
+	public LevelComponent(MainApp main, String filePath, String levelName, ArrayList<Cloud> clouds, ArrayList<SnowParticle> snow, Long timeDiff, int deathCount) {
 		this.clouds = clouds;
 		this.main = main;
 		this.timeDiff = timeDiff;
 		this.deathCount = deathCount;
+		this.snow = snow;
 		displayMadeline = false;
 		otherObject = new ArrayList<CollisionObject>();
 		deathParticles = new ArrayList<DeathParticle>();
@@ -160,6 +164,10 @@ public class LevelComponent extends JComponent {
 		if (gt != null)
 		{
 			gt.drawOn(g2);
+		}
+		for (SnowParticle s : snow)
+		{
+			s.drawOn(g2);
 		}
 		if (ldt != null)
 		{
