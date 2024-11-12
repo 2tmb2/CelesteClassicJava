@@ -275,6 +275,7 @@ public class MainApp implements KeyListener {
     
     private void loadCustomLevel() {
     	final JFileChooser fc = new JFileChooser();
+    	fc.setCurrentDirectory(new File("src/LevelData/"));
     	fc.showOpenDialog(null);
     	frame.requestFocus();
     	filePath = fc.getSelectedFile().getPath();

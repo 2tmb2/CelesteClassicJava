@@ -90,7 +90,7 @@ public class Strawberry extends CollisionObject {
 		{
 			currentFrame = 0;
 		}
-		translateBy = Math.cos(-Math.toRadians(currentFrame * 3))*10;
+		translateBy = Math.cos(-Math.toRadians(currentFrame * 2))*10;
 	}
 
 	/**

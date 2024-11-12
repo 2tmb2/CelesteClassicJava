@@ -10,7 +10,7 @@ public class SnowParticle {
 	private int size;
 	private double translateBy;
 	private int timestamp;
-	private static final Color snowColor = new Color(255, 241, 232);
+	private Color snowColor;
 	
 	/**
 	 * Creates a snow, which is one element of the foreground group of snow, with a randomized y position, speed, and size
@@ -19,9 +19,10 @@ public class SnowParticle {
 	{
 		this.x = Madeline.roundPos((int)(Math.random() * 120*Constants.PIXEL_DIM) + 4*Constants.PIXEL_DIM);;
 		this.y = Madeline.roundPos((int)(Math.random() * 120*Constants.PIXEL_DIM) + 4*Constants.PIXEL_DIM);
-		this.speed = (int)(Math.random() * 3) + 3;
+		this.speed = (int)(Math.random() * 4) + 2;
 		this.size = Constants.PIXEL_DIM * ((int)(Math.random() * 2) + 1);
-		timestamp = 0;
+		timestamp = (int)(Math.random() * 100);
+		snowColor = new Color(255, 242, 231);
 	}
 	
 	/**
@@ -37,6 +38,7 @@ public class SnowParticle {
 			timestamp = 0;
 		}
 		g2.setColor(snowColor);
+		
 		translateBy = Math.cos(Math.toRadians(timestamp*speed))*size*speed;
 		g2.translate(0, translateBy);
 		g2.fillRect(x, y, size, size);
