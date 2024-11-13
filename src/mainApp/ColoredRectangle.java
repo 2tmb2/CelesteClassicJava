@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * A ColoredRectangle is a Rectangle object that stores a color
+ */
 public class ColoredRectangle extends Rectangle {
 
 	private static final long serialVersionUID = 1L;

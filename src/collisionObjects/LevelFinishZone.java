@@ -3,8 +3,10 @@ package collisionObjects;
 import mainApp.Madeline;
 
 /**
- * Class: LevelFinishZone Purpose: Create a collision trigger for finishing the
- * level
+ * <pre>
+ * Class: LevelFinishZone 
+ * Purpose: Create a collision trigger for finishing the level
+ * </pre>
  */
 public class LevelFinishZone extends CollisionObject {
 
@@ -42,8 +44,7 @@ public class LevelFinishZone extends CollisionObject {
 	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
-		if (super.isCollidingFloor(madelineX, madelineY))
-		{
+		if (super.isCollidingFloor(madelineX, madelineY)) {
 			m.nextLevel();
 		}
 		return false;

@@ -11,6 +11,9 @@ import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 
+/**
+ * Includes Madeline's drawing, collision, and every way she can interact with the environment
+ */
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
 	private int xPos;
@@ -859,8 +862,6 @@ public class Madeline {
 		yPos -= 4 * Constants.PIXEL_DIM;
 		xVel *= BOUNCE_VEL_REDUCE;
 		numOfDashesRemaining = numOfDashesTotal;
-		//canDash = true;
-		//canControl = true;
 		dashFrameTimer = lifetime - 1000;
 	}
 
@@ -878,7 +879,6 @@ public class Madeline {
 		if (!canContinue)
 			return;
 		canContinue = false;
-		// collisionObjects = null;
 		lvl.nextLevel();
 	}
 	

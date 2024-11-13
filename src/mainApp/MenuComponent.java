@@ -5,6 +5,9 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
+/**
+ * The full Menu, including the Logo and text
+ */
 public class MenuComponent extends JComponent {
 
 	private static final long serialVersionUID = 1L;

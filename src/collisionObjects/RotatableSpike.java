@@ -6,6 +6,10 @@ import java.awt.Graphics2D;
 import mainApp.Constants;
 import mainApp.Madeline;
 
+/**
+ * A Rotatable Spike is a Spike object that kills Madeline when she collides
+ * with it. It can point left, right, up, or down.
+ */
 public class RotatableSpike extends CollisionObject {
 
 	private char rotation;

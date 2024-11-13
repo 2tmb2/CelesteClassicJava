@@ -7,6 +7,10 @@ import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
+/**
+ * When a Big Chest is collided with, it pauses Madeline's movement while it
+ * opens, then creates a Gem
+ */
 public class BigChest extends CollisionObject {
 
 	private boolean isOpen;
@@ -26,7 +30,7 @@ public class BigChest extends CollisionObject {
 	public BigChest(int x, int y, Madeline m) {
 		super(x, y, 96, 96, false, false);
 		this.m = m;
-		spriteHeight = Constants.SPRITE_WIDTH*2;
+		spriteHeight = Constants.SPRITE_WIDTH * 2;
 		chestLocationY = 48 * 6;
 		drawY = y;
 		isOpen = false;
@@ -39,9 +43,10 @@ public class BigChest extends CollisionObject {
 		g2 = (Graphics2D) g2.create();
 
 		if (true) {
-			g2.drawImage(MainApp.SCALED_MAP, getX(), drawY, getX() + Constants.SPRITE_WIDTH*2, drawY + spriteHeight,
+			g2.drawImage(MainApp.SCALED_MAP, getX(), drawY, getX() + Constants.SPRITE_WIDTH * 2, drawY + spriteHeight,
 					(CHEST_LOCATION_X - Constants.GAME_WIDTH), chestLocationY + 1,
-					((CHEST_LOCATION_X - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH*2, chestLocationY + spriteHeight, null);
+					((CHEST_LOCATION_X - Constants.GAME_WIDTH)) + Constants.SPRITE_WIDTH * 2,
+					chestLocationY + spriteHeight, null);
 		}
 	}
 

@@ -6,6 +6,9 @@ import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
+/**
+ * After the associated key is collected, a Chest dissappears to reveal a Strawberry
+ */
 public class Chest {
 
 	private int x;

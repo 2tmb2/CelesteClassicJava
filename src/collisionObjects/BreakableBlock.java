@@ -42,7 +42,6 @@ public class BreakableBlock extends CollisionObject {
 		// exists dictates whether the block has been broken by Madeline or not
 		if (exists) {
 			// duplicates the Graphics2D object so that transformations don't affect future
-
 			g2 = (Graphics2D) g2.create();
 			g2.translate(getX(), getY());
 			g2.drawImage(MainApp.SCALED_MAP, 0, 0, getWidth(), getHeight(), (int)BREAKABLE_BLOCK_SPRITE.getX(), (int)BREAKABLE_BLOCK_SPRITE.getY() + 1, (int)BREAKABLE_BLOCK_SPRITE.getX() + getWidth(), (int)BREAKABLE_BLOCK_SPRITE.getY() + getHeight(), null);

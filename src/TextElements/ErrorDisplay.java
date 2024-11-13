@@ -3,12 +3,12 @@ package TextElements;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
 import javax.swing.JComponent;
-
 import mainApp.Constants;
-import mainApp.MainApp;
 
+/**
+ * Displays an error in red text
+ */
 public class ErrorDisplay extends JComponent {
 
 	private static final long serialVersionUID = 1L;

@@ -7,7 +7,7 @@ import mainApp.Constants;
 import mainApp.MainApp;
 
 /**
- * Class: PointText Purpose: Display the text 1000 upon collecting a strawberry
+ * Class: PointText Purpose: Display the text 1000 after collecting a strawberry
  */
 public class PointText {
 

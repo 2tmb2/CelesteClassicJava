@@ -7,6 +7,9 @@ import mainApp.Constants;
 import mainApp.Madeline;
 import mainApp.MainApp;
 
+/**
+ * When collected, a Key opens the associated Chest
+ */
 public class Key extends CollisionObject {
 	
 	private Chest chest;
