@@ -2,9 +2,9 @@ package mainApp;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
@@ -55,88 +55,99 @@ public class Madeline {
 	private boolean canRechargeDash = true;
 	private boolean canMove = true;
 	private boolean dying = false;
-	
+	private boolean lookingUp = false;
+	private boolean lookingDown = false;
+
 	private int frameAtDash;
 	private int frameAtWallJump;
 	private int frameAtBreak;
 	private int dashFrameTimer = 0;
 	private int coyoteTimer = 0;
 	private int timerI = 0;
-	
+
 	private int lifetime = 0;
+	private int animationCounter = 0;
 
 	private Color hairColor;
 	private int hairSwitchFrame;
 	private boolean canWallJumpLeft;
 	private boolean canWallJumpRight;
+	private ArrayList<Particle> particles = new ArrayList<Particle>();
+
+	// Drawing variables
 	private boolean isMoving;
+	private Point spritePoint = RED_SPRITES;
+	private int walkFrame = 0;
+
+	// Drawing Constants
+	private static final Point RED_SPRITES = new Point(Constants.SPRITE_WIDTH, 0);
+	private static final Point BLUE_SPRITES = new Point(Constants.SPRITE_WIDTH, 8 * Constants.SPRITE_HEIGHT);
+	private static final Point GREEN_SPRITES = new Point(Constants.SPRITE_WIDTH, 9 * Constants.SPRITE_HEIGHT);
+	private static final Point WHITE_SPRITES = new Point(Constants.SPRITE_WIDTH, 10 * Constants.SPRITE_HEIGHT);
+	private static final int WALK_CYCLE = 12;
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
-	private static final Color WHITE_HAIR = new Color(255,241,232);
-	private static final Color EYE_COLOR = new Color(29, 43, 83);
-	private static final Color TORSO_COLOR = new Color(0, 135, 81);
-	private static final Color LEG_COLOR = new Color(255, 241, 232);
-	private static final Color FACE_COLOR = new Color(255, 204, 170);
 	private static final int WIDTH = 48;
 	private static final int HEIGHT = 42;
+
 	private static final int X_COLLISION_OFFSET = 6;
 	private static final int Y_COLLISION_OFFSET = 18;
-	
+
 	private static final int VERT_DASH_FRAME = 12;
 	private static final int HORZ_DASH_FRAME = 24;
 	private static final int WALL_JUMP_FRAME = 16;
-	
-	//After dashing into a wall, how many ms for the player to regain control
+
+	// After dashing into a wall, how many ms for the player to regain control
 	private static final int WALL_CANCEL_CONTROL_FRAME = 6;
-	
-	//After a wall jump ends, how many ms does the player have low gravity
+
+	// After a wall jump ends, how many ms does the player have low gravity
 	private static final int LOW_GRAV_FRAME = 3;
-	
-	//After a dash, how many ms until springs bounce at full velocity
+
+	// After a dash, how many ms until springs bounce at full velocity
 	private static final int BOUNCE_RECOVERY_FRAME = 6;
-	
-	//How many frames to float in a pure horizontal dash
+
+	// How many frames to float in a pure horizontal dash
 	private static final int HORZ_DASH_HOVER = 11;
-	
-	//How many frames after breaking block horizontally until can control
+
+	// How many frames after breaking block horizontally until can control
 	private static final int BREAK_CONTROL_TIMER = 9;
-	
-	//How many frames of coyote time
+
+	// How many frames of coyote time
 	private static final int COYOTE_FRAMES = 7;
-	
-	//How much to multiply gravity by when in coyote time
+
+	// How much to multiply gravity by when in coyote time
 	private static final double COYOTE_ACCEL_COEFF = 1.00;
-	
-	//How many frames until Madeline can regain her dash
+
+	// How many frames until Madeline can regain her dash
 	private static final int DASH_RECHARGE_FRAMES = 5;
-	
+
 	private static final double MOVEMENT_COEFF = 1.5;
-	private static final double GRAVITY = 0.1 * (double)Constants.PIXEL_DIM;
-	private static final double TERM_VEL = 0.94 * (double)Constants.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double WALL_VEL = 0.25 * (double)Constants.PIXEL_DIM * MOVEMENT_COEFF;
-	private static final double JUMP_VEL = -1.975 * (double)Constants.PIXEL_DIM;
-	private static final double WALK_SPEED = 1.0 * (double)Constants.PIXEL_DIM;
-	
-	private static final double WALL_JUMP_X_VEL = 1.2 * (double)Constants.PIXEL_DIM;
-	private static final double WALL_JUMP_Y_VEL = -1.74 * (double)Constants.PIXEL_DIM;
+	private static final double GRAVITY = 0.1 * (double) Constants.PIXEL_DIM;
+	private static final double TERM_VEL = 0.94 * (double) Constants.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double WALL_VEL = 0.25 * (double) Constants.PIXEL_DIM * MOVEMENT_COEFF;
+	private static final double JUMP_VEL = -1.975 * (double) Constants.PIXEL_DIM;
+	private static final double WALK_SPEED = 1.0 * (double) Constants.PIXEL_DIM;
+
+	private static final double WALL_JUMP_X_VEL = 1.2 * (double) Constants.PIXEL_DIM;
+	private static final double WALL_JUMP_Y_VEL = -1.74 * (double) Constants.PIXEL_DIM;
 	private static final double WALL_JUMP_ACCEL_COEFF = 0.90;
-	
+
 	private static final double ACCEL = WALK_SPEED * 0.6;
 	private static final double DECCEL = WALK_SPEED * 1.0;
 	private static final double DASH_DECCEL = WALK_SPEED * 1.0;
-	
+
 	private static final double BOUNCE_VEL = JUMP_VEL * 1.27;
 	private static final double BOUNCE_VEL_REDUCE = 1.0;
 	private static final double BOUNCE_DASH_COEFF = 0.3;
-	
-	private static final double BREAK_VEL_X = 1.1 * (double)Constants.PIXEL_DIM;
-	private static final double BREAK_VEL_Y = -1.1 * (double)Constants.PIXEL_DIM;
-	
-	private static final double Y_DASH_VEL = 2.35 * (double)Constants.PIXEL_DIM;
-	private static final double DIAG_DASH_Y_COEFF = 1.00;
+
+	private static final double BREAK_VEL_X = 1.1 * (double) Constants.PIXEL_DIM;
+	private static final double BREAK_VEL_Y = -1.1 * (double) Constants.PIXEL_DIM;
+
+	private static final double Y_DASH_VEL = 2.35 * (double) Constants.PIXEL_DIM;
+	private static final double DIAG_DASH_Y_COEFF = .97;
 	private static final double X_DASH_VEL = Y_DASH_VEL * .53;
-	private static final double DIAG_DASH_X_COEFF = 1.075;
+	private static final double DIAG_DASH_X_COEFF = 1.25;
 
 	/**
 	 * Creates an empty Madeline object
@@ -163,7 +174,7 @@ public class Madeline {
 		// facingRight is 1 if Madeline is facing right, -1 if Madeline is facing left
 		facingRight = 1;
 		canContinue = true;
-		
+
 		if (numOfDashesRemaining == 1) {
 			hairColor = RED_HAIR;	
 		} else if (numOfDashesRemaining == 2) {
@@ -192,12 +203,12 @@ public class Madeline {
 			lowGrav = false;
 			if (wallJump) {
 				wallJump = false;
-				//yVel = 0;
+				// yVel = 0;
 				frameAtWallJump = lifetime - WALL_JUMP_FRAME;
 			}
 			if (!canControl && !controlTimerDecreased) {
 				dashFrameTimer = WALL_CANCEL_CONTROL_FRAME;
-				//controlTimerDecreased = true;
+				// controlTimerDecreased = true;
 			}
 			isDashingVertically = false;
 		}
@@ -220,7 +231,7 @@ public class Madeline {
 	 */
 	public void setHorizontalPosition() {
 		if (!isCollidingWall) {
-			xPos = xPos + (int)(xVel);
+			xPos = xPos + (int) (xVel);
 		}
 	}
 
@@ -230,12 +241,14 @@ public class Madeline {
 	 */
 	public void setVerticalPosition() {
 		if (!isCollidingFloor && !isCollidingCeiling) {
-			yPos = yPos + (int)(yVel);
+			yPos = yPos + (int) (yVel);
 		}
 	}
-	
+
 	/**
-	 * Updates Madeline's velocity based on current accel and deccel values and player movement data
+	 * Updates Madeline's velocity based on current accel and deccel values and
+	 * player movement data
+	 * 
 	 * @param hasMoved whether or not the player has pressed a button to move
 	 */
 	public void setVelocity(boolean hasMoved) {
@@ -243,37 +256,41 @@ public class Madeline {
 		setHorizontalVelocity(hasMoved);
 		setVerticalVelocity();
 	}
-	
+
 	/**
-	 * Updates Madeline's horizontal velocity based on current horizontal acceleration.
-	 * Also determines facing direction based on whether velocity is negative or positive
+	 * Updates Madeline's horizontal velocity based on current horizontal
+	 * acceleration. Also determines facing direction based on whether velocity is
+	 * negative or positive
+	 * 
 	 * @param hasMoved whether or not the player has pressed a button to move
 	 */
 	public void setHorizontalVelocity(boolean hasMoved) {
-		if (xVel > 0) { facingRight = 1; }
-		else if (xVel < 0) { facingRight = -1; }
+		if (xVel > 0) {
+			facingRight = 1;
+		} else if (xVel < 0) {
+			facingRight = -1;
+		}
 		if ((!hasMoved || Math.abs(xVel) > WALK_SPEED) && !isDashingHorizontally && !wallJump && !breakState) {
 			if (useDashDeccel) {
 				if (xVel > 0) {
 					xVel = Math.max(0, xVel - DASH_DECCEL);
-				} else { 
-					xVel = Math.min(0, xVel + DASH_DECCEL); 
+				} else {
+					xVel = Math.min(0, xVel + DASH_DECCEL);
 				}
 			} else {
-				if (xVel > 0) { 
+				if (xVel > 0) {
 					xVel = Math.max(0, xVel - DECCEL);
 				} else {
 					xVel = Math.min(0, xVel + DECCEL);
 				}
 			}
-			
-			
+
 		}
 		if (isCollidingWall && !breakState) {
 			xVel = 0;
 		}
 	}
-	
+
 	/**
 	 * Sets Madeline's vertical velocity based on current state and gravity
 	 */
@@ -293,7 +310,8 @@ public class Madeline {
 			noHover = true;
 			downAcc *= 1.05;
 		}
-		if (lowGrav) downAcc *= .5;
+		if (lowGrav)
+			downAcc *= .5;
 		if (isCollidingFloor && !isCollidingWall) {
 			yVel = 0.0;
 		} else if (yVel < yVelMax && (!noGrav || isDashingVertically || isDashingDiagonally)) {
@@ -302,7 +320,7 @@ public class Madeline {
 			} else {
 				Math.min(yVel += (downAcc * 0.5), TERM_VEL);
 			}
-			
+
 		} else if (yVel > yVelMax) {
 			if (!isDashingVertically) {
 				yVel = yVelMax;
@@ -334,7 +352,7 @@ public class Madeline {
 		}
 		if (lifetime > coyoteTimer + COYOTE_FRAMES && isCoyote) {
 			isCoyote = false;
-		} else if (isCoyote){
+		} else if (isCoyote) {
 			isCoyote = true;
 		}
 		if (lifetime > frameAtDash + dashFrameTimer) {
@@ -349,7 +367,7 @@ public class Madeline {
 				lowGrav = true;
 			}
 			wallJump = false;
-			
+
 		}
 		if (lifetime > frameAtBreak + BREAK_CONTROL_TIMER) {
 			breakState = false;
@@ -369,14 +387,17 @@ public class Madeline {
 	 * Make Madeline jump or wall jump if she is able to
 	 */
 	public void jump() {
-		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned && canMove) || (isCoyote && isFullySpawned && canMove && !jumpPressed)) {
+		if ((isTouchingFloor && !jumpPressed && canJump && isFullySpawned && canMove)
+				|| (isCoyote && isFullySpawned && canMove && !jumpPressed)) {
 			numOfDashesRemaining = numOfDashesTotal;
 			yVel = JUMP_VEL;
 			jumpPressed = true;
 			isCoyote = false;
 			coyoteTimer = lifetime - 1;
 			AudioPlayer.playFile("jump");
-		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump && (canWallJumpLeft || canWallJumpRight) && !wallJump) {
+			particles.add(new Particle(xPos, yPos));
+		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump
+				&& (canWallJumpLeft || canWallJumpRight) && !wallJump) {
 			jumpPressed = true;
 			wallJump = true;
 			frameAtWallJump = lifetime;
@@ -386,14 +407,12 @@ public class Madeline {
 				xVel = WALL_JUMP_X_VEL;
 			}
 			yVel = WALL_JUMP_Y_VEL;
-			if (facingRight > 0)
-			{
+			if (facingRight > 0) {
 				AudioPlayer.playFile("jump_wall_right");
-			}
-			else
-			{
+			} else {
 				AudioPlayer.playFile("jump_wall_left");
 			}
+			particles.add(new Particle(xPos,yPos));
 		}
 	}
 
@@ -482,21 +501,24 @@ public class Madeline {
 	 */
 	public boolean isCollidingWithWall() {
 		for (int i = 0; i < collisionObjects.size(); i++) {
-			if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, facingRight)) {
-				if (i < collisionObjects.size())
-				{
-					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) 
+			if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight,
+					yPos + Y_COLLISION_OFFSET, facingRight)) {
+				if (i < collisionObjects.size()) {
+					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20))
 						xPos = collisionObjects.get(i).getX() - WIDTH + 6;
-					else if (Math.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
+					else if (Math
+							.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
 						xPos = collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() - 6;
 					return true;
 				}
 			}
 			if (cloudVel != 0) {
-				if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight, yPos + Y_COLLISION_OFFSET, -facingRight)) {
-					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20)) 
+				if (collisionObjects.get(i).isCollidingWall(xPos + (int) (xVel / 2) + X_COLLISION_OFFSET - facingRight,
+						yPos + Y_COLLISION_OFFSET, -facingRight)) {
+					if (facingRight == 1 && (Math.abs(collisionObjects.get(i).getX() - WIDTH + 6 - xPos) < 20))
 						xPos = collisionObjects.get(i).getX() - WIDTH + 6;
-					else if (Math.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
+					else if (Math
+							.abs(collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() + 6 - xPos) < 20)
 						xPos = collisionObjects.get(i).getX() + collisionObjects.get(i).getWidth() - 6;
 				}
 			}
@@ -514,27 +536,37 @@ public class Madeline {
 			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET, yPos + Y_COLLISION_OFFSET, facingRight) && isMoving) {
 				wallSlide = object.getCanSlide();
 				return;
-			};
+			}
+			;
 		}
 		wallSlide = false;
 	}
-	
+
 	/**
 	 * Checks if Madeline is directly adjacent to a wall (not moving into one)
 	 * 
 	 * @param side The side of Madeline to check (-1 for left, 1 for right)
-	 * @return true if she is colliding with a wall on specified side, otherwise false
+	 * @return true if she is colliding with a wall on specified side, otherwise
+	 *         false
 	 */
 	public boolean isTouchingWall(int side) {
 		CollisionObject object;
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			object = collisionObjects.get(i);
-			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET + (side * ((2 * Constants.PIXEL_DIM) + 2)), yPos + Y_COLLISION_OFFSET, side)) {
-				if (side == -1) canWallJumpLeft = object.getCanWallJump();
-				if (side == 1) canWallJumpRight = object.getCanWallJump();
+			if (object.isCollidingWall(xPos + X_COLLISION_OFFSET + (side * ((0 * Constants.PIXEL_DIM) + 1)),
+					yPos + Y_COLLISION_OFFSET, side)) {
+				if (side == -1)
+					canWallJumpLeft = object.getCanWallJump();
+				if (side == 1)
+					canWallJumpRight = object.getCanWallJump();
 				return true;
-			};
+			}
+			;
 		}
+		if (side == -1)
+			canWallJumpLeft = false;
+		if (side == 1)
+			canWallJumpRight = false;
 		return false;
 	}
 
@@ -547,7 +579,8 @@ public class Madeline {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			if (collisionObjects.get(i).isCollidingFloor(xPos + X_COLLISION_OFFSET,
 					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
-				if (Math.abs(collisionObjects.get(i).getY() - HEIGHT - yPos) < 20) yPos = collisionObjects.get(i).getY() - HEIGHT;
+				if (Math.abs(collisionObjects.get(i).getY() - HEIGHT - yPos) < 20)
+					yPos = collisionObjects.get(i).getY() - HEIGHT;
 				lvl.removeLevelDisplay();
 				isFullySpawned = true;
 				return true;
@@ -586,13 +619,14 @@ public class Madeline {
 		for (int i = 0; i < collisionObjects.size(); i++) {
 			if (collisionObjects.get(i).isCollidingCeiling(xPos + X_COLLISION_OFFSET,
 					yPos + (int) yVel + Y_COLLISION_OFFSET)) {
-				if (Math.abs(collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18 - yPos) < 20) yPos = collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18;
+				if (Math.abs(collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18 - yPos) < 20)
+					yPos = collisionObjects.get(i).getY() + collisionObjects.get(i).getHeight() - 18;
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Draws Madeline onto the screen. Madeline is 48 pixels wide by 42 pixels tall.
 	 * 
@@ -601,108 +635,76 @@ public class Madeline {
 	public void drawOn(Graphics2D g2) {
 		// updates Madeline's hair color based on her number of dashes remaining
 		if (numOfDashesRemaining == 1) {
-			hairColor = RED_HAIR;
+			spritePoint = RED_SPRITES;
 		} else if (numOfDashesRemaining == 2) {
-			if (hairSwitchFrame == 5)
-			{
+			if (hairSwitchFrame == 5) {
 				hairSwitchFrame = 0;
-				if (hairColor.equals(GREEN_HAIR))
-				{
-					hairColor = WHITE_HAIR;
+				if (spritePoint.equals(GREEN_SPRITES)) {
+					spritePoint = WHITE_SPRITES;
+				} else {
+					spritePoint = GREEN_SPRITES;
 				}
-				else
-				{
-					hairColor = GREEN_HAIR;
-				}
-			}
-			else
-			{
+			} else {
 				hairSwitchFrame++;
 			}
 		} else {
-			hairColor = BLUE_HAIR;
+			spritePoint = BLUE_SPRITES;
+		}
+		if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
+			animationCounter++;
+		} else {
+			animationCounter = 0;
+		}
+		if (isTouchingFloor && lookingUp) {
+			walkFrame = 6;
+		} else if (isTouchingFloor && lookingDown) {
+			walkFrame = 5;
+		} else if (isMoving && isTouchingFloor && !isDashingHorizontally && !isDashingVertically) {
+			walkFrame = (animationCounter / WALK_CYCLE) + 1;
+		} else {
+			if (isTouchingFloor) {
+				walkFrame = 0;
+			} else if (wallSlide) {
+				walkFrame = 4;
+			} else {
+				walkFrame = 2;
+			}
+		}
+
+		for (int i = particles.size() - 1; i >= 0; i--) {
+			if (particles.get(i).getFrame() == 16) {
+				particles.remove(i);
+				continue;
+			}
+			particles.get(i).drawOn(g2);
 		}
 
 		// duplicates the Graphics2D object so that transformations don't affect other
 		// objects
 		g2 = (Graphics2D) g2.create();
+		g2.translate(roundPos(xPos), roundPos(yPos) - Constants.PIXEL_DIM);
+		if (facingRight < 0)
+			g2.translate(Constants.SPRITE_WIDTH, 0);
+		g2.drawImage(MainApp.SCALED_MAP, 0, 0, (facingRight * Constants.SPRITE_WIDTH), Constants.SPRITE_HEIGHT,
+				(int) spritePoint.getX() + (walkFrame * Constants.SPRITE_WIDTH), (int) spritePoint.getY(),
+				(int) spritePoint.getX() + (Constants.SPRITE_WIDTH * (walkFrame + 1)),
+				(int) spritePoint.getY() + Constants.SPRITE_HEIGHT, null);
 
-		// facingRight < 0 when Madeline is facing left
-		if (facingRight < 0) {
-			// create an AffineTransform to mirror Madeline's model when she is facing left
-			AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-			// moves the transform left by 48 pixels to adjust for the difference in x/y location
-			tx.translate(-8*Constants.PIXEL_DIM, 0);
-			g2.transform(tx);
-			// translates g2 to make 0, 0 be the top right of Madeline's head
-			g2.translate(-roundPos(xPos), roundPos(yPos));
-		} else {
-			// translates g2 to make 0, 0 be the top left of Madeline's head
-			g2.translate(roundPos(xPos), roundPos(yPos));
-		}
-		// drawing hair
-		g2.setColor(hairColor);
-		g2.fillRect(Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-		g2.fillRect(0, Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
-		g2.fillRect(0, 4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-		g2.fillRect(Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+	}
 
-		// ======================================
-		// WIP
-		// ======================================
-		// draws the velocity-affected section of Madeline's hair
-//		double xModifier = -2 * Math.abs(xVel);
-//		if (Math.abs(xVel) >= 3) {
-//			xModifier = (Math.abs(xVel) / xVel) * 3 * -2 * facingRight;
-//		}
-//		double yModifier = 0;
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(12, 0, 6, 6);
-//
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(12, 6, 12, 6);
-//
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(12, 12, 18, 6);
-//
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(12, 18, 24, 6);
-//
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(12, 24, 30, 6);
-//
-//		g2.translate(xModifier, yModifier);
-//		g2.fillRect(24, 30, 18, 6);
-//
-//		g2.translate(-6 * xModifier, -6 * yModifier);
-
-		// ======================================
-		// END WIP
-		// ======================================
-
-		// drawing face
-		g2.setColor(FACE_COLOR);
-		g2.fillRect(3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
-
-		// drawing torso
-		g2.setColor(TORSO_COLOR);
-		g2.fillRect(2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-
-		// drawing legs
-		g2.setColor(LEG_COLOR);
-		g2.fillRect(2*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-		g2.fillRect(5*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-
-		// drawing eyes
-		g2.setColor(EYE_COLOR);
-		g2.fillRect(3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-		g2.fillRect(6*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
-
+	/*
+	 * Sets Madeline's looking direction. if both, default to down
+	 */
+	public void setLooking(boolean lookingUp, boolean lookingDown) {
+		if (lookingUp && lookingDown)
+			lookingUp = false;
+		this.lookingUp = lookingUp;
+		this.lookingDown = lookingDown;
 	}
 
 	/**
 	 * Rounds a position to the nearest game pixel (6 JFrame pixels)
+	 * 
 	 * @param toRound the position to round
 	 * @return the rounded position
 	 */
@@ -723,24 +725,25 @@ public class Madeline {
 	 *          coordinates (from 0 to 768)
 	 */
 	public void breakBlock(int x, int y) {
-		lvl.addNewStrawberry(x, y-10, false);
+		lvl.addNewStrawberry(x, y - 10, false);
 		if (isDashingHorizontally) {
 			frameAtBreak = lifetime;
 			breakState = true;
 			xVel = -facingRight * BREAK_VEL_X;
 		}
 		yVel = BREAK_VEL_Y;
-		//yPos -= 10;
+		// yPos -= 10;
 	}
-	
+
 	/**
-	 * Triggers when a chest is opened to instantiate a strawberry at designated position
+	 * Triggers when a chest is opened to instantiate a strawberry at designated
+	 * position
+	 * 
 	 * @param x horizontal position of strawberry
 	 * @param y vertical position of strawberry
 	 */
-	public void openChest(int x, int y)
-	{
-		lvl.addNewStrawberry(x, y-30,  false);
+	public void openChest(int x, int y) {
+		lvl.addNewStrawberry(x, y - 30, false);
 	}
 
 	/**
@@ -787,21 +790,20 @@ public class Madeline {
 	public void setTotalDashes(int totalDashes) {
 		this.numOfDashesTotal = totalDashes;
 	}
-	
+
 	public void setCloudsPink() {
 		lvl.setCloudsPink();
 	}
 
 	/**
-	 * Stops all timers on currently active objects. Will be deprecated 
+	 * Stops all timers on currently active objects. Will be deprecated
 	 */
-	public void stopAllTimers()
-	{
-		for (CollisionObject c : collisionObjects)
-		{
+	public void stopAllTimers() {
+		for (CollisionObject c : collisionObjects) {
 			c.stopAllTimers();
 		}
 	}
+
 	/**
 	 * Increases Madeline's X velocity
 	 */
@@ -809,7 +811,6 @@ public class Madeline {
 		if (!wallJump && canControl && !breakState && isFullySpawned && canMove) {
 			xVel = Math.min(WALK_SPEED, xVel + ACCEL);
 		}
-		//if (isTouchingWallRight) wallSlide = true;
 	}
 
 	/**
@@ -820,29 +821,33 @@ public class Madeline {
 			xVel = Math.max(-WALK_SPEED, xVel - ACCEL);
 		}
 	}
-	
+
 	/**
 	 * resets the level upon death
 	 */
 	public void death() {
-		if (!isFullySpawned || dying) return;
+		if (!isFullySpawned || dying)
+			return;
 		dying = true;
 		AudioPlayer.playFile("death");
 		lvl.resetLevel();
 	}
 
 	/**
-	 * Collects the levels strawberry, deleting it from the level and resetting the players dashes
+	 * Collects the levels strawberry, deleting it from the level and resetting the
+	 * players dashes
 	 */
 	public void collectStrawberry() {
-		if (breakState) return;
+		if (breakState)
+			return;
 		AudioPlayer.playFile("strawberrycollect");
 		resetDashes();
 		lvl.collectStrawberry();
 	}
-	
+
 	/**
 	 * returns true if the player is dashing either vertically or horizontally
+	 * 
 	 * @return
 	 */
 	public boolean getIsDashing() {
@@ -850,7 +855,8 @@ public class Madeline {
 	}
 
 	/**
-	 * Increases the players y velocity by factors determined by spring bounce velocity
+	 * Increases the players y velocity by factors determined by spring bounce
+	 * velocity
 	 */
 	public void springBounce() {
 		AudioPlayer.playFile("spring");
@@ -865,43 +871,40 @@ public class Madeline {
 		dashFrameTimer = lifetime - 1000;
 	}
 
-	public void resetDashes()
-	{
+	public void resetDashes() {
 		this.numOfDashesRemaining = numOfDashesTotal;
 	}
-	
-	public void resetVelocity()
-	{
+
+	public void resetVelocity() {
 		this.xVel = 0;
 		this.yVel = 0;
 	}
+
 	public void nextLevel() {
 		if (!canContinue)
 			return;
 		canContinue = false;
 		lvl.nextLevel();
 	}
-	
-	public void setCanDash(boolean option)
-	{
+
+	public void setCanDash(boolean option) {
 		canDash = option;
 	}
-	
+
 	public double getYVelocity() {
 		return yVel;
 	}
-	
+
 	public double getXVelocity() {
 		return xVel;
 	}
-	
-	public void moveWithCloud(int x)
-	{
+
+	public void moveWithCloud(int x) {
 		this.xPos += x;
 		cloudVel = x;
 	}
-	public Color getHairColor()
-	{
+
+	public Color getHairColor() {
 		if (numOfDashesRemaining == 1) {
 			hairColor = RED_HAIR;
 		} else if (numOfDashesRemaining == 2) {
@@ -911,24 +914,22 @@ public class Madeline {
 		}
 		return hairColor;
 	}
-	
-	public void displayFinalText()
-	{
+
+	public void displayFinalText() {
 		lvl.finalScore();
 	}
-	
-	public void openBigChest(int x, int y)
-	{
+
+	public void openBigChest(int x, int y) {
 		this.canMove = false;
 		xVel = 0;
 		yVel = 0;
-		final Color[] backgroundColorList = {new Color(171, 81, 51), new Color(93, 87, 77), Color.BLACK, new Color(28, 42, 80), new Color(125, 36, 81), new Color(0, 134, 80)};
+		final Color[] backgroundColorList = { new Color(171, 81, 51), new Color(93, 87, 77), Color.BLACK,
+				new Color(28, 42, 80), new Color(125, 36, 81), new Color(0, 134, 80) };
 		Timer t = new Timer(150, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				timerI++;
-				if (timerI >= backgroundColorList.length)
-				{
+				if (timerI >= backgroundColorList.length) {
 					timerI = 0;
 				}
 				lvl.setBackgroundColor(backgroundColorList[timerI]);
@@ -949,14 +950,12 @@ public class Madeline {
 		stopTimer.setRepeats(false);
 		stopTimer.start();
 	}
-	
-	public int getCurrentDashNum()
-	{
+
+	public int getCurrentDashNum() {
 		return numOfDashesRemaining;
 	}
-	
-	public int getTotalDashNum()
-	{
+
+	public int getTotalDashNum() {
 		return numOfDashesTotal;
 	}
 }
