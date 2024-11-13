@@ -3,3 +3,4 @@ Background Music (Chapter 9!)
 Sound effects
 Level timer
 Graphics based on original game sprites
+Animations for Madeline
