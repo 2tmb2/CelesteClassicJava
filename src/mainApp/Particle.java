@@ -20,7 +20,7 @@ public class Particle {
 	private static final Point FRAME_ONE = new Point(13 * Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT);
 	private static final Point FRAME_TWO = new Point(14 * Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT);
 	private static final Point FRAME_THREE = new Point(15 * Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT);
-	private static final int LIFETIME = 30;
+	public static final int LIFETIME = 30;
 
 	public Particle(int xPos, int yPos) {
 		this.xPos = Madeline.roundPos(xPos);
@@ -32,7 +32,7 @@ public class Particle {
 		frame++;
 		g2 = (Graphics2D) g2.create();
 		g2.translate(xPos, yPos);
-		if (frame == 5 || frame == (LIFETIME / 3) + 5 || frame == (2*(LIFETIME/3)) + 5) {
+		if (frame % (LIFETIME / 6) == 0) {
 			xPos += Constants.PIXEL_DIM;
 		}
 		if (frame < (LIFETIME / 3) + 1) {

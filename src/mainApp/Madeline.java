@@ -6,13 +6,18 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.Timer;
-
 import collisionObjects.CollisionObject;
 
 /**
- * Includes Madeline's drawing, collision, and every way she can interact with the environment
+ * REQUIRED HELP CITATION
+ * Referenced original code for Madeline's Hair
+ */
+
+
+/**
+ * Includes Madeline's drawing, collision, and every way she can interact with
+ * the environment
  */
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
@@ -78,6 +83,8 @@ public class Madeline {
 	private boolean isMoving;
 	private Point spritePoint = RED_SPRITES;
 	private int walkFrame = 0;
+	private int dashParticles = 0;
+	private Point[] hairPoints = new Point[5];
 
 	// Drawing Constants
 	private static final Point RED_SPRITES = new Point(Constants.SPRITE_WIDTH, 0);
@@ -88,6 +95,9 @@ public class Madeline {
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
+	private static final Color WHITE_HAIR = new Color(255,241,232);
+	private static final int DASH_PARTICLES = 4;
+	private static final int DASH_PARTICLE_GAP = 3;
 	private static final int WIDTH = 48;
 	private static final int HEIGHT = 42;
 
@@ -176,11 +186,14 @@ public class Madeline {
 		canContinue = true;
 
 		if (numOfDashesRemaining == 1) {
-			hairColor = RED_HAIR;	
+			hairColor = RED_HAIR;
 		} else if (numOfDashesRemaining == 2) {
 			hairColor = GREEN_HAIR;
 		} else {
 			hairColor = BLUE_HAIR;
+		}
+		for (int i = 0; i < hairPoints.length; i++) {
+			hairPoints[i] = new Point(-100, 0);
 		}
 	}
 
@@ -395,7 +408,7 @@ public class Madeline {
 			isCoyote = false;
 			coyoteTimer = lifetime - 1;
 			AudioPlayer.playFile("jump");
-			particles.add(new Particle(xPos, yPos));
+			particles.add(new Particle(xPos, yPos + (3 * Constants.PIXEL_DIM)));
 		} else if (isTouchingWall && !jumpPressed && !isTouchingFloor && canJump
 				&& (canWallJumpLeft || canWallJumpRight) && !wallJump) {
 			jumpPressed = true;
@@ -412,7 +425,7 @@ public class Madeline {
 			} else {
 				AudioPlayer.playFile("jump_wall_left");
 			}
-			particles.add(new Particle(xPos,yPos));
+			particles.add(new Particle(xPos, yPos));
 		}
 	}
 
@@ -488,6 +501,8 @@ public class Madeline {
 				noGrav = true;
 			}
 			isDashingDiagonally = isDashingHorizontally && isDashingVertically;
+			if (isDashingVertically || isDashingHorizontally)
+				dashParticles = DASH_PARTICLES * DASH_PARTICLE_GAP;
 			AudioPlayer.playFile("dash");
 			return true;
 		}
@@ -583,6 +598,7 @@ public class Madeline {
 					yPos = collisionObjects.get(i).getY() - HEIGHT;
 				lvl.removeLevelDisplay();
 				isFullySpawned = true;
+				particles.add(new Particle(xPos, yPos + (3 * Constants.PIXEL_DIM)));
 				return true;
 			}
 		}
@@ -633,22 +649,27 @@ public class Madeline {
 	 * @param Graphics2D g2
 	 */
 	public void drawOn(Graphics2D g2) {
+		g2 = (Graphics2D) g2.create();
 		// updates Madeline's hair color based on her number of dashes remaining
 		if (numOfDashesRemaining == 1) {
 			spritePoint = RED_SPRITES;
+			hairColor = RED_HAIR;
 		} else if (numOfDashesRemaining == 2) {
 			if (hairSwitchFrame == 5) {
 				hairSwitchFrame = 0;
 				if (spritePoint.equals(GREEN_SPRITES)) {
 					spritePoint = WHITE_SPRITES;
+					hairColor = WHITE_HAIR;
 				} else {
 					spritePoint = GREEN_SPRITES;
+					hairColor = GREEN_HAIR;
 				}
 			} else {
 				hairSwitchFrame++;
 			}
 		} else {
 			spritePoint = BLUE_SPRITES;
+			hairColor = BLUE_HAIR;
 		}
 		if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
 			animationCounter++;
@@ -671,17 +692,12 @@ public class Madeline {
 			}
 		}
 
-		for (int i = particles.size() - 1; i >= 0; i--) {
-			if (particles.get(i).getFrame() == 16) {
-				particles.remove(i);
-				continue;
-			}
-			particles.get(i).drawOn(g2);
-		}
+		updateHair(g2);
 
 		// duplicates the Graphics2D object so that transformations don't affect other
 		// objects
-		g2 = (Graphics2D) g2.create();
+		Graphics2D g2p = (Graphics2D) g2.create();
+		
 		g2.translate(roundPos(xPos), roundPos(yPos) - Constants.PIXEL_DIM);
 		if (facingRight < 0)
 			g2.translate(Constants.SPRITE_WIDTH, 0);
@@ -689,7 +705,78 @@ public class Madeline {
 				(int) spritePoint.getX() + (walkFrame * Constants.SPRITE_WIDTH), (int) spritePoint.getY(),
 				(int) spritePoint.getX() + (Constants.SPRITE_WIDTH * (walkFrame + 1)),
 				(int) spritePoint.getY() + Constants.SPRITE_HEIGHT, null);
+		drawParticles(g2p);
+	}
 
+	private void drawParticles(Graphics2D g2) {
+		if (dashParticles > 0) {
+			if (dashParticles % DASH_PARTICLE_GAP == 0) {
+				particles.add(new Particle(xPos, yPos));
+			}
+			dashParticles--;
+		}
+		for (int i = particles.size() - 1; i >= 0; i--) {
+			if (particles.get(i).getFrame() == Particle.LIFETIME + 1) {
+				particles.remove(i);
+				continue;
+			}
+			particles.get(i).drawOn(g2);
+		}
+	}
+
+	private void updateHair(Graphics2D g2) {
+		//Update every other frame
+		//if (lifetime % 2 == 0) {
+			for (int i = hairPoints.length - 1; i >= 0; i--) {
+				if (i != 0) {
+					hairPoints[i].setLocation(hairPoints[i - 1].getX(), hairPoints[i - 1].getY());
+					continue;
+				}
+				hairPoints[i].setLocation((double) roundPos(xPos), (double) roundPos(yPos));
+			}
+		//}
+
+		int radius = 1;
+		for (int i = 0; i < hairPoints.length; i++) {
+			if (i <= 1) {
+				radius = 2;
+			} else {
+				radius = 1;
+			}
+			drawCircle((int) hairPoints[i].getX(), (int) hairPoints[i].getY(), radius, hairColor, g2);
+		}
+
+	}
+
+	/**
+	 * Draws a circle at specified x, y, and radius Radius must be within 1 and 3
+	 * 
+	 * Yes, this is all hardcoded, yes the original game does it this way We don't
+	 * need a complex algorithm to make pixely circles when there are only ever 3
+	 * radii to consider
+	 * 
+	 * @param x position of circle
+	 * @param y position of circle
+	 * @param r radius of circle
+	 * @param c color of circle
+	 */
+	private void drawCircle(int x, int y, int r, Color c, Graphics2D g2) {
+		g2 = (Graphics2D) g2.create();
+		g2.translate(Constants.SPRITE_WIDTH / 2 + (-facingRight * 2 * Constants.PIXEL_DIM), 2 * Constants.PIXEL_DIM);
+		g2.setColor(c);
+		if (r == 1) {
+			g2.fillRect(x - (1 * Constants.PIXEL_DIM), y, 3 * Constants.PIXEL_DIM, 1 * Constants.PIXEL_DIM);
+			g2.fillRect(x, y - (1 * Constants.PIXEL_DIM), 1 * Constants.PIXEL_DIM, 3 * Constants.PIXEL_DIM);
+		} else if (r == 2) {
+			g2.fillRect(x - (2 * Constants.PIXEL_DIM), y - Constants.PIXEL_DIM, 5 * Constants.PIXEL_DIM,
+					3 * Constants.PIXEL_DIM);
+			g2.fillRect(x - Constants.PIXEL_DIM, y - (2 * Constants.PIXEL_DIM), 3 * Constants.PIXEL_DIM,
+					5 * Constants.PIXEL_DIM);
+		} else if (r == 3) {
+			g2.fillRect(x - (3 * Constants.PIXEL_DIM), y - (1 * Constants.PIXEL_DIM), 7, 3);
+			g2.fillRect(x - (1 * Constants.PIXEL_DIM), y - (3 * Constants.PIXEL_DIM), 3, 7);
+			g2.fillRect(x - (2 * Constants.PIXEL_DIM), y - (2 * Constants.PIXEL_DIM), 5, 5);
+		}
 	}
 
 	/*
