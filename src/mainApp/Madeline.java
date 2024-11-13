@@ -670,26 +670,31 @@ public class Madeline {
 			spritePoint = BLUE_SPRITES;
 			hairColor = BLUE_HAIR;
 		}
-		if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
-			animationCounter++;
-		} else {
-			animationCounter = 0;
-		}
-		if (isTouchingFloor && lookingUp) {
-			walkFrame = 6;
-		} else if (isTouchingFloor && lookingDown) {
-			walkFrame = 5;
-		} else if (isMoving && isTouchingFloor && !isDashingHorizontally && !isDashingVertically) {
-			walkFrame = (animationCounter / WALK_CYCLE) + 1;
-		} else {
-			if (isTouchingFloor) {
-				walkFrame = 0;
-			} else if (wallSlide) {
-				walkFrame = 4;
+		if (canMove) {
+				if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
+				animationCounter++;
 			} else {
-				walkFrame = 2;
+				animationCounter = 0;
 			}
+			if (isTouchingFloor && lookingUp) {
+				walkFrame = 6;
+			} else if (isTouchingFloor && lookingDown) {
+				walkFrame = 5;
+			} else if (isMoving && isTouchingFloor && !isDashingHorizontally && !isDashingVertically) {
+				walkFrame = (animationCounter / WALK_CYCLE) + 1;
+			} else {
+				if (isTouchingFloor) {
+					walkFrame = 0;
+				} else if (wallSlide) {
+					walkFrame = 4;
+				} else {
+					walkFrame = 2;
+				}
+			}
+		} else {
+			walkFrame = 6;
 		}
+		
 
 		updateHair(g2);
 
