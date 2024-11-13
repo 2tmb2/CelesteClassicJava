@@ -248,6 +248,7 @@ public class MainApp implements KeyListener {
 			checkMoveLevels();
 			updateMadelinePosition();
 			updateMadelineVelocity();
+			setLooking();
 			lvl.updateAnimations();
 			frame.repaint();
 			editor.repaint();
@@ -414,6 +415,10 @@ public class MainApp implements KeyListener {
     	frame.add(err);
     	frame.setVisible(true);
     	frame.repaint();
+    }
+    
+    private void setLooking() {
+    	lvl.setMadelineLooking(pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_W), pressedKeys.contains(KeyEvent.VK_DOWN) || pressedKeys.contains(KeyEvent.VK_S));
     }
     
     /**

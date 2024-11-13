@@ -230,6 +230,15 @@ public class LevelComponent extends JComponent {
 	public void moveMadelineLeft() {
 		m.decreaseX();
 	}
+	
+	/**
+	 * Sets Madeline's looking direction
+	 * @param lookingUp if she is looking up
+	 * @param lookingDown if she is looking down
+	 */
+	public void setMadelineLooking(boolean lookingUp, boolean lookingDown) {
+		m.setLooking(lookingUp, lookingDown);
+	}
 
 	/**
 	 * Adds a display to the level to show the level name/number
