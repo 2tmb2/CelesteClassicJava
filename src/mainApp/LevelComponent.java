@@ -420,8 +420,10 @@ public class LevelComponent extends JComponent {
 	
 	
 	/**
+	 *
 	 * Parses the String array of level data for the information of obstacles and
 	 * objects at each point. There are certain text elements that signify different objects.
+	 * <pre>
 	 * -- is an empty filler character
 	 * [] is an empty filler character
 	 * >1 represents a spike facing right
@@ -447,7 +449,7 @@ public class LevelComponent extends JComponent {
 	 * m2 represents a madeline with 2 dashes
 	 * I followed by two numbers creates ice collision with width and height based on those two numbers
 	 * two numbers alone creates a regular collision object with width and height based on those two numbers
-	 * 
+	 * </pre>
 	 * @param canMoveToNextLevel true if the level finish zone should be spawned, otherwise false.
 	 * The level finish zone should not be spawned if reading in a user-created level.
 	 * 
