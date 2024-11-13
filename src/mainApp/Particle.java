@@ -23,7 +23,7 @@ public class Particle {
 	private static final int LIFETIME = 30;
 
 	public Particle(int xPos, int yPos) {
-		this.xPos = Madeline.roundPos(yPos);
+		this.xPos = Madeline.roundPos(xPos);
 		this.yPos = Madeline.roundPos(yPos);
 		frame = 0;
 	}

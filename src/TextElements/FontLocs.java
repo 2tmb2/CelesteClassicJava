@@ -2,6 +2,9 @@ package TextElements;
 
 import java.awt.Point;
 
+/**
+ * 
+ */
 public class FontLocs {
 	public static Point getLoc(char c) {
 		if (c >= 65 && c <= 90) {
