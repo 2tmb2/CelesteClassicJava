@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import mainApp.Madeline;
 
+/**
+ * A Spring causes Madeline to bounce upwards when she collides with it.
+ */
 public class Spring extends CollisionObject {
 	private static final long REACTIVATION_FRAME = 12;
-	
+
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
 	private static final Color SPRING_LIGHT_YELLOW = new Color(255, 163, 0);
 	private static final Color SPRING_GREY = new Color(95, 87, 79);
@@ -17,6 +20,7 @@ public class Spring extends CollisionObject {
 
 	/**
 	 * Creates a Spring object
+	 * 
 	 * @param x the top left x coordinate of the spring
 	 * @param y the top left y coordinate of the spring
 	 * @param m the Madeline to interact with the spring
@@ -84,6 +88,7 @@ public class Spring extends CollisionObject {
 
 	/**
 	 * Check if Madeline is colliding with a wall
+	 * 
 	 * @return true if Madeline is colliding with the spring, otherwise false
 	 */
 	@Override
@@ -96,6 +101,7 @@ public class Spring extends CollisionObject {
 
 	/**
 	 * Check if Madeline is colliding with a ceiling
+	 * 
 	 * @return true if Madeline is colliding with the spring, otherwise false
 	 */
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
@@ -107,6 +113,7 @@ public class Spring extends CollisionObject {
 
 	/**
 	 * Check if Madeline is colliding with a floor
+	 * 
 	 * @return true if Madeline is colliding with the spring, otherwise false
 	 */
 	@Override
@@ -121,7 +128,8 @@ public class Spring extends CollisionObject {
 	 * Makes Madeline bounce off the spring
 	 */
 	private void bounce() {
-		if (currentFrame < REACTIVATION_FRAME) return;
+		if (currentFrame < REACTIVATION_FRAME)
+			return;
 		m.springBounce();
 		currentFrame = 1;
 		drawFrame = 2;

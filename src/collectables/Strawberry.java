@@ -6,6 +6,10 @@ import java.awt.Graphics2D;
 import collisionObjects.CollisionObject;
 import mainApp.Madeline;
 
+/**
+ * A Strawberry is the main collectible of the game. It slowly floats up and
+ * down, and when collected shows a 1000-point score.
+ */
 public class Strawberry extends CollisionObject {
 
 	private static final Color STRAWBERRY_RED = new Color(255, 0, 77);
@@ -20,9 +24,11 @@ public class Strawberry extends CollisionObject {
 
 	/**
 	 * Creates a Strawberry object that can be collected by the player
+	 * 
 	 * @param x representing the center x of the strawberry
 	 * @param y representing the center y of the strawberry
-	 * @param m representing the current Madeline object who will collect the strawberry
+	 * @param m representing the current Madeline object who will collect the
+	 *          strawberry
 	 */
 	public Strawberry(int x, int y, Madeline m) {
 		super(x, y, 56, 56, false, false);
@@ -40,7 +46,7 @@ public class Strawberry extends CollisionObject {
 		g2.translate(getX(), getY());
 		updateTranslateBy();
 		g2.translate(0, getTranslateBy());
-		
+
 		// red part of the strawberry (main body)
 		g2.setColor(STRAWBERRY_RED);
 		g2.fillRect(0, 6, 18, 6);
@@ -86,11 +92,10 @@ public class Strawberry extends CollisionObject {
 	 */
 	public void updateTranslateBy() {
 		currentFrame++;
-		if (currentFrame > 360)
-		{
+		if (currentFrame > 360) {
 			currentFrame = 0;
 		}
-		translateBy = Math.cos(-Math.toRadians(currentFrame * 2))*10;
+		translateBy = Math.cos(-Math.toRadians(currentFrame * 2)) * 10;
 	}
 
 	/**
@@ -152,6 +157,7 @@ public class Strawberry extends CollisionObject {
 
 	/**
 	 * Sets the current animation frame to a desired value
+	 * 
 	 * @param currentFrame the frame you want the animation to be on
 	 */
 	public void setCurrentFrame(int currentFrame) {
@@ -167,11 +173,13 @@ public class Strawberry extends CollisionObject {
 
 	/**
 	 * sets the total number of animation frames
+	 * 
 	 * @param numOfAnimationFrames the number of animation frames you would like
 	 */
 	public void setNumOfAnimationFrames(int numOfAnimationFrames) {
 		this.numOfAnimationFrames = numOfAnimationFrames;
 	}
-	
-	public void flyAway() {}
+
+	public void flyAway() {
+	}
 }

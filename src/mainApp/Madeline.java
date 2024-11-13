@@ -5,13 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 import javax.swing.Timer;
 
 import collisionObjects.CollisionObject;
 
+/**
+ * Includes Madeline's drawing, collision, and every way she can interact with the environment
+ */
 public class Madeline {
 	// xPos and yPos store the top left corner of Madeline
 	private int xPos;
@@ -86,11 +88,6 @@ public class Madeline {
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
-	private static final Color WHITE_HAIR = new Color(255, 241, 232);
-	private static final Color EYE_COLOR = new Color(29, 43, 83);
-	private static final Color TORSO_COLOR = new Color(0, 135, 81);
-	private static final Color LEG_COLOR = new Color(255, 241, 232);
-	private static final Color FACE_COLOR = new Color(255, 204, 170);
 	private static final int WIDTH = 48;
 	private static final int HEIGHT = 42;
 
@@ -637,7 +634,6 @@ public class Madeline {
 	 */
 	public void drawOn(Graphics2D g2) {
 		// updates Madeline's hair color based on her number of dashes remaining
-		int width = Constants.SPRITE_WIDTH * facingRight;
 		if (numOfDashesRemaining == 1) {
 			spritePoint = RED_SPRITES;
 		} else if (numOfDashesRemaining == 2) {
@@ -872,8 +868,6 @@ public class Madeline {
 		yPos -= 4 * Constants.PIXEL_DIM;
 		xVel *= BOUNCE_VEL_REDUCE;
 		numOfDashesRemaining = numOfDashesTotal;
-		// canDash = true;
-		// canControl = true;
 		dashFrameTimer = lifetime - 1000;
 	}
 
@@ -890,7 +884,6 @@ public class Madeline {
 		if (!canContinue)
 			return;
 		canContinue = false;
-		// collisionObjects = null;
 		lvl.nextLevel();
 	}
 

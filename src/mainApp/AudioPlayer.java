@@ -20,6 +20,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * https://stackoverflow.com/questions/8979914/audio-clip-wont-loop-continuously/8980146#8980146
  */
 
+/**
+ * An Audio Player handles playing a .wav audio file
+ */
 public class AudioPlayer {
 
 	private static final float DEFAULT_VOLUME_DECREASE = -25.0f;

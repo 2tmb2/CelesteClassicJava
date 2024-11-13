@@ -9,6 +9,9 @@ import javax.imageio.ImageIO;
 
 import TextElements.BlockyText;
 
+/**
+ * Displays the Celeste logo
+ */
 public class LogoDisplay {
 
 	private static final int GAME_HEIGHT = Constants.GAME_WIDTH;

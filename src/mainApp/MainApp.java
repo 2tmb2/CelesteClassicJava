@@ -38,45 +38,46 @@ public class MainApp implements KeyListener {
 	// This avoids reading the same file in over and over again.
 	public static BufferedImage SCALED_MAP;
 	
-	
+	private static final int EDITOR_WIDTH = 850;
 	public static final int BETWEEN_FRAMES = 22;
 	public static final double FRAME_COEFF = (double)BETWEEN_FRAMES / 33.0;
-	
 	private static final Color BACKGROUND_PINK = new Color(126, 37, 83);
 	private static final Color BACKGROUND_BLACK = new Color(0, 0, 0);
 	private static final Color BLUE_CLOUDS = new Color(29, 43, 83);
 	private static final Color PINK_CLOUDS = new Color(255, 119, 168);
+	
 	private Color cloudColor;
-	private final Set<Integer> pressedKeys = new HashSet<>();
 	private LevelComponent lvl;
 	private ErrorDisplay err;
 	private JFrame frame;
 	private JFrame editor;
 	private LevelEditor levelEditor;
 	private MenuComponent menu;
-	private int frameSize = 768;
-	private int strawberryCount;
-	private int deathCount;
-	private int currentLevel;
+	
+	private final Set<Integer> pressedKeys = new HashSet<>();
+	private ArrayList<Cloud> clouds;
+	private ArrayList<SnowParticle> snow;
+
 	private boolean strawberryAlreadyCollected;
 	private boolean canMoveLevels;
 	private boolean gameStarted;
 	private boolean errorIsDisplayed;
 	private boolean isCustomLevel;
-	private ArrayList<Cloud> clouds;
-	private ArrayList<SnowParticle> snow;
-
 	private boolean inEditor;
 	private boolean canSwitch;
-	private boolean mouseDown = false;
-	private boolean byFrame = false;
-	private boolean muted = false;
+	private boolean mouseDown;
+	private boolean byFrame;
+	private boolean muted;
 	
 	private String filePath;
 	private String fileName;
 	
-	private long startTime = System.currentTimeMillis();
+	private long startTime;
 	private long endTime;
+	
+	private int strawberryCount;
+	private int deathCount;
+	private int currentLevel;
 	
 	private Timer updateTimer;
 	
@@ -96,6 +97,9 @@ public class MainApp implements KeyListener {
 		currentLevel = 1;
 		strawberryAlreadyCollected = false;
 		inEditor = false;
+		mouseDown = false;  
+		byFrame = false;    
+		muted = false;      
 		deathCount = 0;
 		strawberryCount = 0;
 		endTime = 0;
@@ -104,7 +108,7 @@ public class MainApp implements KeyListener {
 		frame.addKeyListener(this);
 		// sets the preferred size of the inner contentPane to (768, 768)
 		// frame.setPreferredSize() includes the borders so it was not desirable
-		frame.getContentPane().setPreferredSize(new Dimension(frameSize, frameSize));
+		frame.getContentPane().setPreferredSize(new Dimension(Constants.GAME_WIDTH, Constants.GAME_WIDTH));
 		// make the frame non-resizable so that drawn objects remain in the correct
 		// position
 		frame.setResizable(false);
@@ -123,7 +127,7 @@ public class MainApp implements KeyListener {
 		
 		editor = new JFrame();
 		editor.addKeyListener(this);
-		editor.getContentPane().setPreferredSize(new Dimension(frameSize + 850, frameSize));
+		editor.getContentPane().setPreferredSize(new Dimension(Constants.GAME_WIDTH + EDITOR_WIDTH, Constants.GAME_WIDTH));
 		editor.setResizable(false);
 		editor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		editor.getContentPane().setBackground(Color.BLACK);
@@ -267,6 +271,7 @@ public class MainApp implements KeyListener {
     
     private void mainGame() {
     	frame.remove(menu);
+    	startTime = System.currentTimeMillis();
     	isCustomLevel = false;
     	lvl = new LevelComponent(this, currentLevel, strawberryAlreadyCollected, clouds, snow, endTime - startTime, strawberryCount, deathCount, (startTime == 0));
 		mainGameLevelRefresh();	
@@ -283,6 +288,7 @@ public class MainApp implements KeyListener {
     	fileName = fc.getSelectedFile().getName();
     	if (fc.getSelectedFile() != null && fileName.substring(fileName.length() - 3).equals("txt"))
     	{
+    		startTime = System.currentTimeMillis();
     		frame.remove(menu);
     		gameStarted = true;
     		lvl = new LevelComponent(this, filePath, fileName, clouds, snow, endTime - startTime, strawberryCount);

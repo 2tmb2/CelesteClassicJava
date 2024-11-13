@@ -6,6 +6,10 @@ import java.awt.Graphics2D;
 import mainApp.AudioPlayer;
 import mainApp.Madeline;
 
+/**
+ * A Winged Strawberry is similar to a Strawberry, except when Madeline dashes
+ * it flies away from the player.
+ */
 public class WingedStrawberry extends Strawberry {
 
 	private static final Color WING_WHITE = new Color(255, 241, 232);
@@ -17,9 +21,11 @@ public class WingedStrawberry extends Strawberry {
 
 	/**
 	 * Creates a winged strawberry that flies away when Madeline dashes
+	 * 
 	 * @param x the center x location of the strawberry spawn
 	 * @param y the center y location of the strawberry spawn
-	 * @param m the current Madeline object that will interact with the WingedStrawberry
+	 * @param m the current Madeline object that will interact with the
+	 *          WingedStrawberry
 	 */
 	public WingedStrawberry(int x, int y, Madeline m) {
 		super(x, y, m);
@@ -156,8 +162,7 @@ public class WingedStrawberry extends Strawberry {
 	 */
 	@Override
 	public void flyAway() {
-		if (getY() >= -48 && isFlyingAway == false)
-		{
+		if (getY() >= -48 && isFlyingAway == false) {
 			AudioPlayer.playFile("strawberry_flyaway");
 			isFlyingAway = true;
 		}

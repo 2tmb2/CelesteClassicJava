@@ -21,7 +21,7 @@ import collectables.*;
 import collisionObjects.*;
 
 /**
- * Class: LevelComponent
+ * LevelComponent contains all elements that make up a level, including Madeline, Collision Objects, and Collectables
  */
 public class LevelComponent extends JComponent {
 
@@ -55,7 +55,7 @@ public class LevelComponent extends JComponent {
 	private ArrayList<CollisionObject> otherObject;
 	
 	/**
-	 * Creates a LevelComponent Object
+	 * Creates a LevelComponent Object based on the main game
 	 * 
 	 * @param main                       representing the MainApp
 	 * @param level                      representing the current level as an
@@ -88,7 +88,17 @@ public class LevelComponent extends JComponent {
 		levelFromText(levelNum);
 	}
 	
-	
+	/**
+	 * Creates a LevelComponent Object based on a custom level
+	 * 
+	 * @param main                       representing the MainApp
+	 * @param filePAth					 representing the path to the level file
+	 * @param levelName					 representing the level's name
+	 * @param clouds 					 an arraylist of clouds representing the backgorund clouds to draw for the level
+	 * @param snow						 an arraylist of snowparticles representing the foreground snow to draw
+	 * @param timeDiff 					 a Long representing the amount of time that has passed since the game was started and the current level was created
+	 * @param deathCount				 an integer representing the number of times the player has died
+	 */
 	public LevelComponent(MainApp main, String filePath, String levelName, ArrayList<Cloud> clouds, ArrayList<SnowParticle> snow, Long timeDiff, int deathCount) {
 		this.clouds = clouds;
 		this.main = main;
@@ -104,6 +114,7 @@ public class LevelComponent extends JComponent {
 	}
 
 	/**
+	 * <pre>
 	 * Draws objects onto g in the following order:
 	 * Clouds
 	 * Background objects
@@ -118,6 +129,7 @@ public class LevelComponent extends JComponent {
 	 * the breakable block (if it exists)
 	 * the grave text (if it exists)
 	 * the level display text (if it exists)
+	 * </pre>
 	 */
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) (g);
@@ -472,36 +484,43 @@ public class LevelComponent extends JComponent {
 					case ('['):
 						break;
 					case ('>'):
+						// spike facing right
 						RotatableSpike r = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*2, Constants.PIXEL_DIM*6, 'r', m);
 						otherObject.add(r);
 						collisionObjects.add(r);
 						break;
 					case ('<'):
+						// spike facing left
 						RotatableSpike l = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*2, Constants.PIXEL_DIM*6, 'l', m);
 						collisionObjects.add(l);
 						otherObject.add(l);
 						break;
 					case ('^'):
+						// spike facing up
 						RotatableSpike u = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*6, Constants.PIXEL_DIM*2, 'u', m);
 						collisionObjects.add(u);
 						otherObject.add(u);
 						break;
 					case ('v'):
+						// spike facing down
 						RotatableSpike d = new RotatableSpike(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, Constants.PIXEL_DIM*6, Constants.PIXEL_DIM*2, 'd', m);
 						collisionObjects.add(d);
 						otherObject.add(d);
 						break;
 					case ('f'):
+						// finish flag
 						FinishFlag f = new FinishFlag(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(f);
 						otherObject.add(f);
 						break;
 					case ('p'):
+						// spring
 						Spring s = new Spring(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(s);
 						otherObject.add(s);
 						break;
 					case ('n'):
+						// gem
 						Gem gem = new Gem(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(gem);
 						otherObject.add(gem);
@@ -510,10 +529,12 @@ public class LevelComponent extends JComponent {
 						CloudPlatform c;
 						if (secondChar == 'l')
 						{
+							// cloud platform moving left
 							c = new CloudPlatform(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m, -1);
 						}
 						else
 						{
+							// cloud platform moving right
 							c = new CloudPlatform(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m, 1);
 						}
 						collisionObjects.add(c);
@@ -522,28 +543,33 @@ public class LevelComponent extends JComponent {
 					case ('d'):
 						if (secondChar != 'd')
 						{
+							// dissappearing spring
 							DissappearingSpring dSpring = new DissappearingSpring(j*Constants.SPRITE_WIDTH,i*Constants.SPRITE_WIDTH, m);
 							collisionObjects.add(dSpring);
 							otherObject.add(dSpring);
 						}
 						else
 						{
+							// dissappearing block
 							DissappearingBlock dBlock = new DissappearingBlock(j*Constants.SPRITE_WIDTH,i*Constants.SPRITE_WIDTH);
 							collisionObjects.add(dBlock);
 							otherObject.add(dBlock);
 						}
 						break;
 					case ('r'):
+						// balloon
 						Balloon bal = new Balloon(j*Constants.SPRITE_WIDTH,i * Constants.SPRITE_WIDTH, m);
 						otherObject.add(bal);
 						collisionObjects.add(bal);
 						break;
 					case ('g'):
+						// grave text
 						GraveText g = new GraveText(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH);
 						collisionObjects.add(g);
 						gt = g;
 						break;
 					case ('k'):
+						// key
 						if (!strawberryAlreadyCollected) {
 							if (chest == null)
 							{
@@ -555,6 +581,7 @@ public class LevelComponent extends JComponent {
 						}
 						break;
 					case ('c'):
+						// chest
 						if (!strawberryAlreadyCollected) {
 							if (chest == null)
 							{
@@ -565,28 +592,33 @@ public class LevelComponent extends JComponent {
 						}
 						break;
 					case ('b'):
+						// breakable block
 						if (!strawberryAlreadyCollected) {
 							bb = new BreakableBlock(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, 2 * Constants.SPRITE_WIDTH, 2 * Constants.SPRITE_WIDTH, m);
 							collisionObjects.add(bb);
 						}
 						break;
 					case ('s'):
+						// strawberry
 						if (!strawberryAlreadyCollected) {
 							strawberry = new Strawberry(j * Constants.SPRITE_WIDTH + 4*Constants.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*Constants.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('w'):
+						// winged strawberry
 						if (!strawberryAlreadyCollected) {
 							strawberry = new WingedStrawberry(j * Constants.SPRITE_WIDTH + 4*Constants.PIXEL_DIM, i * Constants.SPRITE_WIDTH + 3*Constants.PIXEL_DIM, m);
 							collisionObjects.add(strawberry);
 						}
 						break;
 					case ('C'):
+						// big chest
 						BigChest bc = new BigChest(j*Constants.SPRITE_WIDTH, i*Constants.SPRITE_WIDTH, m);
 						collisionObjects.add(bc);
 						otherObject.add(bc);
 					case ('m'):
+						//madeline
 						if (secondChar == '2')
 							madelineTotalDashes = 2;
 						else
@@ -595,6 +627,7 @@ public class LevelComponent extends JComponent {
 						madY = i * Constants.SPRITE_WIDTH;
 						break;
 					case ('I'):
+						// ice/slippery collision
 						collisionObjects.add(new CollisionObject(j * Constants.SPRITE_WIDTH, i * Constants.SPRITE_WIDTH, (secondChar - '0') * Constants.SPRITE_WIDTH,
 								(objectsData[j].charAt(2) - '0') * Constants.SPRITE_WIDTH, false, true));
 						break;

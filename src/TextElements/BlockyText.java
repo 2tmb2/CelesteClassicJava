@@ -1,10 +1,10 @@
 package TextElements;
-
 import java.awt.Graphics2D;
-
 import mainApp.Constants;
-import mainApp.MainApp;
 
+/**
+ * Draws Text onto the screen in whatever color is currently set
+ */
 public class BlockyText {
 	
 	/**
