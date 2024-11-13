@@ -81,6 +81,9 @@ public class MainApp implements KeyListener {
 	
 	private Timer updateTimer;
 	
+	/**
+	 * Creates the MainApp which runs the overall program
+	 */
 	public MainApp() {
 		// sets default values
 		cloudColor = BLUE_CLOUDS;
@@ -88,6 +91,7 @@ public class MainApp implements KeyListener {
 			SCALED_MAP = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
 		menu = new MenuComponent();
 		gameStarted = false;
@@ -217,6 +221,9 @@ public class MainApp implements KeyListener {
 		}
 	}
 
+	/**
+	 * Handles releasing a key
+	 */
 	@Override
     public synchronized void keyReleased(KeyEvent e) {
 		if (gameStarted == true)
@@ -242,6 +249,9 @@ public class MainApp implements KeyListener {
 		canSwitch = true;
     }
 	
+	/**
+	 * Updates all elements of the game, such as positions, velocities, animations, etc.
+	 */
 	private void update() {
 		if (mouseDown && inEditor) {
 			levelEditor.doMouseHold((int)MouseInfo.getPointerInfo().getLocation().getX(), (int)MouseInfo.getPointerInfo().getLocation().getY());
@@ -269,6 +279,9 @@ public class MainApp implements KeyListener {
     
     public void keyTyped(KeyEvent e) {}
     
+    /**
+     * Starts the actual game
+     */
     private void mainGame() {
     	frame.remove(menu);
     	startTime = System.currentTimeMillis();
@@ -279,6 +292,9 @@ public class MainApp implements KeyListener {
 		
     }
     
+    /**
+     * Starts the game based on a custom level
+     */
     private void loadCustomLevel() {
     	final JFileChooser fc = new JFileChooser();
     	fc.setCurrentDirectory(new File("src/LevelData/"));
@@ -306,6 +322,9 @@ public class MainApp implements KeyListener {
     	}
     }
     
+    /**
+     * Restarts a custom level
+     */
     private void customLevelRefresh() {
     	lvl.stopAllTimers();			
 		frame.remove(lvl);
@@ -314,6 +333,9 @@ public class MainApp implements KeyListener {
     	levelRefresh();
     }
     
+    /**
+     * Restart common to all levels
+     */
     private void levelRefresh() {
     	if (err == null)
 		{
@@ -323,6 +345,7 @@ public class MainApp implements KeyListener {
 		lvl.setDisplayMadeline(false);
 		lvl.resetMadelineVelocity();
     }
+    
 	/**
 	 * Refreshes the level to whatever currentLevel indicates
 	 */
@@ -424,6 +447,9 @@ public class MainApp implements KeyListener {
     	frame.repaint();
     }
     
+    /**
+     * Determines if Madeline is looking up/down
+     */
     private void setLooking() {
     	lvl.setMadelineLooking(pressedKeys.contains(KeyEvent.VK_UP) || pressedKeys.contains(KeyEvent.VK_W), pressedKeys.contains(KeyEvent.VK_DOWN) || pressedKeys.contains(KeyEvent.VK_S));
     }
@@ -438,6 +464,9 @@ public class MainApp implements KeyListener {
 		lvl.moveMadeline();
 	}
     
+    /**
+     * Updates Madeline's velocity based on currently pressed keys
+     */
     private void updateMadelineVelocity() {
     	Boolean hasMoved = false;
     	if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT))
@@ -452,6 +481,9 @@ public class MainApp implements KeyListener {
 		lvl.accelMadeline(hasMoved);
     }
 
+    /**
+     * Makes Madeline Jump if the jump key was pressed
+     */
 	private void checkJump() {
 		if (pressedKeys.contains(KeyEvent.VK_J) || pressedKeys.contains(KeyEvent.VK_C)) {
 			lvl.madelineJump();
@@ -514,7 +546,9 @@ public class MainApp implements KeyListener {
 		}
 	}
     
-    
+    /**
+     * Checks if the game should be muted
+     */
     private void checkToggles() {
     	if (canSwitch) {
 	    	if (pressedKeys.contains(KeyEvent.VK_M)) {
@@ -526,6 +560,9 @@ public class MainApp implements KeyListener {
     	
     }
     
+    /**
+     * Changes the color of clouds to pink
+     */
     public void setCloudsPink()
     {
     	for (Cloud c : clouds)
@@ -534,6 +571,10 @@ public class MainApp implements KeyListener {
 		}
     }
     
+    /**
+     * Changes the color of the background
+     * @param c
+     */
     public void setBackgroundColor(Color c)
     {
     	frame.getContentPane().setBackground(c);

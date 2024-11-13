@@ -537,7 +537,6 @@ public class Madeline {
 				wallSlide = object.getCanSlide();
 				return;
 			}
-			;
 		}
 		wallSlide = false;
 	}
@@ -923,8 +922,13 @@ public class Madeline {
 		this.canMove = false;
 		xVel = 0;
 		yVel = 0;
-		final Color[] backgroundColorList = { new Color(171, 81, 51), new Color(93, 87, 77), Color.BLACK,
-				new Color(28, 42, 80), new Color(125, 36, 81), new Color(0, 134, 80) };
+		Color bgColor1 = new Color(171, 81, 51);
+		Color bgColor2 = new Color(93, 87, 77);
+		Color bgColor3 = Color.BLACK;
+		Color bgColor4 = new Color(28, 42, 80);
+		Color bgColor5 = new Color(125, 36, 81);
+		Color bgColor6 = new Color(0, 134, 80);
+		final Color[] backgroundColorList = {bgColor1, bgColor2, bgColor3, bgColor4, bgColor5, bgColor6};
 		Timer t = new Timer(150, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

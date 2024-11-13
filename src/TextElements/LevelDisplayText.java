@@ -2,9 +2,7 @@ package TextElements;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-
 import mainApp.Constants;
-import mainApp.MainApp;
 
 /**
  * Displays the current level number/name and the total elapsed time
