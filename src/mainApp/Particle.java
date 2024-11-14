@@ -36,11 +36,11 @@ public class Particle {
 			xPos += Constants.PIXEL_DIM;
 		}
 		if (frame < (LIFETIME / 3) + 1) {
-			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_ONE.getX(), (int)FRAME_ONE.getY(), (int)FRAME_ONE.getX() + Constants.SPRITE_WIDTH, (int)FRAME_ONE.getY() + Constants.SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_ONE.getX(), (int)FRAME_ONE.getY() + 1, (int)FRAME_ONE.getX() + Constants.SPRITE_WIDTH, (int)FRAME_ONE.getY() + Constants.SPRITE_HEIGHT, null);
 		} else if (frame < (2 * (LIFETIME / 3)) + 1) {
-			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_TWO.getX(), (int)FRAME_TWO.getY(), (int)FRAME_TWO.getX() + Constants.SPRITE_WIDTH, (int)FRAME_TWO.getY() + Constants.SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_TWO.getX(), (int)FRAME_TWO.getY() + 1, (int)FRAME_TWO.getX() + Constants.SPRITE_WIDTH, (int)FRAME_TWO.getY() + Constants.SPRITE_HEIGHT, null);
 		} else if (frame < (3 * (LIFETIME / 3)) + 1) {
-			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_THREE.getX(), (int)FRAME_THREE.getY(), (int)FRAME_THREE.getX() + Constants.SPRITE_WIDTH, (int)FRAME_THREE.getY() + Constants.SPRITE_HEIGHT, null);
+			g2.drawImage(MainApp.SCALED_MAP, 0, 0, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, (int)FRAME_THREE.getX(), (int)FRAME_THREE.getY() + 1, (int)FRAME_THREE.getX() + Constants.SPRITE_WIDTH, (int)FRAME_THREE.getY() + Constants.SPRITE_HEIGHT, null);
 		}
 	}
 	

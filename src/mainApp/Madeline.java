@@ -706,7 +706,7 @@ public class Madeline {
 		if (facingRight < 0)
 			g2.translate(Constants.SPRITE_WIDTH, 0);
 		g2.drawImage(MainApp.SCALED_MAP, 0, 0, (facingRight * Constants.SPRITE_WIDTH), Constants.SPRITE_HEIGHT,
-				(int) spritePoint.getX() + (walkFrame * Constants.SPRITE_WIDTH), (int) spritePoint.getY(),
+				(int) spritePoint.getX() + (walkFrame * Constants.SPRITE_WIDTH), (int) spritePoint.getY() + 1,
 				(int) spritePoint.getX() + (Constants.SPRITE_WIDTH * (walkFrame + 1)),
 				(int) spritePoint.getY() + Constants.SPRITE_HEIGHT, null);
 		drawParticles(g2p);
