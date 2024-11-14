@@ -63,7 +63,7 @@ public class GraveText extends CollisionObject {
 			g2.translate(6*Constants.PIXEL_DIM, 12 * Constants.PIXEL_DIM * 8);
 			g2.fillRect(8*Constants.PIXEL_DIM, 0, Constants.GAME_WIDTH - (4*Constants.SPRITE_WIDTH), 2*Constants.SPRITE_WIDTH + (Constants.SPRITE_WIDTH / 2));
 			g2.setColor(Color.BLACK);
-			g2.translate(Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH / 2, 3*Constants.PIXEL_DIM);
+			g2.translate(Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH / 2, 2*Constants.PIXEL_DIM);
 			if (timestamp >= 5 * message.length()) {
 				timestamp = 5 * message.length();
 			}
