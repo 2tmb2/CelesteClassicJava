@@ -18,6 +18,7 @@ public class Strawberry extends CollisionObject {
 	private static final Color STRAWBERRY_LIGHT_GREEN = new Color(0, 228, 54);
 	private static final Color STRAWBERRY_DARK_RED = new Color(126, 37, 83);
 	private static final Color STRAWBERRY_YELLOW = new Color(255, 163, 0);
+	private static final int AMPLITUDE = 10;
 	public static final int numOfAnimationFrames = 180;
 	private double translateBy;
 	private int currentFrame;
@@ -95,7 +96,7 @@ public class Strawberry extends CollisionObject {
 		if (currentFrame > 360) {
 			currentFrame = 0;
 		}
-		translateBy = Math.cos(-Math.toRadians(currentFrame * 2)) * 10;
+		translateBy = Math.cos(-Math.toRadians(currentFrame * 2)) * AMPLITUDE;
 	}
 
 	/**
