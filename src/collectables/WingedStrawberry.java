@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import mainApp.AudioPlayer;
+import mainApp.Constants;
 import mainApp.Madeline;
 
 /**
@@ -14,6 +15,7 @@ public class WingedStrawberry extends Strawberry {
 
 	private static final Color WING_WHITE = new Color(255, 241, 232);
 	private static final Color WING_GREY = new Color(194, 195, 199);
+	private static final int MAX_FLY_AWAY_AMOUNT = -100;
 	private Graphics2D g2;
 	private int drawFrame;
 	private boolean isFlyingAway;
@@ -61,34 +63,34 @@ public class WingedStrawberry extends Strawberry {
 	private void drawFrame1() {
 		g2.setColor(WING_WHITE);
 		// left side of wing
-		g2.fillRect(-24, -18, 6, 24);
-		g2.fillRect(-30, -24, 6, 6);
-		g2.fillRect(-30, -12, 6, 12);
-		g2.fillRect(-36, -30, 6, 18);
-		g2.fillRect(-42, -6, 12, 6);
-		g2.fillRect(-48, -18, 18, 6);
-		g2.fillRect(-54, -24, 6, 6);
-		g2.fillRect(-60, -30, 30, 6);
+		g2.fillRect(-4*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM);
+		g2.fillRect(-5*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-5*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(-6*Constants.PIXEL_DIM, -5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
+		g2.fillRect(-7*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-8*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-9*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-10*Constants.PIXEL_DIM, -5*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// right side of wing
-		g2.fillRect(18, -18, 6, 24);
-		g2.fillRect(24, -12, 6, 12);
-		g2.fillRect(24, -6, 18, 6);
-		g2.fillRect(30, -18, 18, 6);
-		g2.fillRect(24, -24, 12, 6);
-		g2.fillRect(48, -24, 6, 6);
-		g2.fillRect(30, -30, 30, 6);
+		g2.fillRect(3*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(8*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, -5*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// left side of the wing
 		g2.setColor(WING_GREY);
-		g2.fillRect(-30, -18, 6, 6);
-		g2.fillRect(-42, -12, 12, 6);
-		g2.fillRect(-48, -24, 12, 6);
+		g2.fillRect(-5*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-7*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-8*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// right side of the wing
-		g2.fillRect(30, -12, 12, 6);
-		g2.fillRect(24, -18, 6, 6);
-		g2.fillRect(36, -24, 12, 6);
+		g2.fillRect(5*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -97,14 +99,14 @@ public class WingedStrawberry extends Strawberry {
 	private void drawFrame2() {
 		g2.setColor(WING_WHITE);
 		// left side of the wing
-		g2.fillRect(-18 - 12, -6, 12, 6);
-		g2.fillRect(-18 - 36, 0, 36, 6);
-		g2.fillRect(-30 - 30, 6, 30, 6);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 2*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 6*Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-5*Constants.PIXEL_DIM - 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// right side of the wing
-		g2.fillRect(18, -6, 12, 6);
-		g2.fillRect(18, 0, 36, 6);
-		g2.fillRect(30, 6, 30, 6);
+		g2.fillRect(3*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -115,26 +117,26 @@ public class WingedStrawberry extends Strawberry {
 		g2.setColor(WING_WHITE);
 
 		// left side of the wing
-		g2.fillRect(-18 - 30, -12, 30, 6);
-		g2.fillRect(-18 - 24, -6, 24, 6);
-		g2.fillRect(-18 - 24 - 6 - 6, -6, 6, 6);
-		g2.fillRect(-18 - 6, 0, 6, 6);
-		g2.fillRect(-18 - 24 - 6 - 12, 0, 12, 6);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 5*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 4*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 4*Constants.PIXEL_DIM - 2*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM - Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 4*Constants.PIXEL_DIM - 3*Constants.PIXEL_DIM, 0, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// right side of the wing
-		g2.fillRect(18, -12, 30, 6);
-		g2.fillRect(18, -6, 24, 6);
-		g2.fillRect(18 + 24 + 6, -6, 6, 6);
-		g2.fillRect(18, 0, 6, 6);
-		g2.fillRect(18 + 24 + 6, 0, 12, 6);
+		g2.fillRect(3*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM + 4*Constants.PIXEL_DIM + Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM + 4*Constants.PIXEL_DIM + Constants.PIXEL_DIM, 0, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(WING_GREY);
 
 		// left side of the wing
-		g2.fillRect(-18 - 24 - 6, -6, 6, 6);
+		g2.fillRect(-3*Constants.PIXEL_DIM - 4*Constants.PIXEL_DIM - Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// right side of the wing
-		g2.fillRect(18 + 24, -6, 6, 6);
+		g2.fillRect(3*Constants.PIXEL_DIM + 4*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -143,14 +145,14 @@ public class WingedStrawberry extends Strawberry {
 	@Override
 	public void updateAnimation() {
 		super.updateAnimation();
-		if (getCurrentFrame() >= getNumOfAnimationFrames() - 2) {
+		if (getCurrentFrame() >= numOfAnimationFrames - 2) {
 			drawFrame = 1;
-		} else if (getCurrentFrame() >= 2 * (getNumOfAnimationFrames() - 2) / 3) {
+		} else if (getCurrentFrame() >= 2 * (numOfAnimationFrames - 2) / 3) {
 			drawFrame = 3;
-		} else if (getCurrentFrame() >= (getNumOfAnimationFrames() - 2) / 2) {
+		} else if (getCurrentFrame() >= (numOfAnimationFrames - 2) / 2) {
 			drawFrame = 2;
 		}
-		if (isFlyingAway && getY() > -50) {
+		if (isFlyingAway && getY() > MAX_FLY_AWAY_AMOUNT) {
 			super.setY(super.getY() - (int) flyAwayAmount);
 			if (flyAwayAmount < 10)
 				flyAwayAmount += .5;
@@ -162,7 +164,7 @@ public class WingedStrawberry extends Strawberry {
 	 */
 	@Override
 	public void flyAway() {
-		if (getY() >= -48 && isFlyingAway == false) {
+		if (getY() >= -8*Constants.PIXEL_DIM && isFlyingAway == false) {
 			AudioPlayer.playFile("strawberry_flyaway");
 			isFlyingAway = true;
 		}

@@ -31,7 +31,7 @@ public class BigChest extends CollisionObject {
 		super(x, y, 96, 96, false, false);
 		this.m = m;
 		spriteHeight = Constants.SPRITE_WIDTH * 2;
-		chestLocationY = 48 * 6;
+		chestLocationY = Constants.SPRITE_WIDTH * Constants.PIXEL_DIM;
 		drawY = y;
 		isOpen = false;
 	}

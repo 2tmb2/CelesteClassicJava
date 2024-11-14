@@ -2,14 +2,11 @@ package collectables;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import collisionObjects.CollisionObject;
 import mainApp.AudioPlayer;
 import mainApp.Constants;
 import mainApp.Madeline;
+import mainApp.MainApp;
 
 /**
  * Balloon objects float in the air, moving up and down slowly. When Madeline
@@ -33,7 +30,6 @@ public class Balloon extends CollisionObject {
 	private static final int BALLOON_BOTTOM_WIDTH = 48;
 	private static final int BALLOON_BOTTOM_HEIGHT = 48;
 
-	private BufferedImage spriteMap;
 	private int timeAtCollect = 0;
 	private int lifetime = 0;
 	private int currentFrame;
@@ -41,18 +37,22 @@ public class Balloon extends CollisionObject {
 	private Madeline m;
 	private boolean isCollected;
 
+	/**
+	 * Create a balloon object
+	 * @param x the top left x coordinate to spawn at
+	 * @param y the top left y coordinate to spawn at
+	 * @param m the current Madeline object
+	 */
 	public Balloon(int x, int y, Madeline m) {
 		super(x, y, 42, 48, false, false);
-		try {
-			spriteMap = ImageIO.read(new File("src/Sprites/atlasScaled.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		currentFrame = 0;
 		isCollected = false;
 		this.m = m;
 	}
 
+	/**
+	 * Draws the balloon at it's current location and stem animation frame
+	 */
 	@Override
 	public void drawOn(Graphics2D g2) {
 		lifetime++;
@@ -70,7 +70,7 @@ public class Balloon extends CollisionObject {
 			g2 = (Graphics2D) g2.create();
 			g2.translate(getX(), getY());
 
-			g2.drawImage(spriteMap, 0, 0 - verticalDelta, BALLOON_TOP_WIDTH, BALLOON_TOP_HEIGHT - verticalDelta,
+			g2.drawImage(MainApp.SCALED_MAP, 0, 0 - verticalDelta, BALLOON_TOP_WIDTH, BALLOON_TOP_HEIGHT - verticalDelta,
 					(int) BALLOON_TOP_SPRITE.getX(), (int) BALLOON_TOP_SPRITE.getY() + 1,
 					(int) BALLOON_TOP_SPRITE.getX() + BALLOON_TOP_WIDTH,
 					(int) BALLOON_TOP_SPRITE.getY() + BALLOON_TOP_HEIGHT, null);
@@ -91,12 +91,15 @@ public class Balloon extends CollisionObject {
 	 * @param spritePoint location of sprite to draw on sprite sheet
 	 */
 	private void drawStemFrame(Graphics2D g2, Point spritePoint) {
-		g2.drawImage(spriteMap, 0, BALLOON_TOP_HEIGHT - verticalDelta, BALLOON_TOP_WIDTH,
+		g2.drawImage(MainApp.SCALED_MAP, 0, BALLOON_TOP_HEIGHT - verticalDelta, BALLOON_TOP_WIDTH,
 				BALLOON_TOP_HEIGHT + BALLOON_BOTTOM_HEIGHT - verticalDelta, (int) spritePoint.getX(),
 				(int) spritePoint.getY() + 1, (int) spritePoint.getX() + BALLOON_BOTTOM_WIDTH,
 				(int) spritePoint.getY() + BALLOON_BOTTOM_HEIGHT, null);
 	}
 
+	/**
+	 * Handles collision with wall
+	 */
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
 		if (super.isCollidingWall(madelineX, madelineY, facing) && !isCollected) {
@@ -105,6 +108,9 @@ public class Balloon extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Handles collision with floor
+	 */
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (super.isCollidingFloor(madelineX, madelineY) && !isCollected) {
@@ -113,6 +119,9 @@ public class Balloon extends CollisionObject {
 		return false;
 	}
 
+	/**
+	 * Handles collision with ceiling
+	 */
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (super.isCollidingFloor(madelineX, madelineY) && !isCollected) {

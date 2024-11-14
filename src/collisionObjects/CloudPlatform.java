@@ -32,7 +32,7 @@ public class CloudPlatform extends CollisionObject {
 	 *                           it is traveling to the left
 	 */
 	public CloudPlatform(int x, int y, Madeline m, int travelingDirection) {
-		super(x, y, 96, 4 * Constants.PIXEL_DIM, false, false);
+		super(x, y, 2*Constants.SPRITE_WIDTH, 4 * Constants.PIXEL_DIM, false, false);
 		translatedPosition = x;
 		this.travelingDirection = travelingDirection;
 		this.m = m;

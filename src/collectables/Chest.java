@@ -23,8 +23,8 @@ public class Chest {
 	 */
 	public Chest()
 	{
-		x = 768/2;
-		y = 768/2;
+		x = Constants.GAME_WIDTH/2;
+		y = Constants.GAME_WIDTH/2;
 		shouldDraw = true;
 	}
 	

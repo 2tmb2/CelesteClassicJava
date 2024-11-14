@@ -50,9 +50,7 @@ public class Gem extends CollisionObject {
 	@Override
 	public boolean isCollidingWall(int madelineX, int madelineY, int facing) {
 		if (super.isCollidingWall(madelineX, madelineY, facing) && !hasBeenCollected) {
-			m.setTotalDashes(2);
-			m.resetDashes();
-			hasBeenCollected = true;
+			collect();
 		}
 		return false;
 	}
@@ -63,9 +61,7 @@ public class Gem extends CollisionObject {
 	@Override
 	public boolean isCollidingFloor(int madelineX, int madelineY) {
 		if (super.isCollidingFloor(madelineX, madelineY) && !hasBeenCollected) {
-			m.setTotalDashes(2);
-			m.resetDashes();
-			hasBeenCollected = true;
+			collect();
 		}
 		return false;
 	}
@@ -76,10 +72,14 @@ public class Gem extends CollisionObject {
 	@Override
 	public boolean isCollidingCeiling(int madelineX, int madelineY) {
 		if (super.isCollidingCeiling(madelineX, madelineY) && !hasBeenCollected) {
-			m.setTotalDashes(2);
-			m.resetDashes();
-			hasBeenCollected = true;
+			collect();
 		}
 		return false;
+	}
+	
+	private void collect() {
+		m.setTotalDashes(2);
+		m.resetDashes();
+		hasBeenCollected = true;
 	}
 }
