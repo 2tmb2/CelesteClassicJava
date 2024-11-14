@@ -66,40 +66,44 @@ public class FinalScoreText {
 			// displays the user's actual statistics
 			g2.translate(3.4 * 8 * Constants.PIXEL_DIM, 8 * Constants.PIXEL_DIM);
 
-			// draws the strawberry icon
+			// red part of the strawberry (main body)
 			g2.setColor(STRAWBERRY_RED);
-			g2.fillRect(0, 6, 18, 6);
-			g2.fillRect(-18, 6, 12, 6);
-			g2.fillRect(-12, 12, 24, 6);
-			g2.fillRect(-6, 18, 12, 6);
-			g2.fillRect(-18, 0, 24, 6);
-			g2.fillRect(12, 0, 6, 6);
-			g2.fillRect(-18, -6, 6, 6);
-			g2.fillRect(-6, -6, 24, 6);
-			g2.fillRect(-12, -12, 24, 6);
+			g2.fillRect(0, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-3*Constants.PIXEL_DIM, 0, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-3*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-2*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
+			// dark red part of the strawberry (corners)
 			g2.setColor(STRAWBERRY_DARK_RED);
-			g2.fillRect(-18, -12, 6, 6);
-			g2.fillRect(12, -12, 6, 6);
-			g2.fillRect(-18, 12, 6, 6);
-			g2.fillRect(12, 12, 6, 6);
-			g2.fillRect(-12, 18, 6, 6);
-			g2.fillRect(6, 18, 6, 6);
+			g2.fillRect(-3*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(2*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
+			// yellow part of the strawberry (dots)
 			g2.setColor(STRAWBERRY_YELLOW);
-			g2.fillRect(-6, 6, 6, 6);
-			g2.fillRect(6, 0, 6, 6);
-			g2.fillRect(-12, -6, 6, 6);
+			g2.fillRect(-Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-2*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
+			// light green part of the strawberry (top of leaves)
 			g2.setColor(STRAWBERRY_LIGHT_GREEN);
-			g2.fillRect(-6, -18, 6, 6);
-			g2.fillRect(0, -24, 6, 6);
-			g2.fillRect(12, -24, 6, 6);
+			g2.fillRect(-Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(0, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(2*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
+			// dark green part of strawberry (bottom of leaves)
 			g2.setColor(STRAWBERRY_DARK_GREEN);
-			g2.fillRect(-18, -24, 6, 6);
-			g2.fillRect(-12, -18, 6, 6);
-			g2.fillRect(0, -18, 12, 6);
+			g2.fillRect(-3*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(-2*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+			g2.fillRect(0, -3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 			// draws the strawberry counter text
 			g2.setColor(Color.WHITE);
@@ -111,8 +115,8 @@ public class FinalScoreText {
 			BlockyText.drawText(g2, hours + ":" + minutes + ":" + seconds);
 
 			// draws the death count text
-			g2.translate(0, 48);
-			g2.translate(-(((deathCount) + "").length() - 1) * 12, 0);
+			g2.translate(0, 8*Constants.PIXEL_DIM);
+			g2.translate(-(((deathCount) + "").length() - 1) * 3*Constants.PIXEL_DIM, 0);
 			BlockyText.drawText(g2, "Deaths:" + deathCount);
 		}
 	}

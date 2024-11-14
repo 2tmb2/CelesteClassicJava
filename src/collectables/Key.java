@@ -19,6 +19,10 @@ public class Key extends CollisionObject {
 	private static final int KEY_LOCATION_Y = 0;
 	private static final int KEY_FRAME_2_X = 1200;
 	private static final int KEY_FRAME_3_X = 1248;
+	private static final int FRAME_1 = 20;
+	private static final int FRAME_2 = 30;
+	private static final int FRAME_3 = 50;
+	private static final int FRAME_4 = 60;
 	private int lifetime;
 	private int drawX;
 	
@@ -49,16 +53,16 @@ public class Key extends CollisionObject {
 			lifetime++;
 			switch (lifetime)
 			{
-				case 20:
+				case FRAME_1:
 					drawX = KEY_FRAME_1_X;
 					break;
-				case 30:
+				case FRAME_2:
 					drawX = KEY_FRAME_2_X;
 					break;
-				case 50:
+				case FRAME_3:
 					drawX = KEY_FRAME_3_X;
 					break;
-				case 60:
+				case FRAME_4:
 					drawX = KEY_FRAME_2_X;
 					lifetime = 0;
 					break;

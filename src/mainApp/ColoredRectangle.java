@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
- * A ColoredRectangle is a Rectangle object that stores a color
+ * A ColoredRectangle is a Rectangle object that can also stores a color
  */
 public class ColoredRectangle extends Rectangle {
 

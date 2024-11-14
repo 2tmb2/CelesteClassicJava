@@ -2,14 +2,16 @@ package collisionObjects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import mainApp.Constants;
 import mainApp.Madeline;
 
 /**
  * A Spring causes Madeline to bounce upwards when she collides with it.
  */
 public class Spring extends CollisionObject {
+	
 	private static final long REACTIVATION_FRAME = 12;
-
 	private static final Color SPRING_DARK_YELLOW = new Color(171, 82, 54);
 	private static final Color SPRING_LIGHT_YELLOW = new Color(255, 163, 0);
 	private static final Color SPRING_GREY = new Color(95, 87, 79);
@@ -26,7 +28,7 @@ public class Spring extends CollisionObject {
 	 * @param m the Madeline to interact with the spring
 	 */
 	public Spring(int x, int y, Madeline m) {
-		super(x + 6, y + 18, 36, 30, false, false);
+		super(x + Constants.PIXEL_DIM, y + 3*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, false, false);
 		this.m = m;
 		originalY = getY();
 		drawFrame = 1;
@@ -47,7 +49,7 @@ public class Spring extends CollisionObject {
 			if (currentFrame > REACTIVATION_FRAME) {
 				drawFrame = 1;
 				setY(originalY);
-				setHeight(30);
+				setHeight(5*Constants.PIXEL_DIM);
 			}
 		}
 
@@ -58,19 +60,19 @@ public class Spring extends CollisionObject {
 	 */
 	private void frame1(Graphics2D g2) {
 		g2.setColor(SPRING_DARK_YELLOW);
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(30, 0, 6, 6);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(SPRING_LIGHT_YELLOW);
-		g2.fillRect(6, 0, 24, 6);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(SPRING_GREY);
-		g2.fillRect(6, 6, 6, 6);
-		g2.fillRect(24, 6, 6, 6);
-		g2.fillRect(12, 12, 12, 6);
-		g2.fillRect(6, 18, 6, 6);
-		g2.fillRect(24, 18, 6, 6);
-		g2.fillRect(12, 24, 12, 6);
+		g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -79,11 +81,11 @@ public class Spring extends CollisionObject {
 	private void frame2(Graphics2D g2) {
 		g2 = (Graphics2D) g2.create();
 		g2.setColor(SPRING_DARK_YELLOW);
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(30, 0, 6, 6);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(SPRING_LIGHT_YELLOW);
-		g2.fillRect(6, 0, 24, 6);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class Spring extends CollisionObject {
 		currentFrame = 1;
 		drawFrame = 2;
 		if (getY() == originalY) {
-			super.setY(getY() + 24);
+			super.setY(getY() + 4*Constants.PIXEL_DIM);
 		}
 	}
 }

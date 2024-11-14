@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import collisionObjects.CollisionObject;
+import mainApp.Constants;
 import mainApp.Madeline;
 
 /**
@@ -17,7 +18,7 @@ public class Strawberry extends CollisionObject {
 	private static final Color STRAWBERRY_LIGHT_GREEN = new Color(0, 228, 54);
 	private static final Color STRAWBERRY_DARK_RED = new Color(126, 37, 83);
 	private static final Color STRAWBERRY_YELLOW = new Color(255, 163, 0);
-	private int numOfAnimationFrames;
+	public static final int numOfAnimationFrames = 180;
 	private double translateBy;
 	private int currentFrame;
 	private Madeline m;
@@ -31,10 +32,9 @@ public class Strawberry extends CollisionObject {
 	 *          strawberry
 	 */
 	public Strawberry(int x, int y, Madeline m) {
-		super(x, y, 56, 56, false, false);
+		super(x, y, 9*Constants.PIXEL_DIM, 9*Constants.PIXEL_DIM, false, false);
 		this.m = m;
 		currentFrame = 0;
-		numOfAnimationFrames = 180;
 	}
 
 	/**
@@ -49,42 +49,42 @@ public class Strawberry extends CollisionObject {
 
 		// red part of the strawberry (main body)
 		g2.setColor(STRAWBERRY_RED);
-		g2.fillRect(0, 6, 18, 6);
-		g2.fillRect(-18, 6, 12, 6);
-		g2.fillRect(-12, 12, 24, 6);
-		g2.fillRect(-6, 18, 12, 6);
-		g2.fillRect(-18, 0, 24, 6);
-		g2.fillRect(12, 0, 6, 6);
-		g2.fillRect(-18, -6, 6, 6);
-		g2.fillRect(-6, -6, 24, 6);
-		g2.fillRect(-12, -12, 24, 6);
+		g2.fillRect(0, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM, 0, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-Constants.PIXEL_DIM, -Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-2*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// dark red part of the strawberry (corners)
 		g2.setColor(STRAWBERRY_DARK_RED);
-		g2.fillRect(-18, -12, 6, 6);
-		g2.fillRect(12, -12, 6, 6);
-		g2.fillRect(-18, 12, 6, 6);
-		g2.fillRect(12, 12, 6, 6);
-		g2.fillRect(-12, 18, 6, 6);
-		g2.fillRect(6, 18, 6, 6);
+		g2.fillRect(-3*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, -2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// yellow part of the strawberry (dots)
 		g2.setColor(STRAWBERRY_YELLOW);
-		g2.fillRect(-6, 6, 6, 6);
-		g2.fillRect(6, 0, 6, 6);
-		g2.fillRect(-12, -6, 6, 6);
+		g2.fillRect(-Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-2*Constants.PIXEL_DIM, -Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// light green part of the strawberry (top of leaves)
 		g2.setColor(STRAWBERRY_LIGHT_GREEN);
-		g2.fillRect(-6, -18, 6, 6);
-		g2.fillRect(0, -24, 6, 6);
-		g2.fillRect(12, -24, 6, 6);
+		g2.fillRect(-Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		// dark green part of strawberry (bottom of leaves)
 		g2.setColor(STRAWBERRY_DARK_GREEN);
-		g2.fillRect(-18, -24, 6, 6);
-		g2.fillRect(-12, -18, 6, 6);
-		g2.fillRect(0, -18, 12, 6);
+		g2.fillRect(-3*Constants.PIXEL_DIM, -4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(-2*Constants.PIXEL_DIM, -3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, -3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -164,22 +164,5 @@ public class Strawberry extends CollisionObject {
 		this.currentFrame = currentFrame;
 	}
 
-	/**
-	 * @return the total number of animation frames
-	 */
-	public int getNumOfAnimationFrames() {
-		return numOfAnimationFrames;
-	}
-
-	/**
-	 * sets the total number of animation frames
-	 * 
-	 * @param numOfAnimationFrames the number of animation frames you would like
-	 */
-	public void setNumOfAnimationFrames(int numOfAnimationFrames) {
-		this.numOfAnimationFrames = numOfAnimationFrames;
-	}
-
-	public void flyAway() {
-	}
+	public void flyAway() {}
 }

@@ -22,7 +22,7 @@ public class GraveText extends CollisionObject {
 	 * @param y the top left y coordinate of the grave
 	 */
 	public GraveText(int x, int y) {
-		super(x, y, 96, 96, false, false);
+		super(x, y, 2*Constants.SPRITE_WIDTH, 2*Constants.SPRITE_WIDTH, false, false);
 	}
 
 	/**
@@ -60,10 +60,10 @@ public class GraveText extends CollisionObject {
 			g2 = (Graphics2D) g2.create();
 
 			g2.setColor(new Color(255, 241, 232));
-			g2.translate(36, 12 * Constants.PIXEL_DIM * 8);
-			g2.fillRect(48, 0, 768 - (96 * 2), 96 + (48 / 2));
+			g2.translate(6*Constants.PIXEL_DIM, 12 * Constants.PIXEL_DIM * 8);
+			g2.fillRect(8*Constants.PIXEL_DIM, 0, Constants.GAME_WIDTH - (4*Constants.SPRITE_WIDTH), 2*Constants.SPRITE_WIDTH + (Constants.SPRITE_WIDTH / 2));
 			g2.setColor(Color.BLACK);
-			g2.translate(48 + 48 / 2, 12);
+			g2.translate(Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH / 2, 3*Constants.PIXEL_DIM);
 			if (timestamp >= 5 * message.length()) {
 				timestamp = 5 * message.length();
 			}

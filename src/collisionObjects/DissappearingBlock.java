@@ -65,16 +65,16 @@ public class DissappearingBlock extends CollisionObject {
 	 */
 	private void drawFullBlock(Graphics2D g2) {
 		g2.setColor(BLOCK_YELLOW);
-		g2.fillRect(0, 0, 48, 48);
+		g2.fillRect(0, 0, 8*Constants.PIXEL_DIM, 8*Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_DARK_BLUE);
-		g2.fillRect(6, 6, 36, 36);
+		g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_BROWN);
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(42, 0, 6, 6);
-		g2.fillRect(0, 42, 6, 6);
-		g2.fillRect(42, 42, 6, 6);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -83,32 +83,32 @@ public class DissappearingBlock extends CollisionObject {
 	private void drawDissappearingFrame1(Graphics2D g2) {
 
 		g2.setColor(BLOCK_DARK_BLUE);
-		g2.fillRect(6, 6, 36, 12);
-		g2.fillRect(6, 6, 12, 36);
-		g2.fillRect(30, 6, 12, 36);
-		g2.fillRect(6, 30, 36, 12);
+		g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_YELLOW);
-		g2.fillRect(6, 0, 36, 6);
-		g2.fillRect(0, 6, 6, 36);
-		g2.fillRect(42, 6, 6, 36);
-		g2.fillRect(6, 42, 36, 6);
-		g2.fillRect(12, 18, 6, 6);
-		g2.fillRect(24, 12, 6, 6);
-		g2.fillRect(24, 30, 6, 6);
-		g2.fillRect(30, 24, 6, 6);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, Constants.PIXEL_DIM, Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 7*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_BROWN);
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(42, 0, 6, 6);
-		g2.fillRect(0, 42, 6, 6);
-		g2.fillRect(42, 42, 6, 6);
-		g2.fillRect(6, 18, 6, 6);
-		g2.fillRect(18, 18, 6, 12);
-		g2.fillRect(24, 6, 6, 6);
-		g2.fillRect(18, 36, 6, 6);
-		g2.fillRect(36, 24, 6, 6);
-		g2.fillRect(30, 18, 6, 6);
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 	}
 
 	/**
@@ -116,39 +116,38 @@ public class DissappearingBlock extends CollisionObject {
 	 */
 	private void drawDissappearingFrame2(Graphics2D g2) {
 		g2.setColor(BLOCK_DARK_BLUE);
-		g2.fillRect(6, 6, 12, 6);
-		g2.fillRect(36, 6, 6, 12);
-		g2.fillRect(6, 30, 6, 12);
-		g2.fillRect(30, 36, 12, 6);
+		g2.fillRect(Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_YELLOW);
-		g2.fillRect(6, 0, 18, 6);
-		g2.fillRect(0, 6, 6, 6);
-		g2.fillRect(0, 24, 6, 18);
-		g2.fillRect(30, 0, 12, 6);
-		g2.fillRect(30, 0, 6, 12);
-		g2.fillRect(42, 6, 6, 12);
-		g2.fillRect(36, 30, 12, 6);
-		g2.fillRect(42, 30, 6, 12);
-		g2.fillRect(30, 42, 12, 6);
-		g2.fillRect(6, 12, 6, 6);
+		g2.fillRect(Constants.PIXEL_DIM, 0, 3*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 0, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 7*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
 
 		g2.setColor(BLOCK_BROWN);
-		g2.fillRect(0, 0, 6, 6);
-		g2.fillRect(42, 0, 6, 6);
-		g2.fillRect(0, 42, 6, 6);
-		g2.fillRect(42, 42, 6, 6);
-		g2.fillRect(0, 12, 6, 6);
-		g2.fillRect(12, 12, 6, 6);
-		g2.fillRect(18, 6, 6, 6);
-		g2.fillRect(6, 24, 6, 6);
-		g2.fillRect(12, 30, 6, 12);
-		g2.fillRect(0, 42, 12, 6);
-		g2.fillRect(30, 12, 6, 6);
-		g2.fillRect(36, 18, 12, 6);
-		g2.fillRect(30, 30, 6, 6);
-		g2.fillRect(24, 36, 6, 12);
-
+		g2.fillRect(0, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 0, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(7*Constants.PIXEL_DIM, 7*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(0, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(3*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(Constants.PIXEL_DIM, 4*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(2*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
+		g2.fillRect(0, 7*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(6*Constants.PIXEL_DIM, 3*Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(5*Constants.PIXEL_DIM, 5*Constants.PIXEL_DIM, Constants.PIXEL_DIM, Constants.PIXEL_DIM);
+		g2.fillRect(4*Constants.PIXEL_DIM, 6*Constants.PIXEL_DIM, Constants.PIXEL_DIM, 2*Constants.PIXEL_DIM);
 	}
 
 	/**
