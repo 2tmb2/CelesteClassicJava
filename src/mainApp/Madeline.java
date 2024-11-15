@@ -14,7 +14,6 @@ import collisionObjects.CollisionObject;
  * Referenced original code for Madeline's Hair
  */
 
-
 /**
  * Includes Madeline's drawing, collision, and every way she can interact with
  * the environment
@@ -95,7 +94,7 @@ public class Madeline {
 	private static final Color RED_HAIR = new Color(255, 0, 77);
 	private static final Color BLUE_HAIR = new Color(41, 173, 255);
 	private static final Color GREEN_HAIR = new Color(0, 228, 54);
-	private static final Color WHITE_HAIR = new Color(255,241,232);
+	private static final Color WHITE_HAIR = new Color(255, 241, 232);
 	private static final int DASH_PARTICLES = 4;
 	private static final int DASH_PARTICLE_GAP = 3;
 	private static final int WIDTH = 48;
@@ -671,7 +670,7 @@ public class Madeline {
 			hairColor = BLUE_HAIR;
 		}
 		if (canMove) {
-				if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
+			if (isMoving && animationCounter != (3 * WALK_CYCLE) - 1) {
 				animationCounter++;
 			} else {
 				animationCounter = 0;
@@ -694,14 +693,13 @@ public class Madeline {
 		} else {
 			walkFrame = 6;
 		}
-		
 
 		updateHair(g2);
 
 		// duplicates the Graphics2D object so that transformations don't affect other
 		// objects
 		Graphics2D g2p = (Graphics2D) g2.create();
-		
+
 		g2.translate(roundPos(xPos), roundPos(yPos) - Constants.PIXEL_DIM);
 		if (facingRight < 0)
 			g2.translate(Constants.SPRITE_WIDTH, 0);
@@ -712,6 +710,11 @@ public class Madeline {
 		drawParticles(g2p);
 	}
 
+	/**
+	 * Iterates through particle list and draws each particle
+	 * 
+	 * @param g2 graphics object to draw on
+	 */
 	private void drawParticles(Graphics2D g2) {
 		if (dashParticles > 0) {
 			if (dashParticles % DASH_PARTICLE_GAP == 0) {
@@ -719,6 +722,8 @@ public class Madeline {
 			}
 			dashParticles--;
 		}
+		// Iterates through list in reverse order so removing particles doesn't cause
+		// out of bounds exception
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			if (particles.get(i).getFrame() == Particle.LIFETIME + 1) {
 				particles.remove(i);
@@ -728,17 +733,20 @@ public class Madeline {
 		}
 	}
 
+	/**
+	 * Updates the hair points based on preceding hair points position and
+	 * Madeline's position and then draws them
+	 * 
+	 * @param g2 the graphics object to draw on
+	 */
 	private void updateHair(Graphics2D g2) {
-		//Update every other frame
-		//if (lifetime % 2 == 0) {
-			for (int i = hairPoints.length - 1; i >= 0; i--) {
-				if (i != 0) {
-					hairPoints[i].setLocation(hairPoints[i - 1].getX(), hairPoints[i - 1].getY());
-					continue;
-				}
-				hairPoints[i].setLocation((double) roundPos(xPos), (double) roundPos(yPos));
+		for (int i = hairPoints.length - 1; i >= 0; i--) {
+			if (i != 0) {
+				hairPoints[i].setLocation(hairPoints[i - 1].getX(), hairPoints[i - 1].getY());
+				continue;
 			}
-		//}
+			hairPoints[i].setLocation((double) roundPos(xPos), (double) roundPos(yPos));
+		}
 
 		int radius = 1;
 		for (int i = 0; i < hairPoints.length; i++) {
@@ -755,7 +763,7 @@ public class Madeline {
 	/**
 	 * Draws a circle at specified x, y, and radius Radius must be within 1 and 3
 	 * 
-	 * Yes, this is all hardcoded, yes the original game does it this way We don't
+	 * Yes, this is all hardcoded, yes the original game does it this way. We don't
 	 * need a complex algorithm to make pixely circles when there are only ever 3
 	 * radii to consider
 	 * 
@@ -971,6 +979,9 @@ public class Madeline {
 		this.yVel = 0;
 	}
 
+	/**
+	 * Makes the level component go to the next level
+	 */
 	public void nextLevel() {
 		if (!canContinue)
 			return;
@@ -990,6 +1001,11 @@ public class Madeline {
 		return xVel;
 	}
 
+	/**
+	 * Moves Madeline with the cloud she is standing on
+	 * 
+	 * @param x the x value to increment position by
+	 */
 	public void moveWithCloud(int x) {
 		this.xPos += x;
 		cloudVel = x;
@@ -1006,10 +1022,19 @@ public class Madeline {
 		return hairColor;
 	}
 
+	/**
+	 * Displays the score text at the end of the game
+	 */
 	public void displayFinalText() {
 		lvl.finalScore();
 	}
 
+	/**
+	 * Performs the actions associated with opening the big chest
+	 * 
+	 * @param x the x location to spawn the gem at
+	 * @param y the y location to spawn the gem at
+	 */
 	public void openBigChest(int x, int y) {
 		this.canMove = false;
 		xVel = 0;
@@ -1020,7 +1045,7 @@ public class Madeline {
 		Color bgColor4 = new Color(28, 42, 80);
 		Color bgColor5 = new Color(125, 36, 81);
 		Color bgColor6 = new Color(0, 134, 80);
-		final Color[] backgroundColorList = {bgColor1, bgColor2, bgColor3, bgColor4, bgColor5, bgColor6};
+		final Color[] backgroundColorList = { bgColor1, bgColor2, bgColor3, bgColor4, bgColor5, bgColor6 };
 		Timer t = new Timer(150, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
