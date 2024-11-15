@@ -39,6 +39,7 @@ public class Balloon extends CollisionObject {
 
 	/**
 	 * Create a balloon object
+	 * 
 	 * @param x the top left x coordinate to spawn at
 	 * @param y the top left y coordinate to spawn at
 	 * @param m the current Madeline object
