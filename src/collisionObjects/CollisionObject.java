@@ -3,7 +3,7 @@ package collisionObjects;
 import java.awt.Graphics2D;
 
 /**
- * Class: CollisionObject <br>
+ * Class: CollisionObject <br> 
  * Purpose: Used to represent an object that the player character Madeline can
  * collide with
  */
