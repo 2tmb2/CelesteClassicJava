@@ -138,7 +138,7 @@ public class MainApp implements KeyListener {
 		editor.pack();
 		editor.setVisible(false);
 		
-		levelEditor = new LevelEditor(this);
+		levelEditor = new LevelEditor();
 		editor.add(levelEditor);
 		
 		editor.addMouseListener(new MouseAdapter() {

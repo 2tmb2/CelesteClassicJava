@@ -29,7 +29,6 @@ import TextElements.FontLocs;
  * file.
  */
 public class LevelEditor extends JComponent {
-
 	private static final long serialVersionUID = 1L;
 	private BufferedImage confirm;
 	private BufferedImage blank;
@@ -40,6 +39,7 @@ public class LevelEditor extends JComponent {
 
 	private static final int ATLAS_WIDTH = 128 * Constants.PIXEL_DIM;
 	private static final int ATLAS_HEIGHT = 88 * Constants.PIXEL_DIM;
+	private static final int PALETTE_WIDTH = 850;
 	private static final int OPTIONS_Y = 16 * Constants.PIXEL_DIM;
 	private static final int GAME_HEIGHT = Constants.GAME_WIDTH;
 	private static final int FONT_WIDTH = 3;
@@ -47,10 +47,14 @@ public class LevelEditor extends JComponent {
 
 	private static final Color BLUE_COLOR = new Color(63, 73, 204);
 	private static final Color GREEN_COLOR = new Color(14, 209, 69);
+	private static final int BLUE_COLLIDER_Y = 9 * Constants.SPRITE_HEIGHT;
+	private static final int BLUE_COLLIDER_X = Constants.GAME_WIDTH + (15 * Constants.SPRITE_WIDTH);
+	private static final int MOUSE_Y_OFFSET = 30;
+	private static final int MOUSE_X_OFFSET = 8;
+	private static final int CONFIRMATION_WIDTH = 56 * Constants.PIXEL_DIM;
+	private static final int CONFIRMATION_Y_OFFSET = 3 * Constants.PIXEL_DIM;
 	private static final int COLLIDER_THICKNESS = 4;
 	private static final BasicStroke RECT_STROKE = new BasicStroke(COLLIDER_THICKNESS);
-
-	private boolean drawDialog = false;
 
 	private int gridX = 0;
 	private int gridY = 0;
@@ -75,7 +79,10 @@ public class LevelEditor extends JComponent {
 	private Point[][] objectLayer = new Point[16][16]; // Object Layer
 	private Boolean[] renderLayers = new Boolean[] { true, true, true, true, true, false };
 
-	public LevelEditor(MainApp mainApp) {
+	/**
+	 * Creates a level editor by opening all required images to create the ui
+	 */
+	public LevelEditor() {
 		try {
 			confirm = ImageIO.read(new File("src/Sprites/confirm.png"));
 			blank = ImageIO.read(new File("src/Sprites/blank.png"));
@@ -93,34 +100,29 @@ public class LevelEditor extends JComponent {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.white);
-		g2.fillRect(Constants.GAME_WIDTH, 0, 850, Constants.GAME_WIDTH);
+		g2.fillRect(Constants.GAME_WIDTH, 0, PALETTE_WIDTH, Constants.GAME_WIDTH);
 		g.drawImage(MainApp.SCALED_MAP, Constants.GAME_WIDTH, 0, ATLAS_WIDTH, ATLAS_HEIGHT + OPTIONS_Y, null);
 		g2.setColor(Color.black);
 		g2.drawRect(selectedX, selectedY, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT);
-		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * 6), Constants.SPRITE_WIDTH, 1 * 6);
+		g2.fillRect(layerX, ATLAS_HEIGHT + OPTIONS_Y + (1 * Constants.PIXEL_DIM), Constants.SPRITE_WIDTH,
+				1 * Constants.PIXEL_DIM);
 
-		if (drawDialog) {
-			drawText(g2, new Point(768, 650), "ESC TO CANCEL");
-			drawText(g2, new Point(768, 700), "LVL: ");
-		} else {
-			g2.setColor(Color.white);
-			g2.fillRect(780, 650, 500, 200);
-		}
 		if (selectedLayer == 7 || selectedLayer == 9) {
-			g.drawImage(confirm, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6,
-					Constants.SPRITE_HEIGHT, null);
+			g.drawImage(confirm, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (CONFIRMATION_Y_OFFSET),
+					CONFIRMATION_WIDTH, Constants.SPRITE_HEIGHT, null);
 		} else {
-			g.drawImage(blank, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (3 * 6), 56 * 6,
-					Constants.SPRITE_HEIGHT, null);
+			g.drawImage(blank, Constants.GAME_WIDTH, ATLAS_HEIGHT + OPTIONS_Y + (CONFIRMATION_Y_OFFSET),
+					CONFIRMATION_WIDTH, Constants.SPRITE_HEIGHT, null);
 		}
 		g2.setColor(Color.red);
+		// Renders the visibility status markers for each layer
 		for (int i = 1; i <= renderLayers.length; i++) {
 			if (!renderLayers[i - 1]) {
-				g.drawImage(ex, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH), ATLAS_HEIGHT + 6,
+				g.drawImage(ex, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH), ATLAS_HEIGHT + Constants.PIXEL_DIM,
 						Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, null);
 			} else {
-				g.drawImage(checkmark, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH), ATLAS_HEIGHT + 6,
-						Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, null);
+				g.drawImage(checkmark, Constants.GAME_WIDTH + (i * Constants.SPRITE_WIDTH),
+						ATLAS_HEIGHT + Constants.PIXEL_DIM, Constants.SPRITE_WIDTH, Constants.SPRITE_HEIGHT, null);
 			}
 		}
 
@@ -148,13 +150,22 @@ public class LevelEditor extends JComponent {
 
 	}
 
+	/**
+	 * Draws the provided layer onto the level view layers are arrays of points that
+	 * reference the sprite that occupies that position in the array For example
+	 * layer[2][3] contains the top left point of the sprite on the sprite map which
+	 * the tile 3rd from the right and 4th from the top contains
+	 * 
+	 * @param g     the graphics object to draw on
+	 * @param layer the array of points for the sprite information of each tile
+	 */
 	public void drawLayer(Graphics2D g, Point[][] layer) {
 		for (int i = 0; i < layer.length; i++) {
 			for (int j = 0; j < layer[0].length; j++) {
 				if (layer[i][j] == null)
 					continue;
-				// For some reason there is a vertical offset of 1 when drawing the sprites, so
-				// the source y1 is increased by 1
+				// For some reason 1 extra line is drawn from above the sprite on the scaled
+				// map, so the sy1 is increased by 1 to compensate
 				g.drawImage(MainApp.SCALED_MAP, i * Constants.SPRITE_WIDTH, j * Constants.SPRITE_HEIGHT,
 						i * Constants.SPRITE_WIDTH + Constants.SPRITE_WIDTH,
 						j * Constants.SPRITE_HEIGHT + Constants.SPRITE_HEIGHT,
@@ -165,12 +176,28 @@ public class LevelEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Draws the green and blue boxes which denote the colliders the player can
+	 * interact with in game
+	 * 
+	 * @param g         the graphics object to draw on
+	 * @param colliders the list of colored rectangles to draw
+	 */
 	public void drawColliders(Graphics2D g, ArrayList<ColoredRectangle> colliders) {
 		for (ColoredRectangle r : colliders) {
 			drawRectangle(g, r);
 		}
 	}
 
+	/**
+	 * Determines if the provided x and y houses the top left of a collider box at
+	 * that point. If there is a collider there, returns it
+	 * 
+	 * @param x the x location to check
+	 * @param y the y location to check
+	 * @return the colored rectangle at that point. Null if there is no collider
+	 *         there
+	 */
 	public ColoredRectangle getColliderAtPoint(int x, int y) {
 		for (ColoredRectangle r : colliders) {
 			if ((r.getX()) / Constants.SPRITE_WIDTH == x && (r.getY() / Constants.SPRITE_WIDTH) == y) {
@@ -180,10 +207,23 @@ public class LevelEditor extends JComponent {
 		return null;
 	}
 
+	/**
+	 * Formats the width and height of the provided collider as a pair of 1 digit
+	 * numbers representing the tile width and height of the collider
+	 * 
+	 * @param c the collider to find the size of
+	 * @return the string representing the width and height of the collider
+	 */
 	public String getColliderSize(ColoredRectangle c) {
-		return (int) c.getWidth() / 48 + "" + (int) c.getHeight() / 48;
+		return (int) c.getWidth() / Constants.SPRITE_WIDTH + "" + (int) c.getHeight() / Constants.SPRITE_HEIGHT;
 	}
 
+	/**
+	 * Draws a colored rectangle with the border thickness specified by RECT_STROKE
+	 * 
+	 * @param g the graphics object to draw on
+	 * @param r the colored rectangle to draw
+	 */
 	public void drawRectangle(Graphics2D g, ColoredRectangle r) {
 		Stroke oldStroke = g.getStroke();
 		g.setColor(r.getColor());
@@ -193,6 +233,14 @@ public class LevelEditor extends JComponent {
 		g.setStroke(oldStroke);
 	}
 
+	/**
+	 * Draws a string of text with the top left of the first letter at the specified
+	 * location
+	 * 
+	 * @param g        the graphics object to draw on
+	 * @param location the top left of the first letter
+	 * @param text     the text to draw
+	 */
 	public void drawText(Graphics2D g, Point location, String text) {
 		text = text.toUpperCase();
 		Point fPoint;
@@ -206,16 +254,28 @@ public class LevelEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Performs the actions associated with a mouse click at the specified point
+	 * 
+	 * @param x the x location of the mouse click
+	 * @param y the y location of the mouse click
+	 */
 	public void doMouseClick(int x, int y) {
-		x -= 8;
-		y -= 30;
+		x -= MOUSE_X_OFFSET; // For some reason the actual location of the mouse is offset by these amounts
+		y -= MOUSE_Y_OFFSET; // So all mouse math is done with the x and y altered by these amounts
+		// Perform this code if the mouse is in the sprite map region
 		if (x > Constants.GAME_WIDTH && x < Constants.GAME_WIDTH + ATLAS_WIDTH) {
 			gridX = x - (x % Constants.SPRITE_WIDTH);
 			gridY = y - (y % Constants.SPRITE_HEIGHT);
-			if (y < ATLAS_HEIGHT) {
+			if (y < ATLAS_HEIGHT) { // Perform this code if the mouse is in the image region of the sprite map
 				selectedX = gridX;
 				selectedY = gridY;
-			} else if (y > ATLAS_HEIGHT + (OPTIONS_Y / 2) && y < ATLAS_HEIGHT + OPTIONS_Y) {
+			}
+			// Perform this code if the
+			// mouse is in the
+			// options region of the
+			// sprite map - lol i dont know why it formatted like that
+			else if (y > ATLAS_HEIGHT + (OPTIONS_Y / 2) && y < ATLAS_HEIGHT + OPTIONS_Y) {
 				newLayer = gridX;
 				newSelectedLayer = ((newLayer - Constants.GAME_WIDTH) / Constants.SPRITE_WIDTH);
 				if (selectedLayer == 7 || selectedLayer == 9) {
@@ -232,7 +292,9 @@ public class LevelEditor extends JComponent {
 				layerX = newLayer;
 				selectedLayer = newSelectedLayer;
 
-			} else if (y > ATLAS_HEIGHT && y < ATLAS_HEIGHT + (OPTIONS_Y / 2)) {
+			}
+			// Perform this code if the mouse is in the visibility region of the sprite map
+			else if (y > ATLAS_HEIGHT && y < ATLAS_HEIGHT + (OPTIONS_Y / 2)) {
 				int index = ((gridX - Constants.GAME_WIDTH) / Constants.SPRITE_WIDTH) - 1;
 				if (index == -1) {
 					Boolean switchToF = true;
@@ -253,7 +315,10 @@ public class LevelEditor extends JComponent {
 
 			}
 
-		} else if (x <= Constants.GAME_WIDTH && selectedLayer != 4) {
+		}
+		// Perform this code if the mouse is in the level viewer region and the collider
+		// layer is not selected
+		else if (x <= Constants.GAME_WIDTH && selectedLayer != 4) {
 			if (selectedLayer == 1) {
 				environmentLayer[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX,
 						selectedY);
@@ -265,9 +330,12 @@ public class LevelEditor extends JComponent {
 			} else if (selectedLayer == 5) {
 				objectLayer[x / Constants.SPRITE_WIDTH][y / Constants.SPRITE_WIDTH] = new Point(selectedX, selectedY);
 			}
-		} else if (x <= Constants.GAME_WIDTH && selectedLayer == 4) {
+		}
+		// Perform this code if the mouse is in the level viewer region and the collider
+		// layer is selected
+		else if (x <= Constants.GAME_WIDTH && selectedLayer == 4) {
 			Color rectColor;
-			if (selectedX == 1488 && selectedY == 432) {
+			if (selectedX == BLUE_COLLIDER_X && selectedY == BLUE_COLLIDER_Y) {
 				rectColor = BLUE_COLOR;
 			} else
 				rectColor = GREEN_COLOR;
@@ -279,9 +347,15 @@ public class LevelEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Perform this method when the mouse is released
+	 * 
+	 * @param x the x location of the mouse
+	 * @param y the y location of the mouse
+	 */
 	public void doMouseRelease(int x, int y) {
-		x -= 8;
-		y -= 30;
+		x -= MOUSE_X_OFFSET; // See the comment at the top of doMouseClick
+		y -= MOUSE_Y_OFFSET;
 		if (tempRect != null) {
 			colliders.add(new ColoredRectangle(tempRect));
 			tempRect = null;
@@ -289,9 +363,15 @@ public class LevelEditor extends JComponent {
 
 	}
 
+	/**
+	 * Perform this method continuously when the mouse is held down
+	 * 
+	 * @param x the x location of the mouse
+	 * @param y the y location of the mouse
+	 */
 	public void doMouseHold(int x, int y) {
-		x -= 8;
-		y -= 30;
+		x -= MOUSE_X_OFFSET; // See the comment at the top of doMouseClick
+		y -= MOUSE_Y_OFFSET;
 		int botRightX;
 		int botRightY;
 		if (topLeft != null) {
@@ -305,6 +385,9 @@ public class LevelEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Perform this method when then clear button is pressed twice
+	 */
 	public void doClear() {
 		if (renderLayers[0]) {
 			environmentLayer = new Point[16][16];
@@ -323,8 +406,12 @@ public class LevelEditor extends JComponent {
 		}
 	}
 
+	/**
+	 * Perform this method when the print button is pressed twice
+	 */
 	public void doPrint() {
-
+		// Initializes a hashmap that relates the location on the sprite map to the
+		// object that should be placed in the level
 		data = new HashMap<List<Integer>, String>();
 		data.put(Arrays.asList(2, 1), "pp");
 		data.put(Arrays.asList(1, 1), "^1");
@@ -398,9 +485,5 @@ public class LevelEditor extends JComponent {
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void clearPrint() {
-		drawDialog = false;
 	}
 }

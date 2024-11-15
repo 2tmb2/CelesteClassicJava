@@ -6,35 +6,37 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
- * A ColoredRectangle is a Rectangle object that can also stores a color
+ * A ColoredRectangle is a Rectangle object that can also store a color. This is
+ * used for the level editor to make collision boxes of both green and blue
+ * types. green implies you can wall slide, and blue implies you can't wall
+ * slide
  */
 public class ColoredRectangle extends Rectangle {
 
 	private static final long serialVersionUID = 1L;
 	private static final Color BLUE_COLOR = new Color(63, 73, 204);
-	private static final Color GREEN_COLOR = new Color(14,209, 69);
+	private static final Color GREEN_COLOR = new Color(14, 209, 69);
 	private Color color;
-	
+
 	public ColoredRectangle(Point p, Dimension d, Color color) {
 		super(p, d);
 		this.color = color;
 	}
-	
+
 	public ColoredRectangle(ColoredRectangle r) {
 		super(r.getLocation(), r.getSize());
 		this.color = r.getColor();
 	}
-	
+
 	public Color getColor() {
 		return this.color;
 	}
-	
+
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
-	public String getIsIce()
-	{
+
+	public String getIsIce() {
 		if (color.equals(GREEN_COLOR))
 			return "";
 		else if (color.equals(BLUE_COLOR))
