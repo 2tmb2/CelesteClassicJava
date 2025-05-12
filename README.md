@@ -1,6 +1,6 @@
 # Celeste
 
-This project is a recreation of Celeste Pico-8[^1] in Java for our CSSE 220 Final Project.
+This project is a recreation of Celeste Pico-8[^1] in Java for the final project in CSSE 220 at Rose-Hulman Institute of Technology
 
 ## Instructions
 Movement is achived by using either wasd or the arrow keys
